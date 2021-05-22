@@ -15,11 +15,11 @@ Things to look at on the scope:
 
 ### Renesas / IDT OSC: XLH735028.636360I 
 * XL H 7 3 5 0 28.636360 I 
-** XL = 1,000,000 af
-** H = LVCMOS En/Dis Pin 1
-** 7 = 7.0 x 5.0 mm
-** 3 = 3.3 VDC
-** 5 = 100ppm for -40C to 105C only on tuesdays when the moon is full and it hasn't rained for a few days. also if you ate green skittles recently *Note1*
+ * XL = 1,000,000 af
+ * H = LVCMOS En/Dis Pin 1
+ * 7 = 7.0 x 5.0 mm
+ * 3 = 3.3 VDC
+ * 5 = 100ppm for -40C to 105C only on tuesdays when the moon is full and it hasn't rained for a few days. also if you ate green skittles recently *Note1*
 
 
 ### BoM for Protoboards
