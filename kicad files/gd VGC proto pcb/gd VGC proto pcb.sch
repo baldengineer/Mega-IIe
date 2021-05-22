@@ -38,7 +38,7 @@ U 1 1 5EE0DDFD
 P 3650 1600
 F 0 "C61" V 3875 1600 50  0000 C CNN
 F 1 "1000u" V 3784 1600 50  0000 C CNN
-F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 3650 1600 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D10.0mm_P2.50mm" H 3650 1600 50  0001 C CNN
 F 3 "~" H 3650 1600 50  0001 C CNN
 	1    3650 1600
 	0    -1   -1   0   
@@ -740,7 +740,7 @@ U 1 1 5F16EF11
 P 12300 7150
 F 0 "C6" V 12400 7150 50  0000 C CNN
 F 1 "1000u" V 12200 7150 50  0000 C CNN
-F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 12300 7150 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D10.0mm_P2.50mm" H 12300 7150 50  0001 C CNN
 F 3 "~" H 12300 7150 50  0001 C CNN
 F 4 "6.3V" V 12100 7150 50  0000 C CNN "Voltage"
 	1    12300 7150
@@ -2448,37 +2448,38 @@ $EndComp
 Text Label 11150 3150 3    50   ~ 0
 COMP-SYN
 $Comp
-L Device:C_Small C5
+L Device:CP_Small C5
 U 1 1 62B144C9
 P 8350 6550
 F 0 "C5" V 8200 6550 50  0000 C CNN
 F 1 "22uF" V 8450 6550 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 8350 6550 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm" H 8350 6550 50  0001 C CNN
 F 3 "~" H 8350 6550 50  0001 C CNN
 	1    8350 6550
-	0    1    1    0   
+	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:C_Small C13
+L Device:CP_Small C13
 U 1 1 62B148A6
 P 8700 6800
 F 0 "C13" V 8600 6800 50  0000 C CNN
 F 1 "22uF" V 8850 6800 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 8700 6800 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm" H 8700 6800 50  0001 C CNN
 F 3 "~" H 8700 6800 50  0001 C CNN
 	1    8700 6800
-	0    1    1    0   
+	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:C_Small C4
+L Device:CP_Small C4
 U 1 1 62B14DC6
 P 7950 6250
 F 0 "C4" V 7800 6250 50  0000 C CNN
 F 1 "22uF" V 8100 6250 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 7950 6250 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm" H 7950 6250 50  0001 C CNN
 F 3 "~" H 7950 6250 50  0001 C CNN
+F 4 "ECE-A1EKA220" V 7950 6250 50  0001 C CNN "MFN"
 	1    7950 6250
-	0    1    1    0   
+	0    -1   -1   0   
 $EndComp
 Wire Wire Line
 	8800 6800 9700 6800
@@ -2508,20 +2509,6 @@ Wire Wire Line
 	8600 6800 8350 6800
 Text Notes 6950 1800 0    50   ~ 0
 H2-6: Blue\nH3-6: Green\nH4-6: Red
-Wire Wire Line
-	6750 7250 6350 7250
-Connection ~ 6750 7250
-$Comp
-L Connector:TestPoint TP26
-U 1 1 6099F062
-P 6750 7250
-F 0 "TP26" H 6750 7500 50  0000 C CNN
-F 1 "TestPoint" V 6854 7322 50  0001 C CNN
-F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 6950 7250 50  0001 C CNN
-F 3 "~" H 6950 7250 50  0001 C CNN
-	1    6750 7250
-	1    0    0    -1  
-$EndComp
 Text GLabel 6350 7550 0    50   Input ~ 0
 CREF.L
 Text GLabel 6350 7250 0    50   Input ~ 0
@@ -2530,8 +2517,6 @@ Text Label 6400 7550 0    50   ~ 0
 CREF.L
 Text Label 6400 7250 0    50   ~ 0
 CREF.H
-Wire Wire Line
-	6950 7250 6750 7250
 Wire Wire Line
 	7600 7350 7550 7350
 Connection ~ 7600 7350
@@ -2984,7 +2969,7 @@ U 1 1 61DCD153
 P 3650 1350
 F 0 "C16" V 3875 1350 50  0000 C CNN
 F 1 "1000u" V 3784 1350 50  0000 C CNN
-F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 3650 1350 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D10.0mm_P2.50mm" H 3650 1350 50  0001 C CNN
 F 3 "~" H 3650 1350 50  0001 C CNN
 	1    3650 1350
 	0    -1   -1   0   
@@ -3012,4 +2997,120 @@ $EndComp
 Connection ~ 3300 1350
 Text Label 14550 3550 0    50   ~ 0
 GND
+Wire Wire Line
+	6350 7250 6950 7250
+$Comp
+L 74xx:74LS02 UE7-1
+U 5 1 60AD9583
+P 6800 6050
+F 0 "UE7-1" H 7100 6650 50  0000 C CNN
+F 1 "74LS02" H 7150 6550 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6800 6050 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74ls02" H 6800 6050 50  0001 C CNN
+	5    6800 6050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C20
+U 1 1 60ADC726
+P 6150 6000
+F 0 "C20" V 6250 5950 50  0000 L CNN
+F 1 "100n" V 6050 5900 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 6150 6000 50  0001 C CNN
+F 3 "~" H 6150 6000 50  0001 C CNN
+	1    6150 6000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6150 5900 6150 5550
+Wire Wire Line
+	6150 5550 6800 5550
+Wire Wire Line
+	6150 6100 6150 6550
+Wire Wire Line
+	6150 6550 6500 6550
+$Comp
+L power:GNDREF #PWR0146
+U 1 1 60B5168A
+P 6500 6550
+F 0 "#PWR0146" H 6500 6300 50  0001 C CNN
+F 1 "GNDREF" H 6505 6377 50  0001 C CNN
+F 2 "" H 6500 6550 50  0001 C CNN
+F 3 "" H 6500 6550 50  0001 C CNN
+	1    6500 6550
+	1    0    0    -1  
+$EndComp
+Connection ~ 6500 6550
+Wire Wire Line
+	6500 6550 6800 6550
+$Comp
+L power:+5V #PWR0147
+U 1 1 60B51AE7
+P 6800 5550
+F 0 "#PWR0147" H 6800 5400 50  0001 C CNN
+F 1 "+5V" H 6815 5723 50  0000 C CNN
+F 2 "" H 6800 5550 50  0001 C CNN
+F 3 "" H 6800 5550 50  0001 C CNN
+	1    6800 5550
+	1    0    0    -1  
+$EndComp
+Connection ~ 6800 5550
+$Comp
+L Device:C_Small C4alt1
+U 1 1 60BE0985
+P 8050 4950
+F 0 "C4alt1" V 7900 4950 50  0000 C CNN
+F 1 "22uF" V 8200 4950 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 8050 4950 50  0001 C CNN
+F 3 "~" H 8050 4950 50  0001 C CNN
+F 4 "ECE-A1EKA220" V 8050 4950 50  0001 C CNN "MFN"
+	1    8050 4950
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C_Small C5alt1
+U 1 1 60BE0EE5
+P 8050 5400
+F 0 "C5alt1" V 7900 5400 50  0000 C CNN
+F 1 "22uF" V 8150 5400 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 8050 5400 50  0001 C CNN
+F 3 "~" H 8050 5400 50  0001 C CNN
+	1    8050 5400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C_Small C6alt1
+U 1 1 60BE12C7
+P 8050 5750
+F 0 "C6alt1" V 7950 5750 50  0000 C CNN
+F 1 "22uF" V 8200 5750 50  0000 C CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 8050 5750 50  0001 C CNN
+F 3 "~" H 8050 5750 50  0001 C CNN
+	1    8050 5750
+	0    1    1    0   
+$EndComp
+Text Label 7700 4950 0    50   ~ 0
+H2-6
+Wire Wire Line
+	7950 4950 7700 4950
+Text Label 7700 5400 0    50   ~ 0
+H3-6
+Wire Wire Line
+	7950 5400 7700 5400
+Text Label 7700 5750 0    50   ~ 0
+H4-6
+Wire Wire Line
+	7950 5750 7700 5750
+Text Label 8400 5750 2    50   ~ 0
+UC2-3
+Wire Wire Line
+	8150 5750 8400 5750
+Text Label 8400 5400 2    50   ~ 0
+UC2-4
+Wire Wire Line
+	8150 5400 8400 5400
+Text Label 8400 4950 2    50   ~ 0
+UC2-5
+Wire Wire Line
+	8150 4950 8400 4950
 $EndSCHEMATC
