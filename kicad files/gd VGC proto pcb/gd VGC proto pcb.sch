@@ -38,7 +38,7 @@ U 1 1 5EE0DDFD
 P 3650 1600
 F 0 "C61" V 3875 1600 50  0000 C CNN
 F 1 "1000u" V 3784 1600 50  0000 C CNN
-F 2 "Capacitor_SMD:C_0805_2012Metric" H 3650 1600 50  0001 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 3650 1600 50  0001 C CNN
 F 3 "~" H 3650 1600 50  0001 C CNN
 	1    3650 1600
 	0    -1   -1   0   
@@ -221,7 +221,7 @@ F 3 "~" H 1650 5650 50  0001 C CNN
 	1    1650 5650
 	0    1    1    0   
 $EndComp
-Text Label 4150 8950 2    50   ~ 0
+Text Label 4150 9200 2    50   ~ 0
 PH0.H
 Text Label 2000 5850 0    50   ~ 0
 IRQ.L
@@ -364,17 +364,6 @@ Wire Wire Line
 	1550 5650 1200 5650
 Wire Wire Line
 	1750 5650 1850 5650
-$Comp
-L Connector:TestPoint TP160
-U 1 1 5EE8C6B3
-P 1850 5650
-F 0 "TP160" H 1850 5850 50  0000 C CNN
-F 1 "TestPoint" V 1954 5722 50  0001 C CNN
-F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 2050 5650 50  0001 C CNN
-F 3 "~" H 2050 5650 50  0001 C CNN
-	1    1850 5650
-	1    0    0    -1  
-$EndComp
 Connection ~ 1850 5650
 Wire Wire Line
 	1850 5650 2500 5650
@@ -402,22 +391,6 @@ F 3 "" H 1600 8250 50  0001 C CNN
 	1    1600 8250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1750 5050 1850 5050
-$Comp
-L Connector:TestPoint TP189
-U 1 1 5EEDC49B
-P 1850 5050
-F 0 "TP189" H 1850 5250 50  0000 C CNN
-F 1 "TestPoint" V 1954 5122 50  0001 C CNN
-F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 2050 5050 50  0001 C CNN
-F 3 "~" H 2050 5050 50  0001 C CNN
-	1    1850 5050
-	1    0    0    -1  
-$EndComp
-Connection ~ 1850 5050
-Wire Wire Line
-	1850 5050 2500 5050
 Text Label 2000 2000 0    50   ~ 0
 ADBUS0
 Text Label 2000 2100 0    50   ~ 0
@@ -476,26 +449,6 @@ Text Label 4350 6300 2    50   ~ 0
 UG3-1
 Text Label 4350 5550 2    50   ~ 0
 VBL.L
-Wire Wire Line
-	3800 5550 4050 5550
-$Comp
-L Connector:TestPoint TP5
-U 1 1 5EF5C697
-P 4200 5650
-F 0 "TP5" V 4200 5900 50  0000 C CNN
-F 1 "TestPoint" V 4304 5722 50  0001 C CNN
-F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 4400 5650 50  0001 C CNN
-F 3 "~" H 4400 5650 50  0001 C CNN
-	1    4200 5650
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	4050 5650 4050 5550
-Connection ~ 4050 5550
-Wire Wire Line
-	4050 5550 4350 5550
-Wire Wire Line
-	4200 5650 4050 5650
 $Comp
 L power:+12V #PWR0105
 U 1 1 5EF63E8B
@@ -2346,81 +2299,58 @@ F 3 "~" H 1800 4100 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	1100 8750 1600 8750
+	900  8750 1300 8750
 Wire Wire Line
-	1100 8850 1600 8850
+	900  8950 1300 8950
 Wire Wire Line
-	1100 8950 1600 8950
-Text Label 1600 8750 2    50   ~ 0
+	900  9250 1300 9250
+Text Label 1300 9150 2    50   ~ 0
 RGB1.H
-Text Label 1600 8850 2    50   ~ 0
+Text Label 1300 9450 2    50   ~ 0
 RGB2.H
-Text Label 1600 8950 2    50   ~ 0
+Text Label 1300 8850 2    50   ~ 0
 RGB4.H
-Text Label 1600 9050 2    50   ~ 0
+Text Label 1300 8950 2    50   ~ 0
 RGB8.H
 $Comp
-L Connector_Generic:Conn_01x04 J20
+L Connector_Generic:Conn_01x08 J20
 U 1 1 626E79E1
-P 900 8850
-F 0 "J20" H 1050 8950 50  0000 C CNN
-F 1 "RGB In" H 1100 8850 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 900 8850 50  0001 C CNN
-F 3 "~" H 900 8850 50  0001 C CNN
-	1    900  8850
+P 700 9050
+F 0 "J20" H 800 9600 50  0000 C CNN
+F 1 "RGB In" H 700 9500 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" H 700 9050 50  0001 C CNN
+F 3 "~" H 700 9050 50  0001 C CNN
+	1    700  9050
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	1100 9050 1600 9050
-$Comp
-L Connector_Generic:Conn_01x06 J22
-U 1 1 6276C0A0
-P 2450 8950
-F 0 "J22" H 2600 9250 50  0000 C CNN
-F 1 "Memory Control" H 2800 9150 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 2450 8950 50  0001 C CNN
-F 3 "~" H 2450 8950 50  0001 C CNN
-	1    2450 8950
-	-1   0    0    -1  
-$EndComp
-Text Label 3150 8850 2    50   ~ 0
+	900  9450 1300 9450
+Text Label 3100 9300 2    50   ~ 0
 STRETCH.L
-Wire Wire Line
-	3150 8850 2650 8850
-Wire Wire Line
-	2650 8750 3150 8750
-Text Label 3150 8750 2    50   ~ 0
+Text Label 6350 9150 2    50   ~ 0
 A2R-W.H
-Wire Wire Line
-	2650 8950 3150 8950
-Wire Wire Line
-	2650 9050 3150 9050
-Text Label 3150 8950 2    50   ~ 0
+Text Label 3100 9700 2    50   ~ 0
 FLIP7.H
-Text Label 3150 9050 2    50   ~ 0
+Text Label 3100 9800 2    50   ~ 0
 FLIP6.H
 Text Label 4150 8750 2    50   ~ 0
-14M.H
-Wire Wire Line
-	3150 9150 2650 9150
-Text Label 3150 9250 2    50   ~ 0
+14MD.H
+Text Label 3100 9400 2    50   ~ 0
 M2SEL.L
-Wire Wire Line
-	3150 9250 2650 9250
 $Comp
-L Connector_Generic:Conn_01x04 J21
+L Connector_Generic:Conn_01x02 J21
 U 1 1 627F4D36
-P 3600 8850
-F 0 "J21" H 3750 8950 50  0000 C CNN
-F 1 "CLKS" H 3800 8850 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 3600 8850 50  0001 C CNN
-F 3 "~" H 3600 8850 50  0001 C CNN
-	1    3600 8850
+P 3600 8750
+F 0 "J21" H 3750 8850 50  0000 C CNN
+F 1 "CLK_14M" H 3800 8750 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3600 8750 50  0001 C CNN
+F 3 "~" H 3600 8750 50  0001 C CNN
+	1    3600 8750
 	-1   0    0    -1  
 $EndComp
 Text Label 2000 5750 0    50   ~ 0
 PH0.H
-Text Label 3150 9150 2    50   ~ 0
+Text Label 6350 9350 2    50   ~ 0
 IRQ.L
 $Comp
 L Device:R_Small R1
@@ -2455,47 +2385,27 @@ Wire Wire Line
 Wire Wire Line
 	3800 8750 4150 8750
 Wire Wire Line
-	3800 8950 4150 8950
+	3800 9200 4150 9200
 Wire Wire Line
 	3800 8850 4250 8850
 Wire Wire Line
-	3800 9050 4250 9050
-Wire Wire Line
-	4250 9050 4250 8850
+	3800 9300 4250 9300
 $Comp
 L power:GNDREF #PWR0142
 U 1 1 628C7532
-P 4250 9050
-F 0 "#PWR0142" H 4250 8800 50  0001 C CNN
-F 1 "GNDREF" H 4255 8877 50  0001 C CNN
-F 2 "" H 4250 9050 50  0001 C CNN
-F 3 "" H 4250 9050 50  0001 C CNN
-	1    4250 9050
+P 4250 9300
+F 0 "#PWR0142" H 4250 9050 50  0001 C CNN
+F 1 "GNDREF" H 4255 9127 50  0001 C CNN
+F 2 "" H 4250 9300 50  0001 C CNN
+F 3 "" H 4250 9300 50  0001 C CNN
+	1    4250 9300
 	1    0    0    -1  
 $EndComp
-Connection ~ 4250 9050
-$Comp
-L Connector_Generic:Conn_01x03 J23
-U 1 1 628C8842
-P 4900 8950
-F 0 "J23" H 5050 9100 50  0000 C CNN
-F 1 "VGC Extra" H 5200 9000 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4900 8950 50  0001 C CNN
-F 3 "~" H 4900 8950 50  0001 C CNN
-	1    4900 8950
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	5100 8850 5600 8850
-Wire Wire Line
-	5100 8950 5600 8950
-Wire Wire Line
-	5100 9050 5600 9050
-Text Label 5600 8850 2    50   ~ 0
+Text Label 6350 9250 2    50   ~ 0
 RESET.L
-Text Label 5600 8950 2    50   ~ 0
+Text Label 3100 9600 2    50   ~ 0
 HDSEL.H
-Text Label 5600 9050 2    50   ~ 0
+Text Label 3100 9500 2    50   ~ 0
 BABUS12
 $Comp
 L Connector_Generic:Conn_01x05 J6
@@ -2540,7 +2450,7 @@ L Connector_Generic:Conn_01x01 J13
 U 1 1 62B11FF1
 P 13450 4200
 F 0 "J13" H 13530 4242 50  0000 L CNN
-F 1 "Mono-Color" H 13530 4151 50  0000 L CNN
+F 1 "COMSYNC" H 13530 4151 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical" H 13450 4200 50  0001 C CNN
 F 3 "~" H 13450 4200 50  0001 C CNN
 	1    13450 4200
@@ -2738,23 +2648,23 @@ $EndComp
 Text Label 10550 5400 2    50   ~ 0
 L3-1
 $Comp
-L Connector_Generic:Conn_01x02 J19
+L Connector_Generic:Conn_02x02_Odd_Even J19
 U 1 1 62CF3533
-P 6150 7850
-F 0 "J19" H 6300 8000 50  0000 C CNN
-F 1 "CREF" H 6450 7900 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 6150 7850 50  0001 C CNN
-F 3 "~" H 6150 7850 50  0001 C CNN
-	1    6150 7850
+P 6250 8050
+F 0 "J19" H 6250 8300 50  0000 C CNN
+F 1 "CREF" H 6300 8200 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x02_P2.54mm_Vertical" H 6250 8050 50  0001 C CNN
+F 3 "~" H 6250 8050 50  0001 C CNN
+	1    6250 8050
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	6350 7850 6700 7850
-Text Label 6700 7850 2    50   ~ 0
+	6450 8050 6800 8050
+Text Label 6800 8050 2    50   ~ 0
 CREF.H
 Wire Wire Line
-	6350 7950 6700 7950
-Text Label 6700 7950 2    50   ~ 0
+	6450 8150 6800 8150
+Text Label 6800 8150 2    50   ~ 0
 CREF.L
 $Comp
 L Connector:TestPoint TP1
@@ -2770,4 +2680,333 @@ $EndComp
 Connection ~ 12050 7150
 Wire Wire Line
 	12050 7150 12200 7150
+$Comp
+L Connector_Generic:Conn_01x02 J24
+U 1 1 60C1231B
+P 3600 9200
+F 0 "J24" H 3750 9300 50  0000 C CNN
+F 1 "CLK_PH0" H 3800 9200 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3600 9200 50  0001 C CNN
+F 3 "~" H 3600 9200 50  0001 C CNN
+	1    3600 9200
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_02x20_Odd_Even J25
+U 1 1 60C97E3D
+P -900 9150
+F 0 "J25" H -850 10267 50  0000 C CNN
+F 1 "Bald-Ext-1" H -850 10176 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical" H -900 9150 50  0001 C CNN
+F 3 "~" H -900 9150 50  0001 C CNN
+	1    -900 9150
+	1    0    0    -1  
+$EndComp
+NoConn ~ -600 9150
+Text Label -1600 8850 0    50   ~ 0
+ADBUS1
+Text Label -1600 8650 0    50   ~ 0
+ADBUS3
+Wire Wire Line
+	-1600 8850 -1100 8850
+Wire Wire Line
+	-100 8650 -600 8650
+Text Label -100 8250 2    50   ~ 0
+14MD.H
+Wire Wire Line
+	-600 8250 -100 8250
+Text Label -100 8950 2    50   ~ 0
+MDBUS0
+Text Label -100 9050 2    50   ~ 0
+MDBUS1
+Wire Wire Line
+	-600 8950 -100 8950
+Wire Wire Line
+	-600 9050 -100 9050
+Text Label -100 9350 2    50   ~ 0
+MDBUS2
+Text Label -100 9450 2    50   ~ 0
+MDBUS3
+Wire Wire Line
+	-600 9350 -100 9350
+Wire Wire Line
+	-600 9450 -100 9450
+Text Label -100 9550 2    50   ~ 0
+MDBUS4
+Text Label -100 9750 2    50   ~ 0
+MDBUS5
+Wire Wire Line
+	-600 9550 -100 9550
+Wire Wire Line
+	-600 9750 -100 9750
+Text Label -100 9850 2    50   ~ 0
+MDBUS6
+Text Label -100 9950 2    50   ~ 0
+MDBUS7
+Wire Wire Line
+	-600 9850 -100 9850
+Wire Wire Line
+	-600 9950 -100 9950
+Text Label -1600 9350 0    50   ~ 0
+RABUS2
+Text Label -1600 9450 0    50   ~ 0
+RABUS3
+Text Label -1600 9650 0    50   ~ 0
+RABUS4
+Text Label -1600 9750 0    50   ~ 0
+RABUS5
+Text Label -1600 9850 0    50   ~ 0
+RABUS6
+Text Label -1600 9950 0    50   ~ 0
+RABUS7
+Wire Wire Line
+	-1600 9350 -1100 9350
+Wire Wire Line
+	-1600 9450 -1100 9450
+Wire Wire Line
+	-1600 9650 -1100 9650
+Wire Wire Line
+	-1600 9750 -1100 9750
+Wire Wire Line
+	-1600 9850 -1100 9850
+Wire Wire Line
+	-1600 9950 -1100 9950
+Wire Wire Line
+	-600 9250 -400 9250
+Text Label -400 9250 2    50   ~ 0
+GND
+Wire Wire Line
+	-600 9650 -400 9650
+Text Label -400 9650 2    50   ~ 0
+GND
+Wire Wire Line
+	-1100 9550 -1300 9550
+Text Label -1300 9550 0    50   ~ 0
+GND
+Wire Wire Line
+	-1100 9150 -1300 9150
+Text Label -1300 9150 0    50   ~ 0
+GND
+Wire Wire Line
+	-1100 10050 -1300 10050
+Text Label -1300 10050 0    50   ~ 0
+GND
+Wire Wire Line
+	-1100 8250 -1300 8250
+Text Label -1300 8250 0    50   ~ 0
+GND
+Wire Wire Line
+	-600 8350 -400 8350
+Text Label -400 8350 2    50   ~ 0
+GND
+Wire Wire Line
+	-1100 8750 -1300 8750
+Text Label -1300 8750 0    50   ~ 0
+GND
+Wire Wire Line
+	-1100 10150 -1600 10150
+Text Label -1600 10150 0    50   ~ 0
+PH0.H
+Wire Wire Line
+	-1100 8350 -1300 8350
+Text Label -1300 8350 0    50   ~ 0
+GND
+Wire Wire Line
+	-600 10150 -400 10150
+Text Label -400 10150 2    50   ~ 0
+GND
+Wire Wire Line
+	-600 10050 -400 10050
+Text Label -400 10050 2    50   ~ 0
+GND
+Wire Wire Line
+	-1600 9250 -1100 9250
+Wire Wire Line
+	-1600 9050 -1100 9050
+Text Label -1600 9250 0    50   ~ 0
+RABUS1
+Text Label -1600 9050 0    50   ~ 0
+RABUS0
+Wire Wire Line
+	-1600 8950 -1100 8950
+Text Label -1600 8950 0    50   ~ 0
+ADBUS0
+Text Label -400 8850 2    50   ~ 0
+GND
+Wire Wire Line
+	-600 8850 -400 8850
+Wire Wire Line
+	-100 8750 -600 8750
+Text Label -100 8750 2    50   ~ 0
+ADBUS2
+Wire Wire Line
+	-1600 8650 -1100 8650
+Text Label -1600 8550 0    50   ~ 0
+ADBUS5
+Wire Wire Line
+	-100 8550 -600 8550
+Text Label -100 8650 2    50   ~ 0
+ADBUS4
+Wire Wire Line
+	-1600 8550 -1100 8550
+Text Label -100 8550 2    50   ~ 0
+ADBUS6
+Wire Wire Line
+	-1600 8450 -1100 8450
+Text Label -1600 8450 0    50   ~ 0
+ADBUS7
+Text Label -400 8450 2    50   ~ 0
+GND
+Wire Wire Line
+	-600 8450 -400 8450
+Wire Wire Line
+	900  8850 1300 8850
+Wire Wire Line
+	900  9050 1300 9050
+Wire Wire Line
+	900  9150 1300 9150
+Text Label 1300 9250 2    50   ~ 0
+RGB1.H
+Text Label 1300 9350 2    50   ~ 0
+RGB2.H
+Text Label 1300 8750 2    50   ~ 0
+RGB4.H
+Text Label 1300 9050 2    50   ~ 0
+RGB8.H
+Wire Wire Line
+	900  9350 1300 9350
+Wire Wire Line
+	3100 9700 2600 9700
+Wire Wire Line
+	2600 9600 3100 9600
+Wire Wire Line
+	2600 9500 3100 9500
+Wire Wire Line
+	3100 9400 2600 9400
+Wire Wire Line
+	2600 9800 3100 9800
+Wire Wire Line
+	3100 9300 2600 9300
+$Comp
+L Connector_Generic:Conn_02x06_Odd_Even J22
+U 1 1 6276C0A0
+P 2400 9600
+F 0 "J22" H 2500 9950 50  0000 C CNN
+F 1 "Memory Control" H 2450 10000 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Vertical" H 2400 9600 50  0001 C CNN
+F 3 "~" H 2400 9600 50  0001 C CNN
+	1    2400 9600
+	-1   0    0    1   
+$EndComp
+Text Label 1600 9300 0    50   ~ 0
+STRETCH.L
+Text Label 4850 9150 0    50   ~ 0
+A2R-W.H
+Text Label 1600 9700 0    50   ~ 0
+FLIP7.H
+Text Label 1600 9800 0    50   ~ 0
+FLIP6.H
+Text Label 1600 9400 0    50   ~ 0
+M2SEL.L
+Text Label 4850 9350 0    50   ~ 0
+IRQ.L
+Wire Wire Line
+	1600 9700 2100 9700
+Wire Wire Line
+	2100 9600 1600 9600
+Wire Wire Line
+	2100 9500 1600 9500
+Wire Wire Line
+	1600 9400 2100 9400
+Wire Wire Line
+	2100 9800 1600 9800
+Wire Wire Line
+	1600 9300 2100 9300
+$Comp
+L power:GNDREF #PWR0144
+U 1 1 61B37793
+P 4250 8850
+F 0 "#PWR0144" H 4250 8600 50  0001 C CNN
+F 1 "GNDREF" H 4255 8677 50  0001 C CNN
+F 2 "" H 4250 8850 50  0001 C CNN
+F 3 "" H 4250 8850 50  0001 C CNN
+	1    4250 8850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5850 9150 6350 9150
+Wire Wire Line
+	5850 9250 6350 9250
+Wire Wire Line
+	5850 9350 6350 9350
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even J23
+U 1 1 628C8842
+P 5650 9250
+F 0 "J23" H 5750 9600 50  0000 C CNN
+F 1 "VGC Extra" H 5750 9500 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 5650 9250 50  0001 C CNN
+F 3 "~" H 5650 9250 50  0001 C CNN
+	1    5650 9250
+	-1   0    0    1   
+$EndComp
+Text Label 4850 9250 0    50   ~ 0
+RESET.L
+Text Label 1600 9600 0    50   ~ 0
+HDSEL.H
+Text Label 1600 9500 0    50   ~ 0
+BABUS12
+Wire Wire Line
+	5350 9150 4850 9150
+Wire Wire Line
+	5350 9250 4850 9250
+Wire Wire Line
+	5350 9350 4850 9350
+Wire Wire Line
+	5950 8050 5600 8050
+Text Label 5600 8050 0    50   ~ 0
+CREF.H
+Wire Wire Line
+	5950 8150 5600 8150
+Text Label 5600 8150 0    50   ~ 0
+CREF.L
+$Comp
+L Connector_Generic:Conn_02x01 J26
+U 1 1 61D39897
+P 1000 5650
+F 0 "J26" H 1050 5500 50  0000 L CNN
+F 1 "SYNC" H 1000 5550 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 1000 5650 50  0001 C CNN
+F 3 "~" H 1000 5650 50  0001 C CNN
+	1    1000 5650
+	-1   0    0    1   
+$EndComp
+Text Label 600  5650 2    50   ~ 0
+SYNC.L
+Wire Wire Line
+	600  5650 700  5650
+Wire Wire Line
+	1750 5050 2500 5050
+Wire Wire Line
+	3800 5550 4350 5550
+$Comp
+L Device:CP_Small C16
+U 1 1 61DCD153
+P 3650 1350
+F 0 "C16" V 3875 1350 50  0000 C CNN
+F 1 "1000u" V 3784 1350 50  0000 C CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm" H 3650 1350 50  0001 C CNN
+F 3 "~" H 3650 1350 50  0001 C CNN
+	1    3650 1350
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3550 1350 3300 1350
+Wire Wire Line
+	3300 1350 3300 1600
+Wire Wire Line
+	3750 1350 3800 1350
+Wire Wire Line
+	3800 1350 3800 1600
+Connection ~ 3800 1600
 $EndSCHEMATC
