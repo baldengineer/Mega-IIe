@@ -3287,10 +3287,10 @@ F 3 "" H 10200 1700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP2
 U 1 1 61334290
 P 10150 4450
-F 0 "TP?" V 10150 4700 50  0000 C CNN
+F 0 "TP2" V 10150 4700 50  0000 C CNN
 F 1 "TestPoint" V 10254 4522 50  0001 C CNN
 F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 10350 4450 50  0001 C CNN
 F 3 "~" H 10350 4450 50  0001 C CNN
@@ -3298,10 +3298,10 @@ F 3 "~" H 10350 4450 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP3
 U 1 1 61334836
 P 10150 4600
-F 0 "TP?" V 10150 4850 50  0000 C CNN
+F 0 "TP3" V 10150 4850 50  0000 C CNN
 F 1 "TestPoint" V 10254 4672 50  0001 C CNN
 F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 10350 4600 50  0001 C CNN
 F 3 "~" H 10350 4600 50  0001 C CNN
@@ -3309,10 +3309,10 @@ F 3 "~" H 10350 4600 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP4
 U 1 1 6133497B
 P 10150 4750
-F 0 "TP?" V 10150 5000 50  0000 C CNN
+F 0 "TP4" V 10150 5000 50  0000 C CNN
 F 1 "TestPoint" V 10254 4822 50  0001 C CNN
 F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 10350 4750 50  0001 C CNN
 F 3 "~" H 10350 4750 50  0001 C CNN
@@ -3320,10 +3320,10 @@ F 3 "~" H 10350 4750 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Connector:TestPoint TP?
+L Connector:TestPoint TP5
 U 1 1 61334BA5
 P 10150 4900
-F 0 "TP?" V 10150 5150 50  0000 C CNN
+F 0 "TP5" V 10150 5150 50  0000 C CNN
 F 1 "TestPoint" V 10254 4972 50  0001 C CNN
 F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 10350 4900 50  0001 C CNN
 F 3 "~" H 10350 4900 50  0001 C CNN
@@ -3331,10 +3331,10 @@ F 3 "~" H 10350 4900 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L power:GNDREF #PWR?
+L power:GNDREF #PWR0154
 U 1 1 61334DD8
 P 10300 5000
-F 0 "#PWR?" H 10300 4750 50  0001 C CNN
+F 0 "#PWR0154" H 10300 4750 50  0001 C CNN
 F 1 "GNDREF" H 10305 4827 50  0001 C CNN
 F 2 "" H 10300 5000 50  0001 C CNN
 F 3 "" H 10300 5000 50  0001 C CNN
@@ -3360,4 +3360,7 @@ Wire Wire Line
 Connection ~ 10300 4900
 Wire Wire Line
 	10300 4900 10300 5000
+Connection ~ 13700 7150
+Connection ~ 13500 6950
+Connection ~ 13300 7150
 $EndSCHEMATC
