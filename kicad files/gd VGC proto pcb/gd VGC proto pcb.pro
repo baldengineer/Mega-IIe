@@ -1,4 +1,4 @@
-update=5/24/2021 12:33:36 AM
+update=6/2/2021 10:24:59 AM
 version=1
 last_client=kicad
 [general]
@@ -249,3 +249,13 @@ uViaDrill=0.1
 dPairWidth=0.2
 dPairGap=0.25
 dPairViaGap=0.25
+[schematic_editor]
+version=1
+PageLayoutDescrFile=C:/Users/balde/Dropbox/KiCad/BE_Frame/BE_Layout_OSHW.kicad_wks
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceAjustPassiveValues=0
+LabSize=50
+ERC_TestSimilarLabels=1

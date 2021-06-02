@@ -1701,11 +1701,11 @@ Text Notes 5650 1650 0    50   ~ 0
 H2, H3, and H4 form\nDAC for RGB video
 Text Notes 3700 3900 0    50   ~ 0
 VIDx - 12-bit binary\nvalues for RGB
-Text Notes -1450 4200 0    50   ~ 0
+Text Notes 12100 8950 0    50   ~ 0
 MDBUSx goes back to MEGA-II
-Text Notes -2450 5350 0    50   ~ 0
+Text Notes 11100 10100 0    50   ~ 0
 All clocks derived from\n28.636360 MHz Xtal\n\nUnclear who generates 14M:\nMEGA-II or VGC\n\nPH0 and PH2 not entirely clear
-Text Notes -1750 4600 0    50   ~ 0
+Text Notes 11800 9350 0    50   ~ 0
 STRETCH:\nEvery 65 clocks, A2 must have 1\nlonger clock period. For each\nHorizontal line.
 Text Notes 5900 750  0    50   ~ 0
 like, fix the library references and stuff...  you know.. because #reasons.
@@ -2648,171 +2648,171 @@ $EndComp
 $Comp
 L Connector_Generic:Conn_02x20_Odd_Even J25
 U 1 1 60C97E3D
-P -900 9150
-F 0 "J25" H -850 10267 50  0000 C CNN
-F 1 "Bald-Ext-1" H -850 10176 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical" H -900 9150 50  0001 C CNN
-F 3 "~" H -900 9150 50  0001 C CNN
-	1    -900 9150
+P 8650 9500
+F 0 "J25" H 8700 10617 50  0000 C CNN
+F 1 "Bald-Ext-1" H 8700 10526 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x20_P2.54mm_Vertical" H 8650 9500 50  0001 C CNN
+F 3 "~" H 8650 9500 50  0001 C CNN
+	1    8650 9500
 	1    0    0    -1  
 $EndComp
-NoConn ~ -600 9150
-Text Label -1600 8850 0    50   ~ 0
+NoConn ~ 8950 9500
+Text Label 7950 9200 0    50   ~ 0
 ADBUS1
-Text Label -1600 8650 0    50   ~ 0
+Text Label 7950 9000 0    50   ~ 0
 ADBUS3
 Wire Wire Line
-	-1600 8850 -1100 8850
+	7950 9200 8450 9200
 Wire Wire Line
-	-100 8650 -600 8650
-Text Label -100 8250 2    50   ~ 0
+	9450 9000 8950 9000
+Text Label 9450 8600 2    50   ~ 0
 14MD.H
 Wire Wire Line
-	-600 8250 -100 8250
-Text Label -100 8950 2    50   ~ 0
+	8950 8600 9450 8600
+Text Label 9450 9300 2    50   ~ 0
 MDBUS0
-Text Label -100 9050 2    50   ~ 0
+Text Label 9450 9400 2    50   ~ 0
 MDBUS1
 Wire Wire Line
-	-600 8950 -100 8950
+	8950 9300 9450 9300
 Wire Wire Line
-	-600 9050 -100 9050
-Text Label -100 9350 2    50   ~ 0
+	8950 9400 9450 9400
+Text Label 9450 9700 2    50   ~ 0
 MDBUS2
-Text Label -100 9450 2    50   ~ 0
+Text Label 9450 9800 2    50   ~ 0
 MDBUS3
 Wire Wire Line
-	-600 9350 -100 9350
+	8950 9700 9450 9700
 Wire Wire Line
-	-600 9450 -100 9450
-Text Label -100 9550 2    50   ~ 0
+	8950 9800 9450 9800
+Text Label 9450 9900 2    50   ~ 0
 MDBUS4
-Text Label -100 9750 2    50   ~ 0
+Text Label 9450 10100 2    50   ~ 0
 MDBUS5
 Wire Wire Line
-	-600 9550 -100 9550
+	8950 9900 9450 9900
 Wire Wire Line
-	-600 9750 -100 9750
-Text Label -100 9850 2    50   ~ 0
+	8950 10100 9450 10100
+Text Label 9450 10200 2    50   ~ 0
 MDBUS6
-Text Label -100 9950 2    50   ~ 0
+Text Label 9450 10300 2    50   ~ 0
 MDBUS7
 Wire Wire Line
-	-600 9850 -100 9850
+	8950 10200 9450 10200
 Wire Wire Line
-	-600 9950 -100 9950
-Text Label -1600 9350 0    50   ~ 0
+	8950 10300 9450 10300
+Text Label 7950 9700 0    50   ~ 0
 RABUS2
-Text Label -1600 9450 0    50   ~ 0
+Text Label 7950 9800 0    50   ~ 0
 RABUS3
-Text Label -1600 9650 0    50   ~ 0
+Text Label 7950 10000 0    50   ~ 0
 RABUS4
-Text Label -1600 9750 0    50   ~ 0
+Text Label 7950 10100 0    50   ~ 0
 RABUS5
-Text Label -1600 9850 0    50   ~ 0
+Text Label 7950 10200 0    50   ~ 0
 RABUS6
-Text Label -1600 9950 0    50   ~ 0
+Text Label 7950 10300 0    50   ~ 0
 RABUS7
 Wire Wire Line
-	-1600 9350 -1100 9350
+	7950 9700 8450 9700
 Wire Wire Line
-	-1600 9450 -1100 9450
+	7950 9800 8450 9800
 Wire Wire Line
-	-1600 9650 -1100 9650
+	7950 10000 8450 10000
 Wire Wire Line
-	-1600 9750 -1100 9750
+	7950 10100 8450 10100
 Wire Wire Line
-	-1600 9850 -1100 9850
+	7950 10200 8450 10200
 Wire Wire Line
-	-1600 9950 -1100 9950
+	7950 10300 8450 10300
 Wire Wire Line
-	-600 9250 -400 9250
-Text Label -400 9250 2    50   ~ 0
+	8950 9600 9150 9600
+Text Label 9150 9600 2    50   ~ 0
 GND
 Wire Wire Line
-	-600 9650 -400 9650
-Text Label -400 9650 2    50   ~ 0
+	8950 10000 9150 10000
+Text Label 9150 10000 2    50   ~ 0
 GND
 Wire Wire Line
-	-1100 9550 -1300 9550
-Text Label -1300 9550 0    50   ~ 0
+	8450 9900 8250 9900
+Text Label 8250 9900 0    50   ~ 0
 GND
 Wire Wire Line
-	-1100 9150 -1300 9150
-Text Label -1300 9150 0    50   ~ 0
+	8450 9500 8250 9500
+Text Label 8250 9500 0    50   ~ 0
 GND
 Wire Wire Line
-	-1100 10050 -1300 10050
-Text Label -1300 10050 0    50   ~ 0
+	8450 10400 8250 10400
+Text Label 8250 10400 0    50   ~ 0
 GND
 Wire Wire Line
-	-1100 8250 -1300 8250
-Text Label -1300 8250 0    50   ~ 0
+	8450 8600 8250 8600
+Text Label 8250 8600 0    50   ~ 0
 GND
 Wire Wire Line
-	-600 8350 -400 8350
-Text Label -400 8350 2    50   ~ 0
+	8950 8700 9150 8700
+Text Label 9150 8700 2    50   ~ 0
 GND
 Wire Wire Line
-	-1100 8750 -1300 8750
-Text Label -1300 8750 0    50   ~ 0
+	8450 9100 8250 9100
+Text Label 8250 9100 0    50   ~ 0
 GND
 Wire Wire Line
-	-1100 10150 -1600 10150
-Text Label -1600 10150 0    50   ~ 0
+	8450 10500 7950 10500
+Text Label 7950 10500 0    50   ~ 0
 PH0.H
 Wire Wire Line
-	-1100 8350 -1300 8350
-Text Label -1300 8350 0    50   ~ 0
+	8450 8700 8250 8700
+Text Label 8250 8700 0    50   ~ 0
 GND
 Wire Wire Line
-	-600 10150 -400 10150
-Text Label -400 10150 2    50   ~ 0
+	8950 10500 9150 10500
+Text Label 9150 10500 2    50   ~ 0
 GND
 Wire Wire Line
-	-600 10050 -400 10050
-Text Label -400 10050 2    50   ~ 0
+	8950 10400 9150 10400
+Text Label 9150 10400 2    50   ~ 0
 GND
 Wire Wire Line
-	-1600 9250 -1100 9250
+	7950 9600 8450 9600
 Wire Wire Line
-	-1600 9050 -1100 9050
-Text Label -1600 9250 0    50   ~ 0
+	7950 9400 8450 9400
+Text Label 7950 9600 0    50   ~ 0
 RABUS1
-Text Label -1600 9050 0    50   ~ 0
+Text Label 7950 9400 0    50   ~ 0
 RABUS0
 Wire Wire Line
-	-1600 8950 -1100 8950
-Text Label -1600 8950 0    50   ~ 0
+	7950 9300 8450 9300
+Text Label 7950 9300 0    50   ~ 0
 ADBUS0
-Text Label -400 8850 2    50   ~ 0
+Text Label 9150 9200 2    50   ~ 0
 GND
 Wire Wire Line
-	-600 8850 -400 8850
+	8950 9200 9150 9200
 Wire Wire Line
-	-100 8750 -600 8750
-Text Label -100 8750 2    50   ~ 0
+	9450 9100 8950 9100
+Text Label 9450 9100 2    50   ~ 0
 ADBUS2
 Wire Wire Line
-	-1600 8650 -1100 8650
-Text Label -1600 8550 0    50   ~ 0
+	7950 9000 8450 9000
+Text Label 7950 8900 0    50   ~ 0
 ADBUS5
 Wire Wire Line
-	-100 8550 -600 8550
-Text Label -100 8650 2    50   ~ 0
+	9450 8900 8950 8900
+Text Label 9450 9000 2    50   ~ 0
 ADBUS4
 Wire Wire Line
-	-1600 8550 -1100 8550
-Text Label -100 8550 2    50   ~ 0
+	7950 8900 8450 8900
+Text Label 9450 8900 2    50   ~ 0
 ADBUS6
 Wire Wire Line
-	-1600 8450 -1100 8450
-Text Label -1600 8450 0    50   ~ 0
+	7950 8800 8450 8800
+Text Label 7950 8800 0    50   ~ 0
 ADBUS7
-Text Label -400 8450 2    50   ~ 0
+Text Label 9150 8800 2    50   ~ 0
 GND
 Wire Wire Line
-	-600 8450 -400 8450
+	8950 8800 9150 8800
 Wire Wire Line
 	900  8850 1300 8850
 Wire Wire Line
@@ -3360,7 +3360,48 @@ Wire Wire Line
 Connection ~ 10300 4900
 Wire Wire Line
 	10300 4900 10300 5000
-Connection ~ 13700 7150
-Connection ~ 13500 6950
-Connection ~ 13300 7150
+$Comp
+L Mechanical:MountingHole H6
+U 1 1 60BBF418
+P 14200 4900
+F 0 "H6" H 14300 4900 50  0000 L CNN
+F 1 "MountingHole" H 14300 4855 50  0001 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 14200 4900 50  0001 C CNN
+F 3 "~" H 14200 4900 50  0001 C CNN
+	1    14200 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H5
+U 1 1 60BBFDA4
+P 13850 4900
+F 0 "H5" H 13950 4900 50  0000 L CNN
+F 1 "MountingHole" H 13950 4855 50  0001 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 13850 4900 50  0001 C CNN
+F 3 "~" H 13850 4900 50  0001 C CNN
+	1    13850 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H7
+U 1 1 60BC0150
+P 13850 5150
+F 0 "H7" H 13950 5150 50  0000 L CNN
+F 1 "MountingHole" H 13950 5105 50  0001 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 13850 5150 50  0001 C CNN
+F 3 "~" H 13850 5150 50  0001 C CNN
+	1    13850 5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H8
+U 1 1 60BC04DD
+P 14200 5150
+F 0 "H8" H 14300 5150 50  0000 L CNN
+F 1 "MountingHole" H 14300 5105 50  0001 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 14200 5150 50  0001 C CNN
+F 3 "~" H 14200 5150 50  0001 C CNN
+	1    14200 5150
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
