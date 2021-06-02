@@ -1,0 +1,7 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP w65c02s
+D pinout for the 44pin QFP
+$ENDCMP
+#
+#End Doc Library
