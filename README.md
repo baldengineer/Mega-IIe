@@ -5,6 +5,14 @@ Creating a portable Apple ][ by using the MEGA II chip from an IIgs. (This chip 
 
 This project is why I started [Bit Preserve](https://github.com/baldengineer/bit-preserve), a project to archive vintage computer schematics.
 
+## Stream Notes 2021-06-02
+* Wherefore no IIe ROM in the IIgs? Is it in the MEGA-II?
+* [Warphammer: this seciton looks rommy](https://twitter.com/babbageboole/status/1001178057057566720/photo/1)
+* rjhelms: that's the big question mark - there could be logic in the Mega II that never actually gets used because the CYA is doing it all in this implementation
+* al: keep it all breakouts
+* can we decode ROMEN1 and ROMEN2 ourselves?
+
+
 ## Stream Notes 2021-05-19
 Things to look at on the scope:
 * Composite signal out of the Mega II
