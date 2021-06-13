@@ -4,4 +4,5 @@
   (lib (name IIgs_Schematic-rescue)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/IIgs Schematic-rescue.lib")(options "")(descr ""))
   (lib (name WDC_65C02)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/WDC 65C02.lib")(options "")(descr ""))
   (lib (name WDC_65c816s)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/WDC 65c816s.lib")(options "")(descr ""))
+  (lib (name gd-MegaII-proto-pcb-rescue)(type Legacy)(uri "${KIPRJMOD}/gd MegaII proto pcb-rescue.lib")(options "")(descr ""))
 )
