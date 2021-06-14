@@ -727,36 +727,25 @@ F 3 "" H 5100 5200 50  0001 C CNN
 	1    5300 4550
 	1    0    0    -1  
 $EndComp
-$Comp
-L Apple_IIgs_Symbols:74HCT245 U5
-U 1 1 60FEA559
-P 5050 6250
-F 0 "U5" H 5150 7000 50  0000 C CNN
-F 1 "74HCT245" H 5300 6900 50  0000 C CNN
-F 2 "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" H 4850 6900 50  0001 C CNN
-F 3 "" H 4850 6900 50  0001 C CNN
-	1    5050 6250
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4900 4050 4500 4050
 Wire Wire Line
 	4900 4150 4500 4150
-Text Label 4500 4050 0    50   ~ 0
+Text Label 4250 6450 0    50   ~ 0
 A0
-Text Label 4500 4150 0    50   ~ 0
+Text Label 4250 6350 0    50   ~ 0
 A1
-Text Label 4500 4250 0    50   ~ 0
+Text Label 4250 6250 0    50   ~ 0
 A2
-Text Label 4500 4350 0    50   ~ 0
+Text Label 4250 6150 0    50   ~ 0
 A3
-Text Label 4500 4450 0    50   ~ 0
+Text Label 4250 6050 0    50   ~ 0
 A4
-Text Label 4500 4550 0    50   ~ 0
+Text Label 4250 5950 0    50   ~ 0
 A5
-Text Label 4500 4650 0    50   ~ 0
+Text Label 4250 5850 0    50   ~ 0
 A6
-Text Label 4500 4750 0    50   ~ 0
+Text Label 4250 5750 0    50   ~ 0
 A7
 Wire Wire Line
 	4900 4750 4500 4750
@@ -770,38 +759,20 @@ Wire Wire Line
 	4900 4350 4500 4350
 Wire Wire Line
 	4900 4250 4500 4250
-Text Label 4250 5750 0    50   ~ 0
+Text Label 4500 4750 0    50   ~ 0
 A8
-Text Label 4250 5850 0    50   ~ 0
+Text Label 4500 4650 0    50   ~ 0
 A9
-Text Label 4250 5950 0    50   ~ 0
+Text Label 4500 4550 0    50   ~ 0
 A10
-Text Label 4250 6050 0    50   ~ 0
+Text Label 4500 4450 0    50   ~ 0
 A11
-Text Label 4250 6150 0    50   ~ 0
+Text Label 4500 4350 0    50   ~ 0
 A12
-Text Label 4250 6250 0    50   ~ 0
+Text Label 4500 4250 0    50   ~ 0
 A13
-Wire Wire Line
-	4250 6250 4650 6250
-Wire Wire Line
-	4250 6150 4650 6150
-Wire Wire Line
-	4650 6050 4250 6050
-Wire Wire Line
-	4650 5950 4250 5950
-Wire Wire Line
-	4650 5850 4250 5850
-Wire Wire Line
-	4650 5750 4250 5750
-Text Label 4250 6350 0    50   ~ 0
+Text Label 4500 4150 0    50   ~ 0
 A14
-Wire Wire Line
-	4250 6350 4650 6350
-Text Label 4250 6450 0    50   ~ 0
-A15
-Wire Wire Line
-	4250 6450 4650 6450
 $Comp
 L power:GND #PWR0111
 U 1 1 61026400
@@ -1893,4 +1864,49 @@ Wire Wire Line
 	550  2850 800  2850
 Text Label 4550 1550 0    50   ~ 0
 A0
+Text Label 4500 4050 0    50   ~ 0
+A15
+Wire Wire Line
+	4250 6250 4650 6250
+Wire Wire Line
+	4250 6150 4650 6150
+Wire Wire Line
+	4650 6050 4250 6050
+Wire Wire Line
+	4650 5950 4250 5950
+Wire Wire Line
+	4650 5850 4250 5850
+Wire Wire Line
+	4650 5750 4250 5750
+Wire Wire Line
+	4250 6350 4650 6350
+Wire Wire Line
+	4250 6450 4650 6450
+Wire Wire Line
+	4000 7600 4400 7600
+Wire Wire Line
+	4000 7500 4400 7500
+Wire Wire Line
+	4400 6900 4000 6900
+Wire Wire Line
+	4400 7000 4000 7000
+Wire Wire Line
+	4400 7100 4000 7100
+Wire Wire Line
+	4400 7200 4000 7200
+Wire Wire Line
+	4000 7300 4400 7300
+Wire Wire Line
+	4000 7400 4400 7400
+$Comp
+L Apple_IIgs_Symbols:74HCT245 U5
+U 1 1 60FEA559
+P 5050 6250
+F 0 "U5" H 5150 7000 50  0000 C CNN
+F 1 "74HCT245" H 5300 6900 50  0000 C CNN
+F 2 "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" H 4850 6900 50  0001 C CNN
+F 3 "" H 4850 6900 50  0001 C CNN
+	1    5050 6250
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
