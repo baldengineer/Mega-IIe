@@ -12,12 +12,12 @@ K OTP EPROM 64KiBit
 F http://ww1.microchip.com/downloads/en/DeviceDoc/11107M.pdf
 $ENDCMP
 #
-$CMP DAC-Resistor-Ladder
-D Used by VGC to create RGB analog Signals
+$CMP 74HCT245
+D Octal Bus Transceiver (aka 74LS245)
 $ENDCMP
 #
-$CMP HCT245
-D Octal Bus Transceiver (aka 74LS245)
+$CMP DAC-Resistor-Ladder
+D Used by VGC to create RGB analog Signals
 $ENDCMP
 #
 $CMP HMS511000
