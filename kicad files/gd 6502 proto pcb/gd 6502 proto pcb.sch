@@ -78,45 +78,45 @@ Wire Wire Line
 $Comp
 L Connector_Generic:Conn_01x11 J3
 U 1 1 60B93573
-P 350 2650
-F 0 "J3" H 430 2642 50  0000 L CNN
-F 1 "Main Data" H 430 2551 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x11_P2.54mm_Vertical" H 350 2650 50  0001 C CNN
-F 3 "~" H 350 2650 50  0001 C CNN
-	1    350  2650
+P 1100 2700
+F 0 "J3" H 1180 2692 50  0000 L CNN
+F 1 "Main Data" H 1180 2601 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x11_P2.54mm_Vertical" H 1100 2700 50  0001 C CNN
+F 3 "~" H 1100 2700 50  0001 C CNN
+	1    1100 2700
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	550  3050 950  3050
+	1300 3100 1700 3100
 Wire Wire Line
-	550  2950 950  2950
+	1300 3000 1700 3000
 Wire Wire Line
-	550  2750 950  2750
+	1300 2800 1700 2800
 Wire Wire Line
-	550  2650 950  2650
+	1300 2700 1700 2700
 Wire Wire Line
-	550  2550 950  2550
+	1300 2600 1700 2600
 Wire Wire Line
-	550  2350 950  2350
+	1300 2400 1700 2400
 Wire Wire Line
-	550  2250 950  2250
+	1300 2300 1700 2300
 Wire Wire Line
-	550  2150 950  2150
-Text Label 950  2250 2    50   ~ 0
+	1300 2200 1700 2200
+Text Label 1700 2300 2    50   ~ 0
 D6
-Text Label 950  2150 2    50   ~ 0
+Text Label 1700 2200 2    50   ~ 0
 D7
-Text Label 950  2350 2    50   ~ 0
+Text Label 1700 2400 2    50   ~ 0
 D5
-Text Label 950  2550 2    50   ~ 0
+Text Label 1700 2600 2    50   ~ 0
 D4
-Text Label 950  2650 2    50   ~ 0
+Text Label 1700 2700 2    50   ~ 0
 D3
-Text Label 950  2750 2    50   ~ 0
+Text Label 1700 2800 2    50   ~ 0
 D2
-Text Label 950  2950 2    50   ~ 0
+Text Label 1700 3000 2    50   ~ 0
 D1
-Text Label 950  3050 2    50   ~ 0
+Text Label 1700 3100 2    50   ~ 0
 D0
 Wire Wire Line
 	2700 2300 2300 2300
@@ -647,8 +647,8 @@ Wire Wire Line
 Text Label 6200 3300 0    50   ~ 0
 ~RCMEN
 Wire Wire Line
-	550  2450 800  2450
-Text Label 800  2450 2    50   ~ 0
+	1300 2500 1550 2500
+Text Label 1550 2500 2    50   ~ 0
 GND
 Wire Wire Line
 	6900 2900 6650 2900
@@ -714,7 +714,7 @@ Wire Wire Line
 	3500 3400 3900 3400
 Text Label 3900 3400 2    50   ~ 0
 RWB
-Text Label 950  3150 2    50   ~ 0
+Text Label 1700 3200 2    50   ~ 0
 RWB
 $Comp
 L Apple_IIgs_Symbols:74HCT245 U4
@@ -1774,7 +1774,7 @@ GND
 Wire Wire Line
 	4750 3300 4500 3300
 Wire Wire Line
-	550  3150 950  3150
+	1300 3200 1700 3200
 Text Label 4700 1450 0    50   ~ 0
 VDD
 Wire Wire Line
@@ -1832,10 +1832,10 @@ Text Label 4500 2900 0    50   ~ 0
 GND
 Wire Wire Line
 	4750 2900 4500 2900
-Text Label 800  2850 2    50   ~ 0
+Text Label 1550 2900 2    50   ~ 0
 GND
 Wire Wire Line
-	550  2850 800  2850
+	1300 2900 1550 2900
 Text Label 4550 1550 0    50   ~ 0
 A0
 Wire Wire Line

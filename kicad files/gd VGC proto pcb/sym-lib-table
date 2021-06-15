@@ -1,4 +1,4 @@
 (sym_lib_table
-  (lib (name Apple_IIgs_Symbols)(type Legacy)(uri ${KIPRJMOD}/../Apple_IIgs_Symbols.lib)(options "")(descr ""))
-  (lib (name IIgs_Schematic-rescue)(type Legacy)(uri "${KIPRJMOD}/../IIgs Schematic-rescue.lib")(options "")(descr ""))
+  (lib (name Apple_IIgs_Symbols)(type Legacy)(uri ${KIPRJMOD}/../KiCad_Symbols/Apple_IIgs_Symbols.lib)(options "")(descr ""))
+  (lib (name IIgs_Schematic-rescue)(type Legacy)(uri "${KIPRJMOD}/../KiCad_Symbols/IIgs Schematic-rescue.lib")(options "")(descr ""))
 )

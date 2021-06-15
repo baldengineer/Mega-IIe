@@ -1,4 +1,0 @@
-(sym_lib_table
-  (lib (name Apple_IIgs_Symbols)(type Legacy)(uri ${KIPRJMOD}/Apple_IIgs_Symbols.lib)(options "")(descr ""))
-  (lib (name "WDC 65C02")(type Legacy)(uri "${KIPRJMOD}/WDC 65C02.lib")(options "")(descr ""))
-)

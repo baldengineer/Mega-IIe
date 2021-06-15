@@ -1,0 +1,1 @@
+I quickly realized the MEGA-II by itself wasn't going to be a useful breakout. So, this project got replaced by the "gd MEGA-II" proto board.
