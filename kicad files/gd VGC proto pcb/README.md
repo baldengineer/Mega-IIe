@@ -1,4 +1,4 @@
-![VGC prototype board render](images/gd-VGC-proto-pcb-rev1.jpg)
+![VGC prototype board render](/images/gd-VGC-proto-pcb-rev1.jpg)
 ## gd VGC proto pcb
 VGC = Video Graphics Controller
 

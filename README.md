@@ -1,4 +1,4 @@
-![render of pcbs side-by-side](images/megaII-breakout-rev1-render.jpg)
+![render of pcbs side-by-side](/images/all-rev1-boards-fusion-render.jpg)
 # Golden Delicious
 
 Creating a portable Apple ][ by using the MEGA II chip from an IIgs. (This chip was also known as the Gemini in the Mac LC compatibility card.)
