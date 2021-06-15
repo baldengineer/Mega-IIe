@@ -1246,12 +1246,12 @@ Wire Wire Line
 Text Label 12850 8350 2    50   ~ 0
 FLIP6
 Wire Wire Line
-	12450 8450 12850 8450
-Text Label 12850 8450 2    50   ~ 0
-FLIP7
-Wire Wire Line
 	12450 8550 12850 8550
 Text Label 12850 8550 2    50   ~ 0
+FLIP7
+Wire Wire Line
+	12450 8450 12850 8450
+Text Label 12850 8450 2    50   ~ 0
 GND
 Text Label 13050 4850 2    50   ~ 0
 RWE.B
