@@ -96,7 +96,7 @@ Wire Wire Line
 Wire Wire Line
 	6400 3450 5850 3450
 $Comp
-L My_Library:Apple_MEGA_II U1
+L Apple_IIgs_Symbols:Apple_MEGA_II U1
 U 1 1 5BD644DD
 P 5150 4800
 F 0 "U1" H 4750 7350 50  0000 C CNN
