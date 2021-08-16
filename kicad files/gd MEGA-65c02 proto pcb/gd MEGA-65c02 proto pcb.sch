@@ -502,68 +502,68 @@ F 3 "" H 9150 2350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10800 3200 10550 3200
-Wire Wire Line
-	12000 3200 11750 3200
-Wire Wire Line
-	12000 3400 11750 3400
-Wire Wire Line
 	10800 3300 10550 3300
 Wire Wire Line
-	12000 3500 11750 3500
-Wire Wire Line
-	12000 3300 11750 3300
+	10800 3200 10550 3200
 Wire Wire Line
 	10800 3400 10550 3400
 Wire Wire Line
 	10800 3500 10550 3500
-Text Label 10550 3200 0    50   ~ 0
-RA0
-Text Label 11750 3200 0    50   ~ 0
-RA1
-Text Label 11750 3400 0    50   ~ 0
-RA2
+Wire Wire Line
+	12000 3200 11750 3200
+Wire Wire Line
+	12000 3300 11750 3300
+Wire Wire Line
+	12000 3400 11750 3400
+Wire Wire Line
+	12000 3500 11750 3500
 Text Label 10550 3300 0    50   ~ 0
+RA0
+Text Label 10550 3200 0    50   ~ 0
+RA1
+Text Label 10550 3400 0    50   ~ 0
+RA2
+Text Label 10550 3500 0    50   ~ 0
 RA3
-Text Label 11750 3500 0    50   ~ 0
+Text Label 11750 3200 0    50   ~ 0
 RA4
 Text Label 11750 3300 0    50   ~ 0
 RA5
-Text Label 10550 3400 0    50   ~ 0
+Text Label 11750 3400 0    50   ~ 0
 RA6
-Text Label 10550 3500 0    50   ~ 0
+Text Label 11750 3500 0    50   ~ 0
 RA7
-Wire Wire Line
-	11200 3200 11450 3200
-Wire Wire Line
-	12400 3200 12650 3200
-Wire Wire Line
-	12400 3400 12650 3400
 Wire Wire Line
 	11200 3300 11450 3300
 Wire Wire Line
-	12400 3500 12650 3500
-Wire Wire Line
-	12400 3300 12650 3300
+	11200 3200 11450 3200
 Wire Wire Line
 	11200 3400 11450 3400
 Wire Wire Line
 	11200 3500 11450 3500
-Text Label 11450 3200 2    50   ~ 0
-RAF0
-Text Label 12650 3200 2    50   ~ 0
-RAF1
-Text Label 12650 3400 2    50   ~ 0
-RAF2
+Wire Wire Line
+	12400 3200 12650 3200
+Wire Wire Line
+	12400 3300 12650 3300
+Wire Wire Line
+	12400 3400 12650 3400
+Wire Wire Line
+	12400 3500 12650 3500
 Text Label 11450 3300 2    50   ~ 0
+RAF0
+Text Label 11450 3200 2    50   ~ 0
+RAF1
+Text Label 11450 3400 2    50   ~ 0
+RAF2
+Text Label 11450 3500 2    50   ~ 0
 RAF3
-Text Label 12650 3500 2    50   ~ 0
+Text Label 12650 3200 2    50   ~ 0
 RAF4
 Text Label 12650 3300 2    50   ~ 0
 RAF5
-Text Label 11450 3400 2    50   ~ 0
+Text Label 12650 3400 2    50   ~ 0
 RAF6
-Text Label 11450 3500 2    50   ~ 0
+Text Label 12650 3500 2    50   ~ 0
 RAF7
 Wire Wire Line
 	13800 1200 13500 1200
@@ -674,17 +674,17 @@ RAF4
 Text Label 8650 1650 0    50   ~ 0
 RAF5
 Wire Wire Line
-	9900 3300 10250 3300
-Text Label 10250 3300 2    50   ~ 0
-CASA.B
+	9900 3200 10250 3200
 Text Label 10250 3200 2    50   ~ 0
+CASA.B
+Text Label 10250 3400 2    50   ~ 0
 CASM.B
 Wire Wire Line
-	9900 3200 10250 3200
-Text Label 10250 3400 2    50   ~ 0
+	9900 3400 10250 3400
+Text Label 10250 3500 2    50   ~ 0
 RAS.B
 Wire Wire Line
-	9900 3400 10250 3400
+	9900 3500 10250 3500
 Wire Wire Line
 	10250 1950 10550 1950
 Wire Wire Line
@@ -717,10 +717,10 @@ Text Label 8650 2050 0    50   ~ 0
 CASM.B
 Wire Wire Line
 	8950 2050 8650 2050
-Text Label 10250 3500 2    50   ~ 0
+Text Label 10250 3300 2    50   ~ 0
 RWE.B
 Wire Wire Line
-	9900 3500 10250 3500
+	9900 3300 10250 3300
 Wire Wire Line
 	10550 2150 10250 2150
 Text Label 10250 2150 0    50   ~ 0
@@ -1123,21 +1123,21 @@ F 3 "" H 5850 8000 50  0001 C CNN
 	1    6050 7350
 	1    0    0    -1  
 $EndComp
-Text Label 5450 7550 0    50   ~ 0
-A7
-Text Label 5450 7450 0    50   ~ 0
-A6
-Text Label 5450 7350 0    50   ~ 0
-A5
-Text Label 5450 7250 0    50   ~ 0
-A4
-Text Label 5450 7150 0    50   ~ 0
-A3
-Text Label 5450 7050 0    50   ~ 0
-A2
-Text Label 5450 6950 0    50   ~ 0
-A1
 Text Label 5450 6850 0    50   ~ 0
+A7
+Text Label 5450 6950 0    50   ~ 0
+A6
+Text Label 5450 7050 0    50   ~ 0
+A5
+Text Label 5450 7150 0    50   ~ 0
+A4
+Text Label 5450 7250 0    50   ~ 0
+A3
+Text Label 5450 7350 0    50   ~ 0
+A2
+Text Label 5450 7450 0    50   ~ 0
+A1
+Text Label 5450 7550 0    50   ~ 0
 A0
 Wire Wire Line
 	5650 9650 5450 9650
@@ -1156,37 +1156,37 @@ Wire Wire Line
 Wire Wire Line
 	5650 8950 5450 8950
 Wire Wire Line
-	5650 7550 5450 7550
-Wire Wire Line
-	5650 7450 5450 7450
-Wire Wire Line
-	5650 7350 5450 7350
-Wire Wire Line
-	5650 7250 5450 7250
-Wire Wire Line
-	5650 7150 5450 7150
-Wire Wire Line
-	5650 7050 5450 7050
+	5650 6850 5450 6850
 Wire Wire Line
 	5650 6950 5450 6950
 Wire Wire Line
-	5650 6850 5450 6850
+	5650 7050 5450 7050
 Wire Wire Line
-	6450 6850 6650 6850
+	5650 7150 5450 7150
 Wire Wire Line
-	6450 6950 6650 6950
+	5650 7250 5450 7250
 Wire Wire Line
-	6450 7050 6650 7050
+	5650 7350 5450 7350
 Wire Wire Line
-	6450 7150 6650 7150
+	5650 7450 5450 7450
 Wire Wire Line
-	6450 7250 6650 7250
+	5650 7550 5450 7550
 Wire Wire Line
-	6450 7350 6650 7350
+	6450 7550 6650 7550
 Wire Wire Line
 	6450 7450 6650 7450
 Wire Wire Line
-	6450 7550 6650 7550
+	6450 7350 6650 7350
+Wire Wire Line
+	6450 7250 6650 7250
+Wire Wire Line
+	6450 7150 6650 7150
+Wire Wire Line
+	6450 7050 6650 7050
+Wire Wire Line
+	6450 6950 6650 6950
+Wire Wire Line
+	6450 6850 6650 6850
 Wire Wire Line
 	6450 8950 6650 8950
 Wire Wire Line
@@ -1203,21 +1203,21 @@ Wire Wire Line
 	6450 9550 6650 9550
 Wire Wire Line
 	6450 9650 6650 9650
-Text Label 6650 6850 2    50   ~ 0
-BA0
-Text Label 6650 6950 2    50   ~ 0
-BA1
-Text Label 6650 7050 2    50   ~ 0
-BA2
-Text Label 6650 7150 2    50   ~ 0
-BA3
-Text Label 6650 7250 2    50   ~ 0
-BA4
-Text Label 6650 7350 2    50   ~ 0
-BA5
-Text Label 6650 7450 2    50   ~ 0
-BA6
 Text Label 6650 7550 2    50   ~ 0
+BA0
+Text Label 6650 7450 2    50   ~ 0
+BA1
+Text Label 6650 7350 2    50   ~ 0
+BA2
+Text Label 6650 7250 2    50   ~ 0
+BA3
+Text Label 6650 7150 2    50   ~ 0
+BA4
+Text Label 6650 7050 2    50   ~ 0
+BA5
+Text Label 6650 6950 2    50   ~ 0
+BA6
+Text Label 6650 6850 2    50   ~ 0
 BA7
 Text Label 6650 8950 2    50   ~ 0
 BA8
@@ -1430,20 +1430,20 @@ F 4 "EXB-38V101JV" V 9700 3400 50  0001 C CNN "MFN"
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	9500 3300 9150 3300
-Text Label 9150 3300 0    50   ~ 0
+	9500 3200 9150 3200
+Text Label 9150 3200 0    50   ~ 0
 CASA
 Wire Wire Line
-	9150 3200 9500 3200
-Text Label 9150 3200 0    50   ~ 0
-CASM
-Wire Wire Line
-	9500 3400 9150 3400
+	9150 3400 9500 3400
 Text Label 9150 3400 0    50   ~ 0
-RAS
+CASM
 Wire Wire Line
 	9500 3500 9150 3500
 Text Label 9150 3500 0    50   ~ 0
+RAS
+Wire Wire Line
+	9500 3300 9150 3300
+Text Label 9150 3300 0    50   ~ 0
 RAMWE
 Wire Wire Line
 	7300 950  7700 950 
@@ -1822,7 +1822,7 @@ U 1 1 6589C196
 P 8500 8250
 F 0 "U5" H 8500 9531 50  0000 C CNN
 F 1 "27C512" H 8750 9300 50  0000 C CNN
-F 2 "Socket:DIP_Socket-32_W11.9_W12.7_W15.24_W17.78_W18.5_3M_232-1285-00-0602J" H 8500 8250 50  0001 C CNN
+F 2 "Socket:DIP_Socket-28_W11.9_W12.7_W15.24_W17.78_W18.5_3M_228-1277-00-0602J" H 8500 8250 50  0001 C CNN
 F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/doc0015.pdf" H 8500 8250 50  0001 C CNN
 	1    8500 8250
 	1    0    0    -1  
