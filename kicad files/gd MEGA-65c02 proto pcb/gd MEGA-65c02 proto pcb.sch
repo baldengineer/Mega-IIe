@@ -1096,8 +1096,8 @@ MD6
 Text Label 10050 2250 2    50   ~ 0
 MD7
 Wire Wire Line
-	7700 2150 7400 2150
-Text Label 7400 2150 0    50   ~ 0
+	7850 1950 8250 1950
+Text Label 8250 1950 2    50   ~ 0
 ~RESET
 $Comp
 L Apple_IIgs_Symbols:74HCT245 U4
@@ -1352,24 +1352,13 @@ Text Label 4100 2500 0    50   ~ 0
 BA14
 Text Label 4100 2600 0    50   ~ 0
 BA15
-$Comp
-L Connector_Generic:Conn_01x06 JP1
-U 1 1 60ED52FA
-P 7900 800
-F 0 "JP1" H 7900 1200 50  0000 C CNN
-F 1 "RGB Binary" H 7950 1100 40  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 7900 800 60  0001 C CNN
-F 3 "" H 7900 800 60  0000 C CNN
-	1    7900 800 
-	1    0    0    -1  
-$EndComp
-Text Label 7300 700  0    50   ~ 0
+Text Label 6950 1200 0    50   ~ 0
 RGB8
-Text Label 7300 600  0    50   ~ 0
+Text Label 6950 1100 0    50   ~ 0
 RGB4
-Text Label 7300 900  0    50   ~ 0
+Text Label 8250 1100 2    50   ~ 0
 RGB2
-Text Label 7300 800  0    50   ~ 0
+Text Label 6950 1300 0    50   ~ 0
 RGB1
 $Comp
 L power:+5V #PWR035
@@ -1444,13 +1433,13 @@ Wire Wire Line
 Text Label 9150 3300 0    50   ~ 0
 RAMWE
 Wire Wire Line
-	7300 600  7700 600 
+	6950 1100 7350 1100
 Wire Wire Line
-	7300 700  7700 700 
+	6950 1200 7350 1200
 Wire Wire Line
-	7300 800  7700 800 
+	6950 1300 7350 1300
 Wire Wire Line
-	7300 900  7700 900 
+	8250 1100 7850 1100
 $Comp
 L Connector_Generic:Conn_01x04 J9
 U 1 1 60CB7C0F
@@ -1536,35 +1525,33 @@ F 3 "" H 10300 10400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x08 J7
+L Connector_Generic:Conn_02x04_Odd_Even J7
 U 1 1 61254C19
-P 7900 1850
-F 0 "J7" H 7980 1892 50  0000 L CNN
-F 1 "CLKS" H 7980 1801 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical" H 7900 1850 50  0001 C CNN
-F 3 "~" H 7900 1850 50  0001 C CNN
-	1    7900 1850
+P 7550 1850
+F 0 "J7" H 7650 2150 50  0000 L CNN
+F 1 "CLKS" H 7650 2050 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Vertical" H 7550 1850 50  0001 C CNN
+F 3 "~" H 7550 1850 50  0001 C CNN
+	1    7550 1850
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7700 2050 7300 2050
-Text Label 7300 2050 0    50   ~ 0
+	7350 1950 6950 1950
+Text Label 6950 1950 0    50   ~ 0
 PH0
 Wire Wire Line
-	7700 1950 7300 1950
-Text Label 7300 1950 0    50   ~ 0
-Q3
+	7850 1850 8250 1850
 Wire Wire Line
-	7700 1850 7300 1850
-Text Label 7300 1850 0    50   ~ 0
+	7350 1850 6950 1850
+Text Label 6950 1850 0    50   ~ 0
 CREF
 Wire Wire Line
-	7700 1750 7300 1750
-Text Label 7300 1750 0    50   ~ 0
+	7850 1750 8250 1750
+Text Label 8250 1750 2    50   ~ 0
 7M
 Wire Wire Line
-	7300 1000 7700 1000
-Text Label 7300 1000 0    50   ~ 0
+	8250 1300 7850 1300
+Text Label 8250 1300 2    50   ~ 0
 SERVIDEO
 Wire Wire Line
 	10550 1650 10250 1650
@@ -2817,29 +2804,12 @@ Wire Wire Line
 	750  4700 1100 4700
 Text Label 750  4700 0    50   ~ 0
 PDLTRIG
-Text Label 7300 1550 0    50   ~ 0
+Text Label 6950 1750 0    50   ~ 0
 14M
 Wire Wire Line
-	7300 1550 7700 1550
-Wire Wire Line
-	7700 1650 7450 1650
-Text Label 7450 1650 0    50   ~ 0
+	6950 1750 7350 1750
+Text Label 8250 2050 2    50   ~ 0
 GND
-$Comp
-L power:GND #PWR023
-U 1 1 6F7BDE9D
-P 7550 2350
-F 0 "#PWR023" H 7550 2100 50  0001 C CNN
-F 1 "GND" H 7555 2177 50  0000 C CNN
-F 2 "" H 7550 2350 50  0001 C CNN
-F 3 "" H 7550 2350 50  0001 C CNN
-	1    7550 2350
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7700 2250 7550 2250
-Wire Wire Line
-	7550 2250 7550 2350
 $Comp
 L Connector_Generic:Conn_02x04_Odd_Even J1
 U 1 1 70273AA4
@@ -2994,8 +2964,8 @@ $EndComp
 Wire Wire Line
 	6700 4700 6700 4750
 Wire Wire Line
-	7300 1100 7700 1100
-Text Label 7300 1100 0    50   ~ 0
+	8250 1200 7850 1200
+Text Label 8250 1200 2    50   ~ 0
 ~SYNC
 $Comp
 L Connector_Generic:Conn_01x03 J11
@@ -3035,4 +3005,31 @@ Wire Wire Line
 Connection ~ 10550 8000
 Text Notes 13700 8400 0    50   ~ 0
 13mm diameter, 5mm pitch, 7mm height
+Text Label 8250 1850 2    50   ~ 0
+Q3
+Wire Wire Line
+	7850 2050 8250 2050
+Text Label 6950 2050 0    50   ~ 0
+GND
+Wire Wire Line
+	7350 2050 6950 2050
+$Comp
+L Connector_Generic:Conn_02x04_Odd_Even J12
+U 1 1 61C70697
+P 7550 1200
+F 0 "J12" H 7650 1500 50  0000 L CNN
+F 1 "RGB Bin" H 7650 1400 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Vertical" H 7550 1200 50  0001 C CNN
+F 3 "~" H 7550 1200 50  0001 C CNN
+	1    7550 1200
+	1    0    0    -1  
+$EndComp
+Text Label 6950 1400 0    50   ~ 0
+GND
+Wire Wire Line
+	7350 1400 6950 1400
+Text Label 8250 1400 2    50   ~ 0
+GND
+Wire Wire Line
+	7850 1400 8250 1400
 $EndSCHEMATC
