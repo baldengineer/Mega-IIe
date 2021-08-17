@@ -2367,7 +2367,7 @@ U 1 1 696B52B6
 P 14400 8900
 F 0 "BZ1" H 14552 8929 50  0000 L CNN
 F 1 "Buzzer" H 14552 8838 50  0000 L CNN
-F 2 "Buzzer_Beeper:Buzzer_12x9.5RM7.6" V 14375 9000 50  0001 C CNN
+F 2 "My Libraries:12mm_Piezo_Buzzer" V 14375 9000 50  0001 C CNN
 F 3 "~" V 14375 9000 50  0001 C CNN
 	1    14400 8900
 	1    0    0    -1  
@@ -3033,4 +3033,6 @@ Wire Wire Line
 Wire Wire Line
 	9950 8000 10550 8000
 Connection ~ 10550 8000
+Text Notes 13700 8400 0    50   ~ 0
+13mm diameter, 5mm pitch, 7mm height
 $EndSCHEMATC
