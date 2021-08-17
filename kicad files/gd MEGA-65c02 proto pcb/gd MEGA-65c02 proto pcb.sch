@@ -1352,13 +1352,13 @@ Text Label 4100 2500 0    50   ~ 0
 BA14
 Text Label 4100 2600 0    50   ~ 0
 BA15
-Text Label 6950 1200 0    50   ~ 0
+Text Label 8250 1200 2    50   ~ 0
 RGB8
-Text Label 6950 1100 0    50   ~ 0
-RGB4
 Text Label 8250 1100 2    50   ~ 0
-RGB2
+RGB4
 Text Label 6950 1300 0    50   ~ 0
+RGB2
+Text Label 6950 1200 0    50   ~ 0
 RGB1
 $Comp
 L power:+5V #PWR035
@@ -1433,13 +1433,13 @@ Wire Wire Line
 Text Label 9150 3300 0    50   ~ 0
 RAMWE
 Wire Wire Line
-	6950 1100 7350 1100
+	8250 1100 7850 1100
+Wire Wire Line
+	8250 1200 7850 1200
 Wire Wire Line
 	6950 1200 7350 1200
 Wire Wire Line
 	6950 1300 7350 1300
-Wire Wire Line
-	8250 1100 7850 1100
 $Comp
 L Connector_Generic:Conn_01x04 J9
 U 1 1 60CB7C0F
@@ -2964,8 +2964,8 @@ $EndComp
 Wire Wire Line
 	6700 4700 6700 4750
 Wire Wire Line
-	8250 1200 7850 1200
-Text Label 8250 1200 2    50   ~ 0
+	6950 1100 7350 1100
+Text Label 6950 1100 0    50   ~ 0
 ~SYNC
 $Comp
 L Connector_Generic:Conn_01x03 J11
