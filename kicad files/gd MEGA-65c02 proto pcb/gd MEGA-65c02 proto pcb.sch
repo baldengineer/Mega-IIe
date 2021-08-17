@@ -122,8 +122,6 @@ Wire Wire Line
 Wire Wire Line
 	6250 4400 5700 4400
 Wire Wire Line
-	6250 4500 5700 4500
-Wire Wire Line
 	5950 4600 5700 4600
 Wire Wire Line
 	6250 4200 5700 4200
@@ -224,7 +222,7 @@ KSEL1
 Text Label 6250 2800 2    50   ~ 0
 KSEL2
 Text Label 6250 3000 2    50   ~ 0
-IRQ
+~IRQ
 Text Label 6250 3900 2    50   ~ 0
 ~MSW
 Text Label 6250 4000 2    50   ~ 0
@@ -234,7 +232,7 @@ Text Label 6250 4100 2    50   ~ 0
 Text Label 6250 4200 2    50   ~ 0
 MDI-MDO
 Text Label 6250 4300 2    50   ~ 0
-ROMEN
+~ROMEN
 Text Label 6250 4400 2    50   ~ 0
 ~DMA
 Text Label 6250 4500 2    50   ~ 0
@@ -248,7 +246,7 @@ RW
 Text Label 6250 4900 2    50   ~ 0
 WINDOW
 Text Label 6250 5000 2    50   ~ 0
-SYNC
+~SYNC
 Text Label 6250 5100 2    50   ~ 0
 14M
 Text Label 6250 5200 2    50   ~ 0
@@ -1355,23 +1353,23 @@ BA14
 Text Label 4100 2600 0    50   ~ 0
 BA15
 $Comp
-L Connector_Generic:Conn_01x05 JP1
+L Connector_Generic:Conn_01x06 JP1
 U 1 1 60ED52FA
-P 7900 1150
-F 0 "JP1" H 7900 1550 50  0000 C CNN
-F 1 "RGB Binary" H 7950 1450 40  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 7900 1150 60  0001 C CNN
-F 3 "" H 7900 1150 60  0000 C CNN
-	1    7900 1150
+P 7900 800
+F 0 "JP1" H 7900 1200 50  0000 C CNN
+F 1 "RGB Binary" H 7950 1100 40  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 7900 800 60  0001 C CNN
+F 3 "" H 7900 800 60  0000 C CNN
+	1    7900 800 
 	1    0    0    -1  
 $EndComp
-Text Label 7300 1050 0    50   ~ 0
+Text Label 7300 700  0    50   ~ 0
 RGB8
-Text Label 7300 950  0    50   ~ 0
+Text Label 7300 600  0    50   ~ 0
 RGB4
-Text Label 7300 1250 0    50   ~ 0
+Text Label 7300 900  0    50   ~ 0
 RGB2
-Text Label 7300 1150 0    50   ~ 0
+Text Label 7300 800  0    50   ~ 0
 RGB1
 $Comp
 L power:+5V #PWR035
@@ -1446,13 +1444,13 @@ Wire Wire Line
 Text Label 9150 3300 0    50   ~ 0
 RAMWE
 Wire Wire Line
-	7300 950  7700 950 
+	7300 600  7700 600 
 Wire Wire Line
-	7300 1050 7700 1050
+	7300 700  7700 700 
 Wire Wire Line
-	7300 1150 7700 1150
+	7300 800  7700 800 
 Wire Wire Line
-	7300 1250 7700 1250
+	7300 900  7700 900 
 $Comp
 L Connector_Generic:Conn_01x04 J9
 U 1 1 60CB7C0F
@@ -1565,8 +1563,8 @@ Wire Wire Line
 Text Label 7300 1750 0    50   ~ 0
 7M
 Wire Wire Line
-	7300 1350 7700 1350
-Text Label 7300 1350 0    50   ~ 0
+	7300 1000 7700 1000
+Text Label 7300 1000 0    50   ~ 0
 SERVIDEO
 Wire Wire Line
 	10550 1650 10250 1650
@@ -2245,7 +2243,7 @@ L My_Library:R_0805 R5
 U 1 1 68D14D34
 P 6700 3750
 F 0 "R5" V 6700 3700 39  0000 L CNN
-F 1 "3k3" H 6759 3705 50  0001 L CNN
+F 1 "4k7" H 6759 3705 50  0001 L CNN
 F 2 "Resistor_SMD:R_0805_2012Metric" H 6700 3750 50  0001 C CNN
 F 3 "~" H 6700 3750 50  0001 C CNN
 	1    6700 3750
@@ -2688,42 +2686,42 @@ KSEL1
 Text Label 2150 4700 2    50   ~ 0
 KSEL2
 Wire Wire Line
-	7050 4550 6800 4550
+	7400 4500 7150 4500
 Wire Wire Line
-	7550 4650 7800 4650
+	7900 4600 8150 4600
 Wire Wire Line
-	7050 4650 6800 4650
+	7400 4600 7150 4600
 Wire Wire Line
-	7550 4750 7800 4750
+	7900 4700 8150 4700
 Wire Wire Line
-	7550 4550 7800 4550
+	7900 4500 8150 4500
 Wire Wire Line
-	7050 4750 6800 4750
+	7400 4700 7150 4700
 Wire Wire Line
-	7550 4850 7800 4850
+	7900 4800 8150 4800
 Wire Wire Line
-	7050 4850 6800 4850
+	7400 4800 7150 4800
 Wire Wire Line
 	1600 8250 2150 8250
 Wire Wire Line
 	1600 8350 2150 8350
 Wire Wire Line
 	1600 8450 2150 8450
-Text Label 7800 4550 2    50   ~ 0
+Text Label 8150 4500 2    50   ~ 0
 AD0
-Text Label 6800 4550 0    50   ~ 0
+Text Label 7150 4500 0    50   ~ 0
 AD1
-Text Label 7800 4650 2    50   ~ 0
+Text Label 8150 4600 2    50   ~ 0
 AD2
-Text Label 6800 4650 0    50   ~ 0
+Text Label 7150 4600 0    50   ~ 0
 AD3
-Text Label 7800 4750 2    50   ~ 0
+Text Label 8150 4700 2    50   ~ 0
 AD4
-Text Label 6800 4750 0    50   ~ 0
+Text Label 7150 4700 0    50   ~ 0
 AD5
-Text Label 7800 4850 2    50   ~ 0
+Text Label 8150 4800 2    50   ~ 0
 AD6
-Text Label 6800 4850 0    50   ~ 0
+Text Label 7150 4800 0    50   ~ 0
 AD7
 Text Label 2150 8250 2    50   ~ 0
 S0
@@ -2744,7 +2742,7 @@ C060-67
 Wire Wire Line
 	2150 4400 1600 4400
 Text Label 750  4600 0    50   ~ 0
-!DMA
+~DMA
 Wire Wire Line
 	1100 4600 750  4600
 Text Label 1850 4800 2    50   ~ 0
@@ -2783,21 +2781,21 @@ INTDEV6
 $Comp
 L Connector_Generic:Conn_02x05_Odd_Even J6
 U 1 1 6CF498C8
-P 7250 4750
-F 0 "J6" H 7300 5167 50  0000 C CNN
-F 1 "Aux Data_La" H 7300 5076 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical" H 7250 4750 50  0001 C CNN
-F 3 "~" H 7250 4750 50  0001 C CNN
-	1    7250 4750
+P 7600 4700
+F 0 "J6" H 7650 5117 50  0000 C CNN
+F 1 "Aux Data_La" H 7650 5026 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical" H 7600 4700 50  0001 C CNN
+F 3 "~" H 7600 4700 50  0001 C CNN
+	1    7600 4700
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7050 4950 6800 4950
-Text Label 6800 4950 0    50   ~ 0
+	7400 4900 7150 4900
+Text Label 7150 4900 0    50   ~ 0
 GND
 Wire Wire Line
-	7550 4950 7800 4950
-Text Label 7800 4950 2    50   ~ 0
+	7900 4900 8150 4900
+Text Label 8150 4900 2    50   ~ 0
 GND
 Wire Wire Line
 	2150 4500 1600 4500
@@ -2962,4 +2960,61 @@ F 5 "56AC8675" H 10550 8350 50  0001 C CNN "SPN"
 	1    10550 8350
 	1    0    0    -1  
 $EndComp
+$Comp
+L Connector_Generic:Conn_02x02_Odd_Even J10
+U 1 1 612422D1
+P 7450 3050
+F 0 "J10" H 7500 3267 50  0000 C CNN
+F 1 "XY" H 7500 3176 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x02_P2.54mm_Vertical" H 7450 3050 50  0001 C CNN
+F 3 "~" H 7450 3050 50  0001 C CNN
+	1    7450 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7100 3050 7250 3050
+Text Label 7100 3050 0    50   ~ 0
+X0
+Wire Wire Line
+	7950 3050 7750 3050
+Text Label 7950 3050 2    50   ~ 0
+X1
+Wire Wire Line
+	7950 3150 7750 3150
+Text Label 7950 3150 2    50   ~ 0
+Y1
+Text Label 7100 3150 0    50   ~ 0
+Y0
+Wire Wire Line
+	7250 3150 7100 3150
+$Comp
+L My_Library:R_0805 R10
+U 1 1 61642911
+P 6700 4600
+F 0 "R10" V 6700 4550 39  0000 L CNN
+F 1 "4k7" H 6759 4555 50  0001 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric" H 6700 4600 50  0001 C CNN
+F 3 "~" H 6700 4600 50  0001 C CNN
+	1    6700 4600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5700 4500 6700 4500
+$Comp
+L power:GND #PWR0101
+U 1 1 617BA829
+P 6700 4750
+F 0 "#PWR0101" H 6700 4500 50  0001 C CNN
+F 1 "GND" H 6705 4577 50  0000 C CNN
+F 2 "" H 6700 4750 50  0001 C CNN
+F 3 "" H 6700 4750 50  0001 C CNN
+	1    6700 4750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 4700 6700 4750
+Wire Wire Line
+	7300 1100 7700 1100
+Text Label 7300 1100 0    50   ~ 0
+~SYNC
 $EndSCHEMATC
