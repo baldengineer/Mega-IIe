@@ -2336,11 +2336,11 @@ Wire Wire Line
 Text Label 10450 7650 2    50   ~ 0
 14M
 $Comp
-L Device:Q_NPN_BCE Q1
+L Device:Q_NPN_BEC Q1
 U 1 1 6964995A
 P 14200 9300
 F 0 "Q1" H 14391 9346 50  0000 L CNN
-F 1 "Q_NPN_BCE-GET PACKAGE!" H 14391 9255 50  0000 L CNN
+F 1 "BC817" H 14391 9255 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 14400 9400 50  0001 C CNN
 F 3 "~" H 14200 9300 50  0001 C CNN
 	1    14200 9300
@@ -2658,12 +2658,12 @@ GND
 Wire Wire Line
 	1600 4800 1850 4800
 Wire Wire Line
-	2150 4600 1600 4600
+	2050 4600 1600 4600
 Wire Wire Line
-	2150 4700 1600 4700
-Text Label 2150 4600 2    50   ~ 0
+	2050 4700 1600 4700
+Text Label 2050 4600 2    50   ~ 0
 KSEL1
-Text Label 2150 4700 2    50   ~ 0
+Text Label 2050 4700 2    50   ~ 0
 KSEL2
 Wire Wire Line
 	7400 4500 7150 4500
@@ -2682,11 +2682,11 @@ Wire Wire Line
 Wire Wire Line
 	7400 4800 7150 4800
 Wire Wire Line
-	1600 8250 2150 8250
+	1600 8250 2100 8250
 Wire Wire Line
-	1600 8350 2150 8350
+	1600 8350 2100 8350
 Wire Wire Line
-	1600 8450 2150 8450
+	1600 8450 2100 8450
 Text Label 8150 4500 2    50   ~ 0
 AD0
 Text Label 7150 4500 0    50   ~ 0
@@ -2703,24 +2703,24 @@ Text Label 8150 4800 2    50   ~ 0
 AD6
 Text Label 7150 4800 0    50   ~ 0
 AD7
-Text Label 2150 8250 2    50   ~ 0
+Text Label 2100 8250 2    50   ~ 0
 S0
-Text Label 550  8250 0    50   ~ 0
+Text Label 650  8250 0    50   ~ 0
 S1
-Text Label 2150 8350 2    50   ~ 0
+Text Label 2100 8350 2    50   ~ 0
 S2
-Text Label 550  8350 0    50   ~ 0
+Text Label 650  8350 0    50   ~ 0
 S3
-Text Label 2150 8450 2    50   ~ 0
+Text Label 2100 8450 2    50   ~ 0
 S4
-Text Label 550  8450 0    50   ~ 0
+Text Label 650  8450 0    50   ~ 0
 S5
 Wire Wire Line
 	1100 4800 850  4800
-Text Label 2150 4400 2    50   ~ 0
+Text Label 2050 4400 2    50   ~ 0
 C060-67
 Wire Wire Line
-	2150 4400 1600 4400
+	2050 4400 1600 4400
 Text Label 750  4600 0    50   ~ 0
 ~DMA
 Wire Wire Line
@@ -2755,8 +2755,8 @@ Wire Wire Line
 Text Label 1850 8650 2    50   ~ 0
 GND
 Wire Wire Line
-	1600 8550 2150 8550
-Text Label 2150 8550 2    50   ~ 0
+	1600 8550 2100 8550
+Text Label 2100 8550 2    50   ~ 0
 INTDEV6
 $Comp
 L Connector_Generic:Conn_02x05_Odd_Even J6
@@ -2778,10 +2778,10 @@ Wire Wire Line
 Text Label 8150 4900 2    50   ~ 0
 GND
 Wire Wire Line
-	2150 4500 1600 4500
-Text Label 2150 4500 2    50   ~ 0
+	2050 4500 1600 4500
+Text Label 2050 4500 2    50   ~ 0
 KSEL0
-Text Label 550  8550 0    50   ~ 0
+Text Label 650  8550 0    50   ~ 0
 MDI-MDO
 Wire Wire Line
 	800  7600 1100 7600
@@ -2884,15 +2884,15 @@ Connection ~ 1850 3850
 Wire Wire Line
 	1850 3850 1850 3800
 Wire Wire Line
-	1100 8350 550  8350
+	1100 8350 650  8350
 Wire Wire Line
-	1100 8450 550  8450
+	1100 8450 650  8450
 Wire Wire Line
-	550  8550 1100 8550
+	650  8550 1100 8550
 Wire Wire Line
 	1100 8650 850  8650
 Wire Wire Line
-	1100 8250 550  8250
+	1100 8250 650  8250
 $Comp
 L Connector_Generic:Conn_02x05_Odd_Even J5
 U 1 1 6C9998F8
@@ -3003,8 +3003,6 @@ Wire Wire Line
 Wire Wire Line
 	9950 8000 10550 8000
 Connection ~ 10550 8000
-Text Notes 13700 8400 0    50   ~ 0
-13mm diameter, 5mm pitch, 7mm height
 Text Label 8250 1850 2    50   ~ 0
 Q3
 Wire Wire Line
@@ -3032,4 +3030,49 @@ Text Label 8250 1400 2    50   ~ 0
 GND
 Wire Wire Line
 	7850 1400 8250 1400
+Wire Wire Line
+	7200 4100 7450 4100
+Text Label 7200 4100 0    50   ~ 0
+RMBK
+$Comp
+L Connector:TestPoint TP4
+U 1 1 612F453C
+P 7450 4100
+F 0 "TP4" H 7508 4218 50  0000 L CNN
+F 1 "TestPoint" H 7508 4127 50  0000 L CNN
+F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 7650 4100 50  0001 C CNN
+F 3 "~" H 7650 4100 50  0001 C CNN
+	1    7450 4100
+	1    0    0    -1  
+$EndComp
+Text Label 7200 3850 0    50   ~ 0
+~MSW
+Wire Wire Line
+	7200 3850 7450 3850
+$Comp
+L Connector:TestPoint TP3
+U 1 1 61414825
+P 7450 3850
+F 0 "TP3" H 7508 3968 50  0000 L CNN
+F 1 "TestPoint" H 7508 3877 50  0000 L CNN
+F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 7650 3850 50  0001 C CNN
+F 3 "~" H 7650 3850 50  0001 C CNN
+	1    7450 3850
+	1    0    0    -1  
+$EndComp
+Text Label 7150 5300 0    50   ~ 0
+WINDOW
+$Comp
+L Connector:TestPoint TP5
+U 1 1 614D37F6
+P 7450 5300
+F 0 "TP5" H 7508 5418 50  0000 L CNN
+F 1 "TestPoint" H 7508 5327 50  0000 L CNN
+F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 7650 5300 50  0001 C CNN
+F 3 "~" H 7650 5300 50  0001 C CNN
+	1    7450 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7450 5300 7150 5300
 $EndSCHEMATC
