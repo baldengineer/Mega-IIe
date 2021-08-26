@@ -212,14 +212,6 @@ Text Label 5100 5850 0    50   ~ 0
 GND
 Text Label 6100 5750 2    50   ~ 0
 GND
-Text Label 6250 5650 2    50   ~ 0
-PHa
-Text Label 6250 5550 2    50   ~ 0
-PHb
-Text Label 6250 5450 2    50   ~ 0
-PHc
-Text Label 4950 5950 0    50   ~ 0
-PHd
 Text Label 4700 3950 2    50   ~ 0
 PHb
 Text Label 4700 3800 2    50   ~ 0
@@ -2513,4 +2505,12 @@ Text Label 2500 5250 0    50   ~ 0
 GND
 Text Label 5150 7350 0    50   ~ 0
 GND
+Text Label 6250 5450 2    50   ~ 0
+seek2
+Text Label 6250 5550 2    50   ~ 0
+seek1
+Text Label 6250 5650 2    50   ~ 0
+seek0
+Text Label 4950 5950 0    50   ~ 0
+seek3
 $EndSCHEMATC
