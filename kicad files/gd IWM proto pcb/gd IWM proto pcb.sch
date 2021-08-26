@@ -510,8 +510,8 @@ L Connector_Generic:Conn_01x19 J2
 U 1 1 611642DF
 P 4650 1250
 F 0 "J2" V 4867 1246 50  0000 C CNN
-F 1 "DB19" V 4776 1246 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x19_P2.54mm_Vertical" H 4650 1250 50  0001 C CNN
+F 1 "DSUB19" V 4776 1246 50  0000 C CNN
+F 2 "My Libraries:DSUB-19_Apple_II_Floppy" H 4650 1250 50  0001 C CNN
 F 3 "~" H 4650 1250 50  0001 C CNN
 	1    4650 1250
 	0    -1   -1   0   
@@ -841,22 +841,11 @@ Wire Wire Line
 Wire Wire Line
 	1150 2300 1050 2300
 $Comp
-L Connector_Generic:Conn_02x04_Odd_Even J6
-U 1 1 61372E9E
-P 1350 2300
-F 0 "J6" V 1354 2480 50  0000 L CNN
-F 1 "PWR" V 1445 2480 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Vertical" H 1350 2300 50  0001 C CNN
-F 3 "~" H 1350 2300 50  0001 C CNN
-	1    1350 2300
-	1    0    0    -1  
-$EndComp
-$Comp
 L My_Library:D_1206 D3
 U 1 1 613F093C
 P 1150 1250
 F 0 "D3" V 1196 1180 50  0000 R CNN
-F 1 "+5d" V 1105 1180 50  0000 R CNN
+F 1 "+5v" V 1105 1180 50  0000 R CNN
 F 2 "LED_SMD:LED_1206_3216Metric" V 1150 1250 50  0001 C CNN
 F 3 "~" V 1150 1250 50  0001 C CNN
 	1    1150 1250
@@ -906,7 +895,7 @@ L My_Library:D_1206 D4
 U 1 1 6140D023
 P 1450 1250
 F 0 "D4" V 1496 1180 50  0000 R CNN
-F 1 "+12d" V 1405 1180 50  0000 R CNN
+F 1 "+12v" V 1405 1180 50  0000 R CNN
 F 2 "LED_SMD:LED_1206_3216Metric" V 1450 1250 50  0001 C CNN
 F 3 "~" V 1450 1250 50  0001 C CNN
 	1    1450 1250
@@ -945,7 +934,7 @@ L My_Library:D_1206 D2
 U 1 1 614143CB
 P 850 1000
 F 0 "D2" V 800 900 50  0000 R CNN
-F 1 "-5d" V 900 950 50  0000 R CNN
+F 1 "-5v" V 900 950 50  0000 R CNN
 F 2 "LED_SMD:LED_1206_3216Metric" V 850 1000 50  0001 C CNN
 F 3 "~" V 850 1000 50  0001 C CNN
 	1    850  1000
@@ -1767,25 +1756,6 @@ Wire Wire Line
 	6750 7350 6750 7400
 NoConn ~ 7700 5800
 $Comp
-L Connector_Generic:Conn_01x02 J7
-U 1 1 61A301EB
-P 9500 3750
-F 0 "J7" H 9650 3650 50  0000 C CNN
-F 1 "PDL_LA" H 9750 3750 50  0000 C CNN
-F 2 "My Libraries:PinHeader_1x02_P2.54mm_Vertical-LOCK" H 9500 3750 50  0001 C CNN
-F 3 "~" H 9500 3750 50  0001 C CNN
-	1    9500 3750
-	1    0    0    1   
-$EndComp
-Wire Wire Line
-	9300 3650 8900 3650
-Text Label 8900 3650 0    50   ~ 0
-PDLTRIG
-Wire Wire Line
-	9300 3750 8900 3750
-Text Label 8900 3750 0    50   ~ 0
-PDLTRIG
-$Comp
 L Connector_Generic:Conn_01x05 J9
 U 1 1 61A74614
 P 8450 3850
@@ -2167,8 +2137,8 @@ F 3 "~" H 10750 4900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10550 4700 10100 4700
-Text Label 10100 4700 0    50   ~ 0
+	10550 4900 10100 4900
+Text Label 10100 4900 0    50   ~ 0
 SW0_OAPL
 Text Label 10100 4800 0    50   ~ 0
 SW1_CAPL
@@ -2179,8 +2149,8 @@ Wire Wire Line
 Text Label 10350 5000 0    50   ~ 0
 SW3
 Wire Wire Line
-	10550 4900 10350 4900
-Text Label 10350 4900 0    50   ~ 0
+	10550 4700 10350 4700
+Text Label 10350 4700 0    50   ~ 0
 SW2
 $Comp
 L power:GND #PWR050
@@ -2270,7 +2240,7 @@ DIS2
 Text Label 6950 3950 0    50   ~ 0
 DIS3
 Text Notes 3700 900  0    50   ~ 0
-TODO: Make "DB19" footprint
+Not straight header, it is a DSUB19\n(like a DB15, but with 4 moar pins)
 $Comp
 L power:GND #PWR060
 U 1 1 6249C3A5
@@ -2298,12 +2268,12 @@ Wire Wire Line
 Wire Wire Line
 	7300 6300 7300 6350
 $Comp
-L Connector_Generic:Conn_02x16_Odd_Even J?
+L Connector_Generic:Conn_02x16_Odd_Even J11
 U 1 1 611A2C00
 P 1300 6850
-F 0 "J?" H 1350 7767 50  0000 C CNN
+F 0 "J11" H 1350 7767 50  0000 C CNN
 F 1 "Addr_Main_Data" H 1350 7676 50  0000 C CNN
-F 2 "" H 1300 6850 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x16_P2.54mm_Horizontal" H 1300 6850 50  0001 C CNN
 F 3 "~" H 1300 6850 50  0001 C CNN
 	1    1300 6850
 	1    0    0    -1  
@@ -2437,34 +2407,34 @@ MD6
 Text Label 900  7550 0    50   ~ 0
 MD7
 $Comp
-L Connector_Generic:Conn_02x05_Odd_Even J?
+L Connector_Generic:Conn_02x05_Odd_Even J18
 U 1 1 61B97347
 P 1350 5050
-F 0 "J?" H 1400 5467 50  0000 C CNN
+F 0 "J18" H 1400 5467 50  0000 C CNN
 F 1 "CTRL1" H 1400 5376 50  0000 C CNN
-F 2 "" H 1350 5050 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Horizontal" H 1350 5050 50  0001 C CNN
 F 3 "~" H 1350 5050 50  0001 C CNN
 	1    1350 5050
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_02x05_Odd_Even J?
+L Connector_Generic:Conn_02x05_Odd_Even J14
 U 1 1 61B9931E
 P 1350 4100
-F 0 "J?" H 1400 4517 50  0000 C CNN
+F 0 "J14" H 1400 4517 50  0000 C CNN
 F 1 "CTRL2" H 1400 4426 50  0000 C CNN
-F 2 "" H 1350 4100 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Horizontal" H 1350 4100 50  0001 C CNN
 F 3 "~" H 1350 4100 50  0001 C CNN
 	1    1350 4100
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_02x05_Odd_Even J?
+L Connector_Generic:Conn_01x02 J19
 U 1 1 61B99AB8
 P 2950 5150
-F 0 "J?" H 3000 5567 50  0000 C CNN
-F 1 "Slot_Maker" H 3000 5476 50  0000 C CNN
-F 2 "" H 2950 5150 50  0001 C CNN
+F 0 "J19" H 2800 5400 50  0000 C CNN
+F 1 "Slot_Maker" H 2800 5300 50  0000 C CNN
+F 2 "My Libraries:PinHeader_1x02_P2.54mm_Vertical-LOCK" H 2950 5150 50  0001 C CNN
 F 3 "~" H 2950 5150 50  0001 C CNN
 	1    2950 5150
 	1    0    0    -1  
@@ -2502,49 +2472,17 @@ Wire Wire Line
 Text Label 1900 4300 2    50   ~ 0
 GND
 Wire Wire Line
-	3250 5350 3500 5350
-Text Label 3500 5350 2    50   ~ 0
-GND
-Wire Wire Line
-	2750 5350 2500 5350
-Text Label 2500 5350 0    50   ~ 0
+	2750 5250 2500 5250
+Text Label 2500 5250 0    50   ~ 0
 GND
 Wire Wire Line
 	1650 3900 2200 3900
 Text Label 2200 3900 2    50   ~ 0
 C060-67
 Wire Wire Line
-	3250 5250 3600 5250
-Text Label 3600 5250 2    50   ~ 0
-INTDEV6
-Wire Wire Line
-	3250 4950 3600 4950
-Wire Wire Line
-	3250 5050 3600 5050
-Wire Wire Line
-	3250 5150 3600 5150
-Wire Wire Line
-	2750 4950 2400 4950
-Wire Wire Line
-	2750 5050 2400 5050
-Wire Wire Line
 	2750 5150 2400 5150
-Text Label 3600 4950 2    50   ~ 0
-S0
-Text Label 3600 5050 2    50   ~ 0
-S2
-Text Label 2400 5050 0    50   ~ 0
-S3
-Text Label 3600 5150 2    50   ~ 0
-S4
 Text Label 2400 5150 0    50   ~ 0
-S5
-Text Label 2400 4950 0    50   ~ 0
-S1
-Wire Wire Line
-	2750 5250 2400 5250
-Text Label 2400 5250 0    50   ~ 0
-MDI-MDO
+INTDEV6
 NoConn ~ 1150 4850
 NoConn ~ 1150 5050
 NoConn ~ 1150 5150
@@ -2574,4 +2512,52 @@ NoConn ~ 1650 4200
 NoConn ~ 1150 4100
 NoConn ~ 1150 4000
 NoConn ~ 1150 3900
+$Comp
+L Connector_Generic:Conn_02x04_Odd_Even J6
+U 1 1 61372E9E
+P 1350 2300
+F 0 "J6" V 1354 2480 50  0000 L CNN
+F 1 "PWR" V 1445 2480 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Horizontal" H 1350 2300 50  0001 C CNN
+F 3 "~" H 1350 2300 50  0001 C CNN
+	1    1350 2300
+	1    0    0    -1  
+$EndComp
+$Comp
+L My_Library:C_0805 C1
+U 1 1 61393828
+P 7700 7250
+F 0 "C1" H 7500 7300 50  0000 L CNN
+F 1 "10u" H 7500 7200 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0805_2012Metric" H 7700 7250 50  0001 C CNN
+F 3 "~" H 7700 7250 50  0001 C CNN
+	1    7700 7250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0101
+U 1 1 6139382E
+P 7700 7050
+F 0 "#PWR0101" H 7700 6900 50  0001 C CNN
+F 1 "+5V" H 7715 7223 50  0000 C CNN
+F 2 "" H 7700 7050 50  0001 C CNN
+F 3 "" H 7700 7050 50  0001 C CNN
+	1    7700 7050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0102
+U 1 1 61393834
+P 7700 7400
+F 0 "#PWR0102" H 7700 7150 50  0001 C CNN
+F 1 "GND" H 7705 7227 50  0000 C CNN
+F 2 "" H 7700 7400 50  0001 C CNN
+F 3 "" H 7700 7400 50  0001 C CNN
+	1    7700 7400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7700 7050 7700 7150
+Wire Wire Line
+	7700 7350 7700 7400
 $EndSCHEMATC
