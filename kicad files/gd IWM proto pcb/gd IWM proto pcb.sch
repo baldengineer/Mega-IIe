@@ -759,7 +759,7 @@ Wire Wire Line
 Wire Wire Line
 	5250 1450 5250 1850
 Text Label 5250 1850 1    50   ~ 0
-DB19-4
+DB19-16
 Wire Wire Line
 	1150 2500 1050 2500
 Wire Wire Line
@@ -2494,4 +2494,23 @@ F 3 "" H 7200 4100 50  0001 C CNN
 	1    7200 4100
 	-1   0    0    -1  
 $EndComp
+$Comp
+L power:GND #PWR0103
+U 1 1 61299791
+P 5300 7400
+F 0 "#PWR0103" H 5300 7150 50  0001 C CNN
+F 1 "GND" H 5305 7227 50  0000 C CNN
+F 2 "" H 5300 7400 50  0001 C CNN
+F 3 "" H 5300 7400 50  0001 C CNN
+	1    5300 7400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 7400 5300 7350
+Wire Wire Line
+	5300 7350 5150 7350
+Text Label 2500 5250 0    50   ~ 0
+GND
+Text Label 5150 7350 0    50   ~ 0
+GND
 $EndSCHEMATC
