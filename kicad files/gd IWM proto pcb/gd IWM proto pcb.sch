@@ -63,11 +63,11 @@ Wire Wire Line
 Wire Wire Line
 	3300 3300 2950 3300
 Text Label 6600 5050 0    50   ~ 0
-A0
+BA0
 Text Label 6600 5150 0    50   ~ 0
-A1
+BA1
 Text Label 6600 5250 0    50   ~ 0
-A2
+BA2
 Wire Wire Line
 	6900 5050 6600 5050
 Wire Wire Line
@@ -197,11 +197,11 @@ Wire Wire Line
 Wire Wire Line
 	6250 5650 5850 5650
 Text Label 6250 5850 2    50   ~ 0
-EN1
+bEN1
 Wire Wire Line
 	6250 5850 5850 5850
 Text Label 6250 5950 2    50   ~ 0
-EN2
+bEN2
 Wire Wire Line
 	6250 5950 5850 5950
 Wire Wire Line
@@ -1021,7 +1021,7 @@ Wire Wire Line
 Wire Wire Line
 	7700 5700 8000 5700
 Text Label 8000 5700 2    50   ~ 0
-MDBUS7
+MD7
 Text Label 6600 5400 0    50   ~ 0
 SW3
 Text Label 6600 5700 0    50   ~ 0
