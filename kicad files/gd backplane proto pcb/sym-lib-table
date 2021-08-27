@@ -1,0 +1,7 @@
+(sym_lib_table
+  (lib (name Apple_IIgs_Symbols)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/Apple_IIgs_Symbols.lib")(options "")(descr ""))
+  (lib (name IIgs_Schematic-cache)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/IIgs Schematic-cache.lib")(options "")(descr ""))
+  (lib (name IIgs_Schematic-rescue)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/IIgs Schematic-rescue.lib")(options "")(descr ""))
+  (lib (name WDC_65C02)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/WDC 65C02.lib")(options "")(descr ""))
+  (lib (name WDC_65c816s)(type Legacy)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/WDC 65c816s.lib")(options "")(descr ""))
+)
