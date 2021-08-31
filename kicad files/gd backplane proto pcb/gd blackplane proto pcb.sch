@@ -1152,13 +1152,13 @@ PDLTRIG
 $Comp
 L Connector_Generic:Conn_02x16_Odd_Even J24
 U 1 1 613F00C3
-P 9100 3700
-F 0 "J24" H 9100 4650 50  0000 L CNN
-F 1 "Addr_Main_Data" H 8900 4550 50  0000 L CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_2x16_P2.54mm_Vertical" H 9100 3700 50  0001 C CNN
-F 3 "~" H 9100 3700 50  0001 C CNN
-	1    9100 3700
-	1    0    0    -1  
+P 9200 3800
+F 0 "J24" H 9200 4750 50  0000 L CNN
+F 1 "Addr_Main_Data" H 9000 4650 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x16_P2.54mm_Vertical" H 9200 3800 50  0001 C CNN
+F 3 "~" H 9200 3800 50  0001 C CNN
+	1    9200 3800
+	-1   0    0    1   
 $EndComp
 Wire Wire Line
 	9400 3000 9650 3000
