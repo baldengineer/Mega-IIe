@@ -1108,8 +1108,7 @@ F 3 "" H 1800 2650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1800 2550 1800 2650
-NoConn ~ 1700 2550
+	1800 2550 1800 2600
 $Comp
 L power:+5V #PWR05
 U 1 1 61558F5F
@@ -2108,4 +2107,11 @@ Text Label 12150 1500 0    50   ~ 0
 RX_2040
 Text Label 12150 1600 0    50   ~ 0
 TX_2040
+Wire Wire Line
+	1800 2600 1700 2600
+Wire Wire Line
+	1700 2600 1700 2550
+Connection ~ 1800 2600
+Wire Wire Line
+	1800 2600 1800 2650
 $EndSCHEMATC
