@@ -19,13 +19,19 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(IIe-keyboard_emulator IIe-keyboard_emulator.c )
+add_executable(IIe-keyboard_emulator 
+        IIe-keyboard_emulator.c 
+        src/iie_hid_app.c
+        )
 
+        
 pico_set_program_name(IIe-keyboard_emulator "IIe-keyboard_emulator")
 pico_set_program_version(IIe-keyboard_emulator "0.1")
 
 pico_enable_stdio_uart(IIe-keyboard_emulator 1)
 pico_enable_stdio_usb(IIe-keyboard_emulator 0)
+
+target_include_directories(IIe-keyboard_emulator PRIVATE src)
 
 # Add the standard library to the build
 target_link_libraries(IIe-keyboard_emulator pico_stdlib)
@@ -36,6 +42,8 @@ target_link_libraries(IIe-keyboard_emulator
         hardware_timer
         hardware_watchdog
         hardware_clocks
+        tinyusb_board
+        tinyusb_host
         )
 
 pico_add_extra_outputs(IIe-keyboard_emulator)
