@@ -11,21 +11,17 @@ It is very poorly written and breaks easy.
 
 ## What you need:
 * Digilent Digital Discovery 
- * Address and Data needs 24 channels, Analog Discovery 2 only has 15. But if you only wanted one or the other you could look at either Address or Data.
-
+	* Address and Data needs 24 channels, Analog Discovery 2 only has 15. But if you only wanted one or the other you could look at either Address or Data.
 * Waveforms
- * Software that runs the Digital Discovery.
- * This code uses version 3.16.41.
-
+	* Software that runs the Digital Discovery.
+	* This code uses version 3.16.41.
 * A way probe address and databus
  * For the [Golden Delicious Project](https://github.com/baldengineer/golden-delicious) we built a custom backplane that the Digital Discovery plugs into.
-
 * For 6502 decode you need ROMEN signal
- * Currently, I use ROMEN because it is available on the MEGA chip. However, the decoder should use and rely on SYNC from the 6502. 
-  * FYI, the 6502's SYNC is not related to the video SYNC signal found in the Apple II design
-
+	* Currently, I use ROMEN because it is available on the MEGA chip. However, the decoder should use and rely on SYNC from the 6502. 
+		* FYI, the 6502's SYNC is not related to the video SYNC signal found in the Apple II design
 * For IIe ROM Decode, no extra signals are needed
- * Waveforms can use the clock to clean-up states, but I found that to be harder to follow.
+	* Waveforms can use the clock to clean-up states, but I found that to be harder to follow.
 
 
 ## How to use these files:
