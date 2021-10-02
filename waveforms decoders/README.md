@@ -1,4 +1,4 @@
-![Digilent Waveforms decoding 6502 traffic on Apple IIe](images/waveforms_6502_iie_decoder.png)
+![Digilent Waveforms decoding 6502 traffic on Apple IIe](../images/waveforms_6502_iie_decoder.png)
 
 # Waveforms Decoders
 
@@ -67,13 +67,13 @@ Notice the 6052 RESET sequence:
 * Then a few cycles later, the 6502 jumps to 0xFA62
 
 (Remember *this* specific ROM jumps to 0xFA62. Match the values the LA sees!)
-![waveforms_6502_iie_RESET_decoded](images/waveforms_6502_iie_RESET_decoded.png)
+![waveforms_6502_iie_RESET_decoded](../images/waveforms_6502_iie_RESET_decoded.png)
 
 ## Random Apple IIe ROM Decode Example
 Just a random part of the Apple IIe boot sequence. Here you can see it setting up a text page in LORES mode. (Probably getting ready to print "Apple ][" at the top of the screen!)
 
 For fun, check out the [Apple IIe ROM Disassembly](https://6502disassembly.com/a2-rom/Unenh_IIe_F8ROM.html). Search for `fb2f:`. The label is `INIT`. The sequence should look familiar. 
-![waveforms_6502_iie_LORES_decoded](images/waveforms_6502_iie_LORES_decoded.png)
+![waveforms_6502_iie_LORES_decoded](../images/waveforms_6502_iie_LORES_decoded.png)
 
 
 ## Bald Engineer Live Stream
