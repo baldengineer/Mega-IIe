@@ -7,14 +7,39 @@
 // This code goes into the "decoder" tab
 c = rgData.length
 
-for(var i = 0; i < c; i++){
+// Uncomment/change the return in Value to Text tab to see what
+// hex values the decoder finds. If they don't match the logic analyzer
+// capture, you probably need to reverse la_bit
 
-   rgValue[i] = rgData[i] & 0xFFFF;
-   // set flag other than zero for valid data
+//la_bit = [8,12,9,13,10,14,11,15,16,20,17,21,18,22,19,23];
+la_bit = [23,19,22,18,21,17,20,16,15,11,14,10,13,9,12,8];
+print("Starting...");
+
+for(var i = 0; i < c; i++){
+    rgValue[i] = 0x0;
+    for (var x=0; x<16; x++) {
+        var sample = rgData[i] & 0xFFFF00;  // mask off what we don't want. 
+        sample = sample >> (la_bit[x]) //  shift the sample all the way to the right, so that LSB is our value
+        sample = sample & 0x1;
+        if (sample == 0) {
+            sample = 0x1;
+            sample = sample << x // shift left to position correctly
+            sample = sample & 0xFFFF; // mask the top part
+            sample = ~sample;          // invert
+            rgValue[i] = (rgValue[i] & sample) & 0xFFFF; 
+        } else {
+            sample = sample << x // shift left to position correctly
+            rgValue[i] = rgValue[i] | sample;
+       }
+    }
+
    rgFlag[i] = 1;
 }
+print ("... done");
 
 // This code goes into the "Value2Text" tab
+// It is huge. So make sure you copy it all!
+
 function Value2Text(flag, value){
   if (flag >0) {
       switch(value){
@@ -591,6 +616,7 @@ function Value2Text(flag, value){
         case 0xffe3: return "SUBTBL"
 
 
+       // default: return value.toString(16);
         default: return "";
       }
   }

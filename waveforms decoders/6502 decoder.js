@@ -1,24 +1,46 @@
 // 6502 decoder (for Apple II)
 // For Digilent WaveForms (Digital Discovery)
-// ROMEN needs to be Digital IO 28
-// using ROMEN right now, should be using a 6502 signal, will update later
-
-// Create a custom decoder
+// ROMEN needs to be defined
+// using ROMEN right now, should be using a 6502 signal, may update later
 
 // This code goes into the "decoder" tab
 c = rgData.length
 
+// if the decode is failing, then uncomment the "return" line in Value to Text
+// that shows what the decoder is passing. if the values look "backward" then 
+// change the bit order of la_bit (MSB to LSB or LSB to MSB).
+// This depends on how the LA is setup (and I don't fully understand why yet.)
+//la_bit = [0,4,1,5,2,6,3,7]
+la_bit = [7,3,6,2,5,1,4,0]
+
+romen_bit = 26;
+
 for(var i = 0; i < c; i++){
-   // take 4 least significant bits
-   rgValue[i] = (rgData[i] & 0xFF0000) >> 16;
-   // set flag other than zero for valid data
-   // using ROMEN right now, should be using a 6502 signal
-    rgFlag[i] = ((rgData[i] >> 28) & 0x1) + 1; // 0 means ROMEN is asserted, so add 1 so that decoder will run
+    rgValue[i] = 0x0;
+    for (var x=0; x<8; x++) {
+        var sample = rgData[i] & 0xFF;  // mask off what we don't want. 
+        sample = sample >> (la_bit[x]) //  shift the sample all the way to the right, so that LSB is our value
+        sample = sample & 0x1;
+        if (sample == 0) {
+            sample = 0x1;
+            sample = sample << x // shift left to position correctly
+            sample = sample & 0xFF; // mask the top part
+            sample = ~sample;          // invert
+            rgValue[i] = (rgValue[i] & sample) & 0xFF; 
+        } else {
+            sample = sample << x // shift left to position correctly
+            rgValue[i] = rgValue[i] | sample;
+       }
+    }
+
+  // 0 means ROMEN is asserted, so add 1 so that decoder will run
+   rgFlag[i] = ((rgData[i] >> 26) & 0x1) + 1; 
 }
+
 
 // This code goes into the "Value2Text" tab
 function Value2Text(flag, value) {
-    if (flag == 0) {
+    if (flag == 1) {
         switch(value) {
              // op codes with address modes
             case 0x69: return "ADC (Imd)";
@@ -177,5 +199,6 @@ function Value2Text(flag, value) {
             default: return ("0x" + value.toString(16));
         }
     }
-//    return ("0x" + value.toString(16));
+    //return ("0x" + value.toString(16));
+   return ""; // this was a ROM read, so I dunno.. be blank?
 }
