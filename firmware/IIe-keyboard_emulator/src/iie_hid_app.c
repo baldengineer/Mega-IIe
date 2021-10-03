@@ -41,10 +41,10 @@ extern uint8_t keys[101];
 extern bool print_usb_report;
 extern uint32_t millis();
 extern volatile bool kbd_connected;
-bool any_key=false;
 extern void wtf_bbq_led(uint8_t state);
 extern volatile uint8_t kbd_led_state[1];
 
+bool any_key=false;
 static uint8_t const keycode2ascii[128][2] = {HID_KEYCODE_TO_ASCII};
 
 // Each HID instance can has multiple reports
@@ -55,7 +55,6 @@ static struct
 } hid_info[CFG_TUH_HID];
 
 static void process_kbd_report(hid_keyboard_report_t const* report);
-static void process_mouse_report(hid_mouse_report_t const* report);
 static void process_generic_report(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
 
 void hid_app_task(void) {
@@ -115,11 +114,6 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
             process_kbd_report((hid_keyboard_report_t const*)report);
             break;
 
-        case HID_ITF_PROTOCOL_MOUSE:
-            TU_LOG2("HID receive boot mouse report\r\n");
-            process_mouse_report((hid_mouse_report_t const*)report);
-            break;
-
         default:
             // Generic report requires matching ReportID and contents with previous parsed report info
             process_generic_report(dev_addr, instance, report, len);
@@ -153,8 +147,6 @@ void print_report_why_not(hid_keyboard_report_t const* report) {
     printf("\n");
 }
 
-
-
 /*
 SETUP = 0x21
 Request Code SetReport = 0x09
@@ -171,7 +163,6 @@ Data stage = 1 byte
   explains setup packet: https://www.beyondlogic.org/usbnutshell/usb6.shtml
 */
 
-//uint8_t kbd_leds[1];
 void imma_led(uint8_t state) {
     static uint32_t call_counter = 0;
     uint8_t dev_addr    = 0x01;
@@ -184,7 +175,7 @@ void imma_led(uint8_t state) {
         kbd_led_state[0] = kbd_led_state[0] | 0x02;
     if (state == 0x0)
         kbd_led_state[0] = kbd_led_state[0] & 0xFD;
-  //  kbd_leds[0] = state;
+
     tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
 }
 
@@ -219,55 +210,6 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
     }
 
     prev_report = *report;
-}
-
-//--------------------------------------------------------------------+
-// Mouse
-//--------------------------------------------------------------------+
-
-void cursor_movement(int8_t x, int8_t y, int8_t wheel) {
-#if USE_ANSI_ESCAPE
-    // Move X using ansi escape
-    if (x < 0) {
-        printf(ANSI_CURSOR_BACKWARD(% d), (-x));  // move left
-    } else if (x > 0) {
-        printf(ANSI_CURSOR_FORWARD(% d), x);  // move right
-    }
-
-    // Move Y using ansi escape
-    if (y < 0) {
-        printf(ANSI_CURSOR_UP(% d), (-y));  // move up
-    } else if (y > 0) {
-        printf(ANSI_CURSOR_DOWN(% d), y);  // move down
-    }
-
-    // Scroll using ansi escape
-    if (wheel < 0) {
-        printf(ANSI_SCROLL_UP(% d), (-wheel));  // scroll up
-    } else if (wheel > 0) {
-        printf(ANSI_SCROLL_DOWN(% d), wheel);  // scroll down
-    }
-
-    printf("\r\n");
-#else
-    printf("(%d %d %d)\r\n", x, y, wheel);
-#endif
-}
-
-static void process_mouse_report(hid_mouse_report_t const* report) {
-    static hid_mouse_report_t prev_report = {0};
-
-    //------------- button state  -------------//
-    uint8_t button_changed_mask = report->buttons ^ prev_report.buttons;
-    if (button_changed_mask & report->buttons) {
-        printf(" %c%c%c ",
-               report->buttons & MOUSE_BUTTON_LEFT ? 'L' : '-',
-               report->buttons & MOUSE_BUTTON_MIDDLE ? 'M' : '-',
-               report->buttons & MOUSE_BUTTON_RIGHT ? 'R' : '-');
-    }
-
-    //------------- cursor movement -------------//
-    cursor_movement(report->x, report->y, report->wheel);
 }
 
 //--------------------------------------------------------------------+
@@ -317,12 +259,6 @@ static void process_generic_report(uint8_t dev_addr, uint8_t instance, uint8_t c
                 TU_LOG1("HID receive keyboard report\r\n");
                 // Assume keyboard follow boot report layout
                 process_kbd_report((hid_keyboard_report_t const*)report);
-                break;
-
-            case HID_USAGE_DESKTOP_MOUSE:
-                TU_LOG1("HID receive mouse report\r\n");
-                // Assume mouse follow boot report layout
-                process_mouse_report((hid_mouse_report_t const*)report);
                 break;
 
             default:
