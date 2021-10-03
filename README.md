@@ -5,6 +5,23 @@ Creating a portable Apple ][ by using the MEGA II chip from an IIgs. (This chip 
 
 This project is why I started [Bit Preserve](https://github.com/baldengineer/bit-preserve), a project to archive vintage computer schematics.
 
+
+## (Off-)Stream Notes 2021-10-02
+* Attempting to book the GD with a IIc ROM results in a lock-up.
+  * graphics get initialized and the memory is dumped to the screen, but no beep and nothing past that.
+  * Logic Analyzer suggests `BASICINIT` is doing a monitor version check in the F8 ROM, but failing. It calls a jump called `HANG`. Even though the 6502 should be jumping in a circle, it seems to keep doing other stuff. (Maybe it is just bus fetches that do nothing?)
+* SLOTMAKER Bus Headers on the IO board are pinned out different from the SLOTMAKER Bus Header on the MEGA-65c02. For a ribbon cable, each pin-pair needs to be swapped, except for the last two. They are GND.
+
+## Stream Notes 2021-10-01
+Golden Delicious Rev 2 booted! Yay!
+
+* \~DMA is wrong level
+  * The two \`245 buffers have their enable pins connnected to \~DMA. I made the mistake of thinking that MEGA drove the \~DMA signal. That is not the case, nor does it make sense after thinking about it. For now, the \`245s have pin 19 lifted and tied to ground to always enable them. 
+  * When connecting the IWM or a card to slotmaker, \~DMA situation needs to be resolved.
+
+* [IIe / 6502 decoder](https://discord.com/channels/369243434080272385/843878836471201902/893914917676130314) for Waveforms / Digitial Discovery has been updated. 
+* This [forum post](https://discord.com/channels/369243434080272385/843878836471201902/893915436620607488) has Digilent Waveforms beta builds that are downloadable without filling out the annoying registration form. (Or just use `asdf` for all of the fields.)
+
 ## Stream Notes 2021-06-02
 * Wherefore no IIe ROM in the IIgs? Is it in the MEGA-II?
 * [Warphammer: this seciton looks rommy](https://twitter.com/babbageboole/status/1001178057057566720/photo/1)

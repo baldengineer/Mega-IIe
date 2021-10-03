@@ -42,9 +42,9 @@ If your bits are cleanly going from LSB to MSB and bits 0 to 15 then the decoder
 ### Using the Javascript files
 Each of the JavaScript files has two functions in them. One goes into the "Decoder" tab and the other goes into the Value To Text tab. The Value To Text code is a massic switch statement, so make sure you carefully copy the braces at the end.
 
-In both files there is an array called `la_bits`. Give that array the sequential order of Address or Data bits. Depending on how you connect the logic analyzer, you might have to reverse that order to get the decode to work correctly.
+In both files there is an array called `la_bit`. Give that array the sequential order of Address or Data bits. Depending on how you connect the logic analyzer, you might have to reverse that order to get the decode to work correctly.
 
-In the Value to Text tab/code, there is a return statement commented out. Enabling this statement will cause the CUSTOM decoder to return the value it decoded in HEX. Those HEX values should match what the logic analyzer captured. If not, try reversing the order of your `la_bits` array.
+In the Value to Text tab/code, there is a return statement commented out. Enabling this statement will cause the CUSTOM decoder to return the value it decoded in HEX. Those HEX values should match what the logic analyzer captured. If not, try reversing the order of your `la_bit` array.
 
 
 #### Apple IIe ROM Decoder.js
