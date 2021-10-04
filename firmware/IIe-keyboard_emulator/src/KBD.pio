@@ -1,0 +1,39 @@
+; output pins : 21-27 (GP0-G7)
+; enable input: 31 (GP14)
+
+.program KBD
+
+mov x, null        ; fallback char if TX FIFO is empty
+mov y, null        ; will store last decoded character
+
+.wrap_target
+    wait 0 gpio 14     ; wait for ENABLE to assert
+    pull noblock       ; if empty, MOV OSR, X
+
+    ; check if there is a new character
+    mov x, osr
+    jmp !x output      
+
+    ; 0000 0000 0000 0000 1XXX XXXX 0XXX XXXX
+    ; mmmm fresh char, save for later
+    mov y, x
+    out pins, 8
+    jmp one_time_out
+
+output:
+    mov osr, y         ; repeat previous if not new
+one_time_out:
+    out pins, 8        ; load out_pins register (7 bit data) from OSR
+    mov osr, ~ null    ; load FFs into OSR (for change to output)
+    out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
+
+    mov osr, null      ; load 0s into OSR (for change to Hi-Z)
+    wait 1 gpio 14     ; wait for ENABLE to de-assert
+    out pindirs, 8     ; shfit 8 0s into pin dir register from OSR
+
+    mov x, null        ; reset x for next iteration
+    ; clear MSB in Y  (?XXX XXXX)
+    ; shift left 33 times
+    ; shift right 32 times
+
+.wrap          ; do it again!
