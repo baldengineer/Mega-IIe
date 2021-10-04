@@ -885,10 +885,6 @@ Wire Wire Line
 	3500 7000 4150 7000
 Text Notes 9950 3950 0    50   ~ 0
 Make sure R3 and R4 are close to RP2040
-Text Notes 16800 1950 0    50   ~ 0
-* Changed 0402 to 0805\n* Add a USB Host Port\n* GPIO for MEGA-II Signals (RW, PH0/Q3, ??)\n* Small Proto Area\n* UART/FTDI Header\n* 74HCT245 Buffer (Latch)\n* Programming Header
-Text Notes 16800 1350 0    50   ~ 0
-the pico lib supports using \nuart0 as  STDIO\n\nso you just need to break out \nSWDIO/SWCLK/GND/UART0TX/UART0RX \nand you're golden for programming
 $Comp
 L Connector_Generic:Conn_01x03 J8
 U 1 1 6131244B
@@ -1343,8 +1339,6 @@ F 3 "" H 5650 6100 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	5650 6100 5650 6150
-Text Notes 16900 4200 0    50   ~ 0
-7 data bits\n----\n\nKSEL0\nKSEL1\nKSEL2 \n\n----\n\nPH0\nRW (? -yas!)\nAddress  A4\n  C000 \n  C010\n  0001 0000\n\n---\n13 inputs
 Text Label 14150 3150 2    50   ~ 0
 MD0
 Text Label 14150 3250 2    50   ~ 0
@@ -2158,4 +2152,6 @@ Wire Wire Line
 	9850 1250 9850 1200
 Wire Wire Line
 	9850 1200 9950 1200
+Text Notes 12500 10950 0    50   ~ 0
+7 data bits\n----\n\nKSEL0\nKSEL1\nKSEL2 \n\n----\n\nPH0\nRW (? -yas!)\nAddress  A4\n  C000 \n  C010\n  0001 0000\n\n---\n13 inputs
 $EndSCHEMATC
