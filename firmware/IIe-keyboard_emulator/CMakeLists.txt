@@ -31,6 +31,7 @@ pico_set_program_version(IIe-keyboard_emulator "0.1")
 pico_enable_stdio_uart(IIe-keyboard_emulator 1)
 pico_enable_stdio_usb(IIe-keyboard_emulator 0)
 
+# pico_generate_pio_header(IIe-keyboard_emulator src/KBD.pio)
 pico_generate_pio_header(IIe-keyboard_emulator ${CMAKE_CURRENT_LIST_DIR}/src/KBD.pio)
 
 

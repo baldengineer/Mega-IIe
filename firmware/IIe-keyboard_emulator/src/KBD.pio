@@ -1,18 +1,79 @@
-; output pins : 21-27 (GP0-G7)
-; enable input: 31 (GP14)
-
 .program KBD
 
 mov x, null        ; fallback char if TX FIFO is empty
-mov y, null        ; will store last decoded character
+mov y, null        ; will store last decoded characters
+; output pins (9 total)
+; gpio 4-12 (d7-d0, en_245)
 
-.wrap_target
-    wait 0 gpio 14     ; wait for ENABLE to assert
+; input pins
+; 17: KSEL0
+; 18: KSEL1
+; 19: KSEL2
+; 20: R/W 
+; 21: PH0
+; 22: 
+; 23: 
+; 24:
+; 25:
+
+; KSEL0 to go HIGH
+; KSEL1 and KSEL1 to be LOW
+; RW to be HIGH
+; PH0 low or high?
+; ---
+; KSEL2 go LOW
+; KSEL1 is low?
+; KSEL0 is HIGH or LOW
+;
+; KSEL0 is HIGH AND R/W is HIGH
+; then we'll put data out when PH0 goes HIGH
+; --or--
+; KSEL1 is LOW and R/W is LOW 
+; then we'll put data when PH0 goes HIGH 
+; and then clear high bit of keyboard value
+
+; AKD  1=key pressed 0=keys free
+;
+; KSEL2 GP25
+; KSEL1 GP24
+
+; KSEL0 GP23
+; R/W   GP22
+
+;; if KSEL0 == LOW and R/W == LOW, then do nothing
+;; if KSEL0 == LOW and R/W == HIGH, then we put value on the bus
+;; --
+;; if KSEL0 == HIGH and R/W == XX, then we put value on bus and clear it
+;;
+
+; PH0   GP21
+
+; Probe KSEL0
+;
+; ISR = KSEL0 has to be the bottom...
+; PIN = R/W
+
+
+.wrap_target 
+start:
+    wait 0 gpio 19     ; wait for KSEL2 to assert
+    wait 0 gpio 18     ; wait for KSEL1 to assert
+
+    in PINS, 1         ; get KSEL0 from the input pins (bottom bit)
+    mov x, ISR         ; move to x for comparison
+    jmp X--, there     ; KSEL0 is HIGH, so C010
+
+    jmp PIN, there     ; KSEL0 is low and R/W = HIGH(READ) C000 for strobe
+    wait 1 gpio 21         ; wait for cycle to be over
+    wait 0 gpio 21         ;
+    jmp start          ; if R/W low, this sa C000 call which is for 80col card
+
+there:
     pull noblock       ; if empty, MOV OSR, X
 
     ; check if there is a new character
     mov x, osr
-    jmp !x output      
+    jmp !x output      ; jmp if x is zero
 
     ; 0000 0000 0000 0000 1XXX XXXX 0XXX XXXX
     ; mmmm fresh char, save for later
@@ -25,15 +86,21 @@ output:
 one_time_out:
     out pins, 8        ; load out_pins register (7 bit data) from OSR
     mov osr, ~ null    ; load FFs into OSR (for change to output)
+    wait 1 gpio 21    ; wait for Data Cycle
     out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
 
     mov osr, null      ; load 0s into OSR (for change to Hi-Z)
-    wait 1 gpio 14     ; wait for ENABLE to de-assert
+
+    ; was this a C010 soft switch?
+    in PINS, 1         ; get KSEL0 from the input pins (bottom bit)
+    mov X, ISR         ; move to x for comparison
+    jmp X--, c010_clear         ; C010 all is good
+    mov X, y           ; reset x for next iteration
+    jmp past_c010      ; clever name is clever
+c010_clear:
+    mov X, null        ; reset x for next iteration
+past_c010:
+    wait 0 gpio 21     ; wait for ENABLE to de-assert
     out pindirs, 8     ; shfit 8 0s into pin dir register from OSR
-
-    mov x, null        ; reset x for next iteration
-    ; clear MSB in Y  (?XXX XXXX)
-    ; shift left 33 times
-    ; shift right 32 times
-
+    
 .wrap          ; do it again!

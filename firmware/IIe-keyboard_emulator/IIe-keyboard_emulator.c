@@ -6,6 +6,7 @@
 #include "hardware/timer.h"
 #include "hardware/watchdog.h"
 #include "pico/stdlib.h"
+#include "KBD.pio.h"
 
 // So much easier to read
 #define ON 0x1
@@ -13,6 +14,9 @@
 
 #define ENABLED 0x0
 #define DISABLED 0x1
+
+#define OUT true
+#define IN false
 
 uint8_t keys[101] = {0};
 
@@ -41,6 +45,7 @@ extern bool tusb_init();
 extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void* report, uint16_t len);
+static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count);
 
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 12;
@@ -174,6 +179,51 @@ void setup_main_databus() {
 
 }
 
+PIO pio;
+uint pio_offset;
+uint pio_sm;
+
+static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
+    pio = pio0;
+    pio_offset = pio_add_program(pio, &KBD_program);
+    pio_sm = pio_claim_unused_sm(pio, true);
+
+
+    pio_sm_config c = KBD_program_get_default_config(pio_offset);
+
+    // map SM's OUT pin group to one pin?
+    // sm_config_set_out_pins (pio_sm_config *c, uint out_base, uint out_count)
+    //sm_config_set_out_pins(&c, pin, pin_count);
+    
+    pio_sm_set_enabled(pio,pio_sm, false);
+
+    // for (int x = 0; x < pin_count; x++)
+    //     sm_config_set_in_pins(pio, (pin+x));
+    sm_config_set_out_pins(&c, pin, pin_count);
+
+    // init GPIO for OUT (not needed for IN)
+    for (int x = 0; x < pin_count; x++)
+        pio_gpio_init(pio,(pin+x));
+
+    // set pin direction to output
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, pin, pin_count, IN);
+
+    // configure KSEL0,1,2 R/W, and PH0 as INPUT (17-21)
+    for (int x = 17; x < 22; x++)
+        sm_config_set_in_pins(&c,x);
+
+    // set pin direction to output
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
+    // configure JMP pin to be the R/W Signal
+    sm_config_set_jmp_pin(&c, 20);
+
+    // Load our configraution, and jump to program start
+    pio_sm_init(pio, pio_sm, pio_offset, &c);
+
+    // set the state machine running
+    pio_sm_set_enabled(pio,pio_sm, true);
+}
+
 void setup() {
     // get the 245 off MD as soon as possible
     setup_main_databus();
@@ -190,31 +240,15 @@ void setup() {
     // couple of times for funnsies
     // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
     add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
+    printf("(---------\n");
+    // printf("Connecting System Clock to Pin 21\n");
+    // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
     
+    printf("Configuring State Machine\n");
+    KBD_pio_setup(4,9); //D0-D7 plus enable_245
+
     printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
-
-static inline void KBD_program_init(PIO pio, uint sm, uint offset, uint pin_tx) {
-    // copies from UART TX example in the datasheet
-    // need to "convert" Circuit Python setup to C-code
-    pio_sm_set_pins_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
-    pio_sm_set_pindirs_with_mask(pio, sm, 1u << pin_tx, 1u << pin_tx);
-    pio_gpio_init(pio, pin_tx);
- 
-    pio_sm_config c = uart_tx_program_get_default_config(offset);
- 
-    // OUT shifts to right, no autopull
-    sm_config_set_out_shift(&c, true, false, 32);
- 
-    // We are mapping both OUT and side-set to the same pin, because sometimes
-    // we need to assert user data onto the pin (with OUT) and sometimes
-    // assert constant values (start/stop bit)
-    sm_config_set_out_pins(&c, pin_tx, 1);
-}
-
-static inline void uart_tx_program_init(PIO pio, uint sm, uint offset, uint pin_tx, uint baud) {
-
-   }
 
 int main() {
     setup();
@@ -226,6 +260,14 @@ int main() {
         handle_tinyusb();
         handle_serial();
         check_keyboard_buffer();
+
+        static uint32_t previous_key = 0;
+        static uint8_t the_key = 0x65;
+
+        if (millis() - previous_key >= 1000) {
+            pio_sm_put(pio,pio_sm, the_key);
+            previous_key = millis();
+        }
 
         if (millis() - previous_output >= 100) {  
             // defaults to disabled, enable over serial

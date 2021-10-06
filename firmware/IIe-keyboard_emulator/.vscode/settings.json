@@ -1,3 +1,6 @@
 {
   "cmake.configureOnOpen": true,
+  "files.associations": {
+    "kbd.pio.h": "c"
+  },
 }
