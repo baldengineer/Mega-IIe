@@ -245,7 +245,7 @@ void setup() {
     // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
     
     printf("Configuring State Machine\n");
-    KBD_pio_setup(4,9); //D0-D7 plus enable_245
+    KBD_pio_setup(4,8); //D0-D7 plus enable_245
 
     printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
@@ -262,14 +262,14 @@ int main() {
         check_keyboard_buffer();
 
         static uint32_t previous_key = 0;
-        static uint8_t the_key = 0x65;
+        static uint8_t the_key = 0x165;  // 0110 1010
 
         if (millis() - previous_key >= 1000) {
             pio_sm_put(pio,pio_sm, the_key);
             previous_key = millis();
         }
 
-        if (millis() - previous_output >= 100) {  
+    /*    if (millis() - previous_output >= 100) {  
             // defaults to disabled, enable over serial
             // and remove this   
             gpio_put(enable_245_pin, state_245);
@@ -281,7 +281,7 @@ int main() {
             gpio_put(testpins[io_select++], 0x1);
 
             previous_output = millis();
-        }
+        }*/
     }
 
     return 0; // but you never will hah!
