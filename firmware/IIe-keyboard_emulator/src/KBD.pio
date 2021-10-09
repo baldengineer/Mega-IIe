@@ -56,6 +56,7 @@ mov y, null        ; will store last decoded characters
 
 .wrap_target 
 start:
+/*
     wait 0 gpio 19     ; wait for KSEL2 to assert
     wait 0 gpio 18     ; wait for KSEL1 to assert
 
@@ -67,7 +68,7 @@ start:
     wait 1 gpio 21         ; wait for cycle to be over
     wait 0 gpio 21         ;
     jmp start          ; if R/W low, this sa C000 call which is for 80col card
-
+*/
 there:
     pull noblock       ; if empty, MOV OSR, X
 
@@ -78,7 +79,7 @@ there:
     ; 0000 0000 0000 0000 1XXX XXXX 0XXX XXXX
     ; mmmm fresh char, save for later
     mov y, x
-    out pins, 8
+    ;out pins, 8
     jmp one_time_out
 
 output:
@@ -86,17 +87,18 @@ output:
 one_time_out:
     out pins, 8        ; load out_pins register (7 bit data) from OSR
     mov osr, ~ null    ; load FFs into OSR (for change to output)
-    wait 1 gpio 21    ; wait for Data Cycle
+    wait 1 gpio 21     ; wait for Data Cycle
+    
     out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
-
+ 
     mov osr, null      ; load 0s into OSR (for change to Hi-Z)
 
     ; was this a C010 soft switch?
-    in PINS, 1         ; get KSEL0 from the input pins (bottom bit)
-    mov X, ISR         ; move to x for comparison
-    jmp X--, c010_clear         ; C010 all is good
-    mov X, y           ; reset x for next iteration
-    jmp past_c010      ; clever name is clever
+    ; in PINS, 1         ; get KSEL0 from the input pins (bottom bit)
+    ; mov X, ISR         ; move to x for comparison
+    ; jmp X--, c010_clear         ; C010 all is good
+    ; mov X, y           ; reset x for next iteration
+    ; jmp past_c010      ; clever name is clever
 c010_clear:
     mov X, null        ; reset x for next iteration
 past_c010:
