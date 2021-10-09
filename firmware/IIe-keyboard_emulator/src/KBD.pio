@@ -1,4 +1,5 @@
 .program KBD
+.side_set 1 opt
 
 mov x, null        ; fallback char if TX FIFO is empty
 mov y, null        ; will store last decoded characters
@@ -54,6 +55,9 @@ mov y, null        ; will store last decoded characters
 ; PIN = R/W
 
 
+mov osr, ~ null    ; load FFs into OSR (for change to output)
+out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
+
 .wrap_target 
 start:
 /*
@@ -69,6 +73,8 @@ start:
     wait 0 gpio 21         ;
     jmp start          ; if R/W low, this sa C000 call which is for 80col card
 */
+
+
 there:
     pull noblock       ; if empty, MOV OSR, X
 
@@ -85,13 +91,14 @@ there:
 output:
     mov osr, y         ; repeat previous if not new
 one_time_out:
-    out pins, 8        ; load out_pins register (7 bit data) from OSR
-    mov osr, ~ null    ; load FFs into OSR (for change to output)
-    wait 1 gpio 21     ; wait for Data Cycle
     
-    out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
- 
-    mov osr, null      ; load 0s into OSR (for change to Hi-Z)
+   ; mov osr, ~ null    ; load FFs into OSR (for change to output)
+
+    wait 1 gpio 21     ; wait for Data Cycle  
+    out pins, 8 side 0       ; load out_pins register (7 bit data) from OSR
+    ;out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
+    ;nop side 0
+ ;   mov osr, null      ; load 0s into OSR (for change to Hi-Z)
 
     ; was this a C010 soft switch?
     ; in PINS, 1         ; get KSEL0 from the input pins (bottom bit)
@@ -103,6 +110,9 @@ c010_clear:
     mov X, null        ; reset x for next iteration
 past_c010:
     wait 0 gpio 21     ; wait for ENABLE to de-assert
-    out pindirs, 8     ; shfit 8 0s into pin dir register from OSR
-    
+
+;    out pindirs, 8     ; shfit 8 0s into pin dir register from OSR
+     nop side 1
+     mov osr, ~ null 
+     out pins, 8
 .wrap          ; do it again!

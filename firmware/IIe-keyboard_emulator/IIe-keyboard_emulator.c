@@ -197,11 +197,15 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // for (int x = 0; x < pin_count; x++)
     //     sm_config_set_in_pins(pio, (pin+x));
-    sm_config_set_out_pins(&c, pin, pin_count);
+    sm_config_set_out_pins(&c, pin, pin_count); // TODO: Fix this later
 
     // init GPIO for OUT (not needed for IN)
     for (int x = 0; x < pin_count; x++)
         pio_gpio_init(pio, (pin + x));
+
+    // side set for the enable signal
+    pio_gpio_init(pio, enable_245_pin);
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
 
     // set pin direction to output
     pio_sm_set_consecutive_pindirs(pio, pio_sm, pin, pin_count, IN);
@@ -212,14 +216,18 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // set pin direction to output
     pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
+    
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, 20);
 
-    // Load our configraution, and jump to program start
-    pio_sm_init(pio, pio_sm, pio_offset, &c);
+    // side set for OE signal
+    sm_config_set_sideset_pins(&c, enable_245_pin);
 
     // geek wants to change the clock for #reasons
-    sm_config_set_clkdiv(&c,clock_get_hz(clk_sys)/1000000);
+   // sm_config_set_clkdiv(&c,clock_get_hz(clk_sys)/1000000);
+
+    // Load our configraution, and jump to program start
+    pio_sm_init(pio, pio_sm, pio_offset, &c);
 
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
@@ -227,7 +235,7 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
 void setup() {
     // get the 245 off MD as soon as possible
-    setup_main_databus();
+   // setup_main_databus();
 
     stdio_init_all();  // so we can see stuff on UART
 
@@ -281,7 +289,7 @@ int main() {
         static uint32_t previous_key = 0;
         static uint8_t the_key = 0x41;  // 0110 1010
 
-        if (millis() - previous_key >= 250) {
+        if (millis() - previous_key >= 25) {
             pio_sm_put(pio, pio_sm, reversi(the_key++)); 
             if (the_key > 0x5A)                  
                 the_key = 0x41;                  
