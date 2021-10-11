@@ -199,6 +199,15 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     //     sm_config_set_in_pins(pio, (pin+x));
     sm_config_set_out_pins(&c, pin, pin_count); // TODO: Fix this later
 
+/*
+// 4.1.16.3.14 in pico datasheet
+static void sm_config_set_out_shift (pio_sm_config *c,
+                                    bool shift_right,
+                                    bool autopull,
+                                    uint pull_threshold);
+
+    // shift_right true to shift OSR to right, false to shift OSR to left
+*/
     // init GPIO for OUT (not needed for IN)
     for (int x = 0; x < pin_count; x++)
         pio_gpio_init(pio, (pin + x));
