@@ -286,13 +286,13 @@ int main() {
         handle_serial();
         check_keyboard_buffer();
 
-        static uint32_t previous_key = 0;
-        static uint8_t the_key = 0x41;  // 0110 1010
+        static uint32_t previous_key = 0;   //A1 is 0x20 and C1 is 0x41
+        static uint8_t the_key = 0xC1; //1010 0000   // 1100 0001
 
-        if (millis() - previous_key >= 25) {
-            pio_sm_put(pio, pio_sm, reversi(the_key++)); 
-            if (the_key > 0x5A)                  
-                the_key = 0x41;                  
+        if (millis() - previous_key >= 2500) {
+            pio_sm_put(pio, pio_sm, reversi(the_key)); 
+           /* if (the_key > 0x5A)                  
+                the_key = 0x41;     */             
             previous_key = millis();
         }
 

@@ -35,67 +35,73 @@ mov y, null        ; will store last decoded characters
 
 ; AKD  1=key pressed 0=keys free
 ;
-; KSEL2 GP25
-; KSEL1 GP24
-
-; KSEL0 GP23
-; R/W   GP22
-
 ;; if KSEL0 == LOW and R/W == LOW, then do nothing
 ;; if KSEL0 == LOW and R/W == HIGH, then we put value on the bus
 ;; --
 ;; if KSEL0 == HIGH and R/W == XX, then we put value on bus and clear it
 ;;
 
-; PH0   GP21
-
-; Probe KSEL0
-;
-; ISR = KSEL0 has to be the bottom...
-; PIN = R/W
-
-
+; make sure the data bus is set to output
 mov osr, ~ null    ; load FFs into OSR (for change to output)
 out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
+nop side 1         ; disable data buffer
 
 .wrap_target 
 start:
-/*
-    wait 0 gpio 19     ; wait for KSEL2 to assert
-    wait 0 gpio 18     ; wait for KSEL1 to assert
+    wait 0 gpio 19      ; KSEL2 
+    wait 0 gpio 18      ; KSEL1 both seem to do the same thing
+    jmp PIN, read_cyc   ; R/W pin, jumps if HIGH (Read)
+    jmp start           ; if R/W low, this sa C000 call which is for 80col card
 
-    in PINS, 1         ; get KSEL0 from the input pins (bottom bit)
-    mov x, ISR         ; move to x for comparison
-    jmp X--, there     ; KSEL0 is HIGH, so C010
-
-    jmp PIN, there     ; KSEL0 is low and R/W = HIGH(READ) C000 for strobe
-    wait 1 gpio 21         ; wait for cycle to be over
-    wait 0 gpio 21         ;
-    jmp start          ; if R/W low, this sa C000 call which is for 80col card
-*/
-
-
-there:
-    pull noblock       ; if empty, MOV OSR, X
-
-    ; check if there is a new character
-    mov x, osr
-    jmp !x output      ; jmp if x is zero
-
-    ; 0000 0000 0000 0000 1XXX XXXX 0XXX XXXX
-    ; mmmm fresh char, save for later
-    mov y, x
-    ;out pins, 8
+read_cyc:
+    pull noblock        ; if FIFO empty, MOV OSR, X happens
+    mov x, osr          ; check if there is a new character
+    jmp !x output       ; a zero means no new character
+    mov y, x            ; mmmm fresh char, save for next iteration
     jmp one_time_out
 
 output:
-    mov osr, y         ; repeat previous if not new
-one_time_out:
-    
-   ; mov osr, ~ null    ; load FFs into OSR (for change to output)
+    mov osr, y          ; repeat previous character nothing new in FIFO
 
-    wait 1 gpio 21     ; wait for Data Cycle  
-    out pins, 8 side 0       ; load out_pins register (7 bit data) from OSR
+one_time_out:
+    wait 1 gpio 21      ; wait for Data Cycle
+
+    out pins, 8 side 0  ; load out_pins register (7 bit data) from OSR
+
+    ; was this C010 (or C000)?
+    in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
+    mov x, ISR           ; move to x for comparison
+    jmp X--, c010        ; KSEL0 is HIGH, so C010   
+    jmp c000             ;
+c010:
+; turns 0xC1 into 0xC0,
+;1100 0001
+;1100 0000
+
+;1000 0010
+   /* mov x,y
+    mov OSR, null
+    out Y, 1
+    mov OSR, x
+    out Y, 7 */
+    mov OSR, Y
+  ;  out null, 1
+    out Y, 7
+
+c000:
+    mov X, null        ; reset x for next iteration
+past_c010:
+    wait 0 gpio 21     ; wait for ENABLE to de-assert
+
+;    out pindirs, 8     ; shfit 8 0s into pin dir register from OSR
+     nop side 1
+.wrap          ; do it again!
+
+
+   ; I think this is where we set bit 7?
+
+   
+
     ;out pindirs, 8     ; shift 8 FFs into pin direction register from OSR
     ;nop side 0
  ;   mov osr, null      ; load 0s into OSR (for change to Hi-Z)
@@ -106,13 +112,3 @@ one_time_out:
     ; jmp X--, c010_clear         ; C010 all is good
     ; mov X, y           ; reset x for next iteration
     ; jmp past_c010      ; clever name is clever
-c010_clear:
-    mov X, null        ; reset x for next iteration
-past_c010:
-    wait 0 gpio 21     ; wait for ENABLE to de-assert
-
-;    out pindirs, 8     ; shfit 8 0s into pin dir register from OSR
-     nop side 1
-     mov osr, ~ null 
-     out pins, 8
-.wrap          ; do it again!
