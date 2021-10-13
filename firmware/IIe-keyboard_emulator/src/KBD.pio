@@ -5,7 +5,7 @@
 ; gpio 4-12 (d7-d0, en_245)
 
 ; input pins
-.define KSEL0 17
+.define KSEL0 3
 .define KSEL1 18
 .define KSEL2 19
 .define RW 20
@@ -26,12 +26,12 @@ out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
 
 .wrap_target 
 start:
-    wait 0 gpio KSEL2 side 1    ; KSEL2 and
-    wait 0 gpio KSEL1           ; KSEL1 both seem to do the same thing
+    nop side 1           ; disable output buffer
+    wait 0 gpio KSEL2    ; KSEL2 and
+    wait 0 gpio KSEL1   ; KSEL1 both seem to do the same thing
     ; is this a C000 or C010? KSEL0 is the key
     in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
     mov X, ISR          ; move to x for comparison
-    in PINS, 31         ; should be clearning this in the C setup`
     jmp X--, valid_cyc  ; KSEL0 is HIGH, so C010   
     ; this is C000, can only respond to a READ
     jmp PIN, valid_cyc  ; R/W pin, jumps if HIGH (Read)
@@ -49,11 +49,10 @@ output:
 
 one_time_out:
     wait 1 gpio PH0     ; wait for Data Cycle
-    out pins, 8 side 0  ; output keyboard value (7 data 1 strobe) from OSR 
-
+    out pins, 8   ; output keyboard value (7 data 1 strobe) from OSR 
+    nop side 0
     ; was this C010 (or C000)?
-
-    in PINS, 1           ; get KSEL0 from input PINS (bottom bit)
+  ;  in PINS, 1           ; get KSEL0 from input PINS (bottom bit)
     mov X, ISR           ; move to x for comparison
     jmp X--, c010        ; KSEL0 is HIGH, so C010 (dk about the decrement)
     jmp c000             ; if low then C000
@@ -64,19 +63,8 @@ c010:
 ; * but key to remember is that the data word is swizzled
 ; * Strobe is MD7 on the bus, but it is bit 0 in the Y register / FIFO!
 ; ******************
-
-; turns 0xC1 into 0xC0,
-;1100 0001
-;1100 0000
-
-;1000 0010
-   /* mov x,y
-    mov OSR, null
-    out Y, 1
-    mov OSR, x
-    out Y, 7 */
-    mov OSR, Y
-    out Y, 7
+    set PINS, 0 ; ONLY sets MD7 to 0 (because of the set_set in the config)
+    in y, 9     ; move 8 bits of PINS into y for later use
 
 c000:
     mov X, null         ; reset x for next iteration

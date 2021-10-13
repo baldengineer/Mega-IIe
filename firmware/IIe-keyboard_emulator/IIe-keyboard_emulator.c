@@ -197,43 +197,42 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // for (int x = 0; x < pin_count; x++)
     //     sm_config_set_in_pins(pio, (pin+x));
-    sm_config_set_out_pins(&c, pin, pin_count); // TODO: Fix this later
+    sm_config_set_out_pins(&c, 4, 8); // TODO: Fix this later
 
-/*
-// 4.1.16.3.14 in pico datasheet
-static void sm_config_set_out_shift (pio_sm_config *c,
-                                    bool shift_right,
-                                    bool autopull,
-                                    uint pull_threshold);
-
-    // shift_right true to shift OSR to right, false to shift OSR to left
-*/
     // init GPIO for OUT (not needed for IN)
-    for (int x = 0; x < pin_count; x++)
-        pio_gpio_init(pio, (pin + x));
+    for (int x = 3; x < 26; x++)
+        pio_gpio_init(pio, x);
+
+
+// map MD7:0 to PINS for output
+// KSEL0 to LSB to PINS for input
+// give the PIO/SM the pins KSEL1, KSEL2, R/W, PH0
+
+    // configure KSEL0,MD[7:0], 
+    // don't care 1,2 R/W, and PH0 as INPUT (17-21)
+    //for (int x = 3; x < 12; x++)
+    sm_config_set_in_pins(&c, 3);
+
+    // set pin direction to 
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 25, IN);
 
     // side set for the enable signal
-    pio_gpio_init(pio, enable_245_pin);
+   // pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
 
-    // set pin direction to output
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, pin, pin_count, IN);
-
-    // configure KSEL0,1,2 R/W, and PH0 as INPUT (17-21)
-    for (int x = 17; x < 22; x++)
-        sm_config_set_in_pins(&c, x);
-
-    // set pin direction to output
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
+    // set pin direction to input
+//    pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
     
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, 20);
 
+    // create the KSEL0 set pin why is there a pio_sm and sm_config?
+   // pio_sm_set_set_pins(pio, pio_sm, PIN_TO_USE, NUM_PINS);
+    sm_config_set_set_pins(&c, 4, 1);
+
     // side set for OE signal
     sm_config_set_sideset_pins(&c, enable_245_pin);
 
-    // geek wants to change the clock for #reasons
-   // sm_config_set_clkdiv(&c,clock_get_hz(clk_sys)/1000000);
 
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
