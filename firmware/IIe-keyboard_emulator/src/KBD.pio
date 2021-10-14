@@ -26,10 +26,11 @@ out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
 
 .wrap_target 
 start:
-    nop side 1           ; disable output buffer
-    wait 0 gpio KSEL2    ; KSEL2 and
+    
+    wait 0 gpio KSEL2 side 1   ; KSEL2 and
     wait 0 gpio KSEL1   ; KSEL1 both seem to do the same thing
     ; is this a C000 or C010? KSEL0 is the key
+    mov isr,null        ;Clear ISR
     in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
     mov X, ISR          ; move to x for comparison
     jmp X--, valid_cyc  ; KSEL0 is HIGH, so C010   
@@ -38,22 +39,24 @@ start:
     jmp start           ; if R/W low, this is a C000 call which is for 80col card
 
 valid_cyc:
+    mov x,y
     pull noblock        ; if FIFO empty, MOV OSR, X happens
     mov x, osr          ; check if there is a new character
-    jmp !x output       ; a zero means no new character
+    jmp x!=y fresh_char       ; a zero means no new character
+    jmp output
+fresh_char:
     mov y, x            ; mmmm fresh char, save for next iteration
     jmp one_time_out
-
 output:
     mov osr, y          ; repeat previous character nothing new in FIFO
 
 one_time_out:
     wait 1 gpio PH0     ; wait for Data Cycle
     out pins, 8   ; output keyboard value (7 data 1 strobe) from OSR 
-    nop side 0
+    ; nop side 0
     ; was this C010 (or C000)?
-  ;  in PINS, 1           ; get KSEL0 from input PINS (bottom bit)
-    mov X, ISR           ; move to x for comparison
+    ; in PINS, 1           ; get KSEL0 from input PINS (bottom bit)
+    mov X, ISR side 0          ; move to x for comparison
     jmp X--, c010        ; KSEL0 is HIGH, so C010 (dk about the decrement)
     jmp c000             ; if low then C000
 
@@ -63,8 +66,11 @@ c010:
 ; * but key to remember is that the data word is swizzled
 ; * Strobe is MD7 on the bus, but it is bit 0 in the Y register / FIFO!
 ; ******************
-    set PINS, 0 ; ONLY sets MD7 to 0 (because of the set_set in the config)
-    in y, 9     ; move 8 bits of PINS into y for later use
+ in  y,1        ;discard LSB
+ mov isr,null    ;discard ISR
+ in  y,7        ;rotate in rest of register
+ in  null,25    ;rotate rest of the way back to the start
+ mov y,isr    ;move result back into Y. Bit 0 is cleared.
 
 c000:
     mov X, null         ; reset x for next iteration
