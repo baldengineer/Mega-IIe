@@ -44,7 +44,7 @@ extern bool tusb_init();
 extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
-static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count);
+static inline void KBD_pio_setup();
 
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 12;
@@ -182,7 +182,7 @@ PIO pio;
 uint pio_offset;
 uint pio_sm;
 
-static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
+static inline void KBD_pio_setup() {
     pio = pio0;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);
@@ -195,42 +195,40 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     pio_sm_set_enabled(pio, pio_sm, false);
 
+    sm_config_set_out_pins(&c, 4, 1);  // TODO: Fix this later
+
     // init GPIO for OUT (not needed for IN)
-    for (int x = 3; x < 26; x++)
-        pio_gpio_init(pio, x);
+    pio_gpio_init(pio, 4);
 
-    // set pin direction to 
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 22, IN);
+    // map MD7:0 to PINS for output
+    // KSEL0 to LSB to PINS for input
+    // give the PIO/SM the pins KSEL1, KSEL2, R/W, PH0
 
-// map MD7:0 to PINS for output
-// KSEL0 to LSB to PINS for input
-// give the PIO/SM the pins KSEL1, KSEL2, R/W, PH0
-
-    // configure KSEL0,MD[7:0], 
+    // configure KSEL0,MD[7:0],
     // don't care 1,2 R/W, and PH0 as INPUT (17-21)
-    //for (int x = 3; x < 12; x++)
-   // sm_config_set_in_pins(&c, 3);
-     for (int x = 17; x < 22; x++)
-         sm_config_set_in_pins(&c, x);
-    sm_config_set_out_pins(&c, 4, 8); 
+    sm_config_set_in_pins(&c, 3);
+
+    // set pin direction to
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 2, IN);
 
     // side set for the enable signal
-    //pio_gpio_init(pio, enable_245_pin);
+    pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
 
     // set pin direction to input
-//    pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
-    
+    //pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
+
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, 20);
 
     // create the KSEL0 set pin why is there a pio_sm and sm_config?
-   // pio_sm_set_set_pins(pio, pio_sm, PIN_TO_USE, NUM_PINS);
-//#    sm_config_set_set_pins(&c, 4, 1);
+    // pio_sm_set_set_pins(pio, pio_sm, PIN_TO_USE, NUM_PINS);
+    sm_config_set_set_pins(&c, 4, 1);
 
     // side set for OE signal
     sm_config_set_sideset_pins(&c, enable_245_pin);
 
+    // sm_config_set_in_shift 	(&c,false,false,0);
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
 
@@ -240,7 +238,7 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
 void setup() {
     // get the 245 off MD as soon as possible
-   // setup_main_databus();
+    // setup_main_databus();
 
     stdio_init_all();  // so we can see stuff on UART
 
@@ -259,7 +257,7 @@ void setup() {
     // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
 
     printf("Configuring State Machine\n");
-    KBD_pio_setup(4, 8);  //D0-D7 plus enable_245 (?)
+    KBD_pio_setup();  //D0-D7 plus enable_245 (?)
 
     printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
@@ -267,8 +265,8 @@ void setup() {
 #define CHAR_BIT 8
 
 uint8_t reversi(uint8_t v) {
-  //  unsigned int v;                    // input bits to be reversed
-    uint8_t r = v & 1;            // r will be reversed bits of v; first get LSB of v
+    //  unsigned int v;                    // input bits to be reversed
+    uint8_t r = v & 1;                 // r will be reversed bits of v; first get LSB of v
     int s = sizeof(v) * CHAR_BIT - 1;  // extra shift needed at end
 
     for (v >>= 1; v; v >>= 1) {
@@ -291,13 +289,13 @@ int main() {
         handle_serial();
         check_keyboard_buffer();
 
-        static uint32_t previous_key = 0;   //A1 is 0x20 and C1 is 0x41
-        static uint8_t the_key = 0xC1; //1010 0000   // 1100 0001
+        static uint32_t previous_key = 0;  //A1 is 0x20 and C1 is 0x41
+        static uint8_t the_key = 0xC1;     //1010 0000   // 1100 0001
 
         if (millis() - previous_key >= 25) {
-            pio_sm_put(pio, pio_sm, reversi(the_key)); 
-           /* if (the_key > 0x5A)                  
-                the_key = 0x41;     */             
+            pio_sm_put(pio, pio_sm, reversi(the_key));
+            /* if (the_key > 0x5A)                  
+                the_key = 0x41;     */
             previous_key = millis();
         }
 
