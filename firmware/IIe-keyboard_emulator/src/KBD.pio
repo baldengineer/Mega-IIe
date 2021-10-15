@@ -23,15 +23,15 @@ mov y, null             ; will store last decoded characters
 mov osr, ~ null         ; load FFs into OSR (for change to output)
 out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
                         ; and disable data buffer
-
 .wrap_target 
 start:
     nop side 1           ; disable output buffer
     wait 0 gpio KSEL2    ; KSEL2 and
     wait 0 gpio KSEL1   ; KSEL1 both seem to do the same thing
     ; is this a C000 or C010? KSEL0 is the key
-    in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
-    mov X, ISR          ; move to x for comparison
+  ;  in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
+  ;  mov X, ISR          ; move to x for comparison
+    set X, 1
     jmp X--, valid_cyc  ; KSEL0 is HIGH, so C010   
     ; this is C000, can only respond to a READ
     jmp PIN, valid_cyc  ; R/W pin, jumps if HIGH (Read)
@@ -63,8 +63,8 @@ c010:
 ; * but key to remember is that the data word is swizzled
 ; * Strobe is MD7 on the bus, but it is bit 0 in the Y register / FIFO!
 ; ******************
-    set PINS, 0 ; ONLY sets MD7 to 0 (because of the set_set in the config)
-    in y, 9     ; move 8 bits of PINS into y for later use
+;    set PINS, 0 ; ONLY sets MD7 to 0 (because of the set_set in the config)
+;    in y, 8     ; move 8 bits of PINS into y for later use
 
 c000:
     mov X, null         ; reset x for next iteration
