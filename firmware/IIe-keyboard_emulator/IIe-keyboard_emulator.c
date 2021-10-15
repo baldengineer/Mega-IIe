@@ -197,11 +197,10 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // for (int x = 0; x < pin_count; x++)
     //     sm_config_set_in_pins(pio, (pin+x));
-    sm_config_set_out_pins(&c, 4, 8); // TODO: Fix this later
+    sm_config_set_out_pins(&c, 4, 1); // TODO: Fix this later
 
     // init GPIO for OUT (not needed for IN)
-    for (int x = 3; x < 26; x++)
-        pio_gpio_init(pio, x);
+    pio_gpio_init(pio, 4);
 
 
 // map MD7:0 to PINS for output
@@ -214,7 +213,7 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     sm_config_set_in_pins(&c, 3);
 
     // set pin direction to 
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 8, IN);
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 2, IN);
 
     // side set for the enable signal
     pio_gpio_init(pio, enable_245_pin);
@@ -301,7 +300,7 @@ int main() {
     gpio_put(17,true); //KSEL1
     gpio_put(16,true); //KSEL2
     gpio_put(14,false); //PH
-    pio_sm_put(pio, pio_sm, reversi(0xC1));
+    bool a = false;
     while (true) {
         static uint32_t previous_output = 0;
         static uint8_t io_select = 0;
@@ -313,17 +312,20 @@ int main() {
         static uint32_t previous_key = 0;   //A1 is 0x20 and C1 is 0x41
         static uint32_t previous_check = 0;
         static uint8_t ksel = 0;
+         static uint8_t rsel = 0;
         static uint8_t the_key = 0xC1; //1010 0000   // 1100 0001
-
-        if (millis() - previous_key >= 300) {
-            pio_sm_put(pio, pio_sm, reversi(the_key)); 
-           /* if (the_key > 0x5A)                  
-                the_key = 0x41;     */             
+        static uint8_t c =0;
+        if (millis() - previous_key >= 400) {
+            pio_sm_put(pio, pio_sm, 0); 
             previous_key = millis();
+            a=false;
+        }else if (millis() - previous_key >= 300 && !a) {
+            a=true;
+           pio_sm_put(pio, pio_sm, 3);
         }
-        if (millis() - previous_check >= 10) {
+        if (millis() - previous_check >= 2) {
             
-            gpio_put(13,true); //RW
+            gpio_put(13,rsel); //RW
             gpio_put(22,ksel); //KSEL0
             gpio_put(17,false); //KSEL1
             gpio_put(16,false); //KSEL2
@@ -334,8 +336,14 @@ int main() {
             gpio_put(17,true); //KSEL1
             gpio_put(16,true); //KSEL2
             gpio_put(14,false); //PH
-
+            c++;
+            if(c>10){
+                rsel = (rsel+1) % 2;
+            }
+            if(c>20){
             ksel = (ksel+1) % 2;//Toggle between c010 and c000
+            c=0;
+            }
             previous_check = millis();
         }
         /*    if (millis() - previous_output >= 100) {  
