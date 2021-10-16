@@ -375,3 +375,18 @@ int main() {
 
     return 0;  // but you never will hah!
 }
+void write_key(uint8_t key)
+{
+    pio_sm_put(pio, pio_sm, key & 0x7F); 
+    pio_sm_put(pio, pio_sm_1,0x3);
+    pio_interrupt_clear(pio,1);
+}
+void raise_key()
+{
+    if(!pio_interrupt_get(pio,1)){  //If irq 1 is clear we have a new key still
+        pio_sm_put(pio, pio_sm_1,0x1);
+    }else{
+        pio_sm_put(pio, pio_sm_1,0x0);
+    }
+    
+}

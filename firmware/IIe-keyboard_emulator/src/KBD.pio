@@ -16,9 +16,9 @@
 ; 25:
 
 ; used to store/repeat last key press
-mov x, null             ; fallback char if TX FIFO is empty
-mov y, null             ; will store last decoded characters
-
+;mov x, null             ; fallback char if TX FIFO is empty
+;mov y, null             ; will store last decoded characters
+;Should not need these...
 ; make sure the data bus is set to output
 mov osr, ~ null         ; load FFs into OSR (for change to output)
 out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
@@ -38,6 +38,7 @@ C0XX:
     jmp !Y, C000        ; KSEL0 0 C000
 C010:
     ;Clear bit 0        ;Clear Keystrobe
+    irq 1
     out null,1 ;Delete KeyRDY 0xxx xxxx xxxx xxxx xxxx xxxx xxxx xxxY | X
     mov isr,::osr
     in null,1  ; xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxy0 
