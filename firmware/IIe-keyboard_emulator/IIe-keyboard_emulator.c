@@ -299,20 +299,20 @@ int main() {
 
         int incoming_char = getchar_timeout_us(0);
       // if ((incoming_char > 31) && (incoming_char < 127)) {
-        if ((incoming_char > 0)) {
+        if ((incoming_char > 0) && (incoming_char < 128)) {
             key_value = incoming_char;
             printf("%c", key_value);
             new_key = true;
         }
 
         if (new_key) {
-            new_key = false;
             gpio_put(DEBUG_PIN, true);
-            pio_sm_put(pio, pio_sm, (0x3));
             uint8_t io_mask = 0x40;
-            // 0000 0001
-            //  100 0001
-            printf(": ");
+            printf("(%#04x): ", key_value);
+
+            // make sure we don't respond with valid data while 
+            // changing the GPIO pins
+            pio_sm_put(pio, pio_sm, (0x0));
             for (int gpio=5; gpio < 12; gpio++) {
                 if (io_mask & key_value) {
                     gpio_put(gpio, 0x1);
@@ -324,6 +324,8 @@ int main() {
                 io_mask = io_mask >> 1;
             }
             printf("\n");
+            pio_sm_put(pio, pio_sm, (0x1));
+            new_key = false;
             any_clear = true;
             previous_anyclear = millis();
         }
@@ -341,7 +343,7 @@ int main() {
         //     previous_anyclear = millis();
         // } 
 
-        if (any_clear && (millis() - previous_anyclear >= 5)) {
+        if (any_clear && (millis() - previous_anyclear >= 10)) {
             any_clear = false;
             pio_sm_put(pio, pio_sm, (0x0));
             gpio_put(DEBUG_PIN, false);
