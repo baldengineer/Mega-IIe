@@ -53,6 +53,7 @@ C000:
     
 wait_phase:
     wait 1 gpio PH0     ; wait for Data Cycle
+    irq clear 0
 set_245en:
     jmp PIN,read        ;If RW is High Read Cycle
     jmp not_read
@@ -61,3 +62,11 @@ read:
 not_read:  
     wait 0 gpio PH0     ; wait for data phase to end
 .wrap          
+
+.program dataout
+    .wrap_target
+    irq wait 0
+    pull noblock
+    mov x,osr
+    out pins,7
+    .wrap

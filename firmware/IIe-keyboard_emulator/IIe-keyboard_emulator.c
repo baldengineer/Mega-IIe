@@ -181,6 +181,7 @@ void setup_main_databus() {
 PIO pio;
 uint pio_offset;
 uint pio_sm;
+uint pio_sm_1;
 
 static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     pio = pio0;
@@ -209,7 +210,6 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // configure KSEL0,MD[7:0], 
     // don't care 1,2 R/W, and PH0 as INPUT (17-21)
-    //for (int x = 3; x < 12; x++)
     sm_config_set_in_pins(&c, 3);
 
     // set pin direction to 
@@ -218,10 +218,7 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     // side set for the enable signal
     pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
-
-    // set pin direction to input
-//    pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
-    
+  
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, 20);
 
@@ -238,6 +235,21 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
+    
+    pio_offset = pio_add_program(pio, &dataout_program);
+    pio_sm = pio_claim_unused_sm(pio, true);
+
+    c = dataout_program_get_default_config(pio_offset);
+    pio_sm_set_enabled(pio, pio_sm_1, false);
+    //Set GPIO
+    for (int x = 5; x < 13; x++){
+         pio_gpio_init(pio, x);
+    }
+    sm_config_set_out_pins(&c, 5, 1); // TODO: Fix this later
+    pio_sm_set_consecutive_pindirs(pio, pio_sm_1, 5, 7, OUT);
+    pio_sm_set_enabled(pio, pio_sm_1, true);
+    
+
 }
 
 void setup() {
