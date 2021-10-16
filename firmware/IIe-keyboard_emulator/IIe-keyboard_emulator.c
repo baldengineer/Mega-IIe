@@ -36,6 +36,7 @@ const uint16_t delay_time = 1000;
 // IO Pins
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin
 const uint8_t testpins[8] = {11, 10, 9, 8, 7, 6, 5, 4};
+const uint DEBUG_PIN = 24;
 
 // From the outside scary world
 extern void imma_led(uint8_t state);
@@ -163,19 +164,18 @@ void handle_tinyusb() {
 }
 
 void setup_main_databus() {
-    gpio_init(enable_245_pin);
-    gpio_set_dir(enable_245_pin, GPIO_OUT);
+   // gpio_init(enable_245_pin);
+   // gpio_set_dir(enable_245_pin, GPIO_OUT);
 
     // disable our databus buffer
-    state_245 = ENABLED;
-    gpio_put(enable_245_pin, state_245);
-
-    // enable test pins to be output
-    /*  for (int x=0; x<8; x++) {
-        gpio_init(testpins[x]);
-        gpio_set_dir(testpins[x], GPIO_OUT);
+   // state_245 = ENABLED;
+  //  gpio_put(enable_245_pin, state_245);
+    const uint8_t main_data[7] = {5,6,7,8,9,10,11};
+    for (int x=0; x<7; x++) {
+        gpio_init(main_data[x]);
+        gpio_set_dir(main_data[x], GPIO_OUT);
+        gpio_put(main_data[x], 0x1);
     }
-  */
 }
 
 PIO pio;
@@ -204,8 +204,7 @@ static inline void KBD_pio_setup() {
     // KSEL0 to LSB to PINS for input
     // give the PIO/SM the pins KSEL1, KSEL2, R/W, PH0
 
-    // configure KSEL0,MD[7:0],
-    // don't care 1,2 R/W, and PH0 as INPUT (17-21)
+    // Setup KSEL0 as an input, so PIO can determine C000 or C010 access
     sm_config_set_in_pins(&c, 3);
 
     // set pin direction to
@@ -215,14 +214,10 @@ static inline void KBD_pio_setup() {
     pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
 
-    // set pin direction to input
-    //pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
-
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, 20);
 
-    // create the KSEL0 set pin why is there a pio_sm and sm_config?
-    // pio_sm_set_set_pins(pio, pio_sm, PIN_TO_USE, NUM_PINS);
+    // create MD7 set pin so we can control the strobe bit
     sm_config_set_set_pins(&c, 4, 1);
 
     // side set for OE signal
@@ -234,32 +229,6 @@ static inline void KBD_pio_setup() {
 
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
-}
-
-void setup() {
-    // get the 245 off MD as soon as possible
-    // setup_main_databus();
-
-    stdio_init_all();  // so we can see stuff on UART
-
-    // TODO: Add an LED to the board
-    // gpio_init(LED_PIN);
-    // gpio_set_dir(LED_PIN, GPIO_OUT);
-
-    // yay usb!
-    tusb_init();
-
-    // couple of times for funnsies
-    // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
-    add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
-    printf("(---------\n");
-    // printf("Connecting System Clock to Pin 21\n");
-    // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
-
-    printf("Configuring State Machine\n");
-    KBD_pio_setup();  //D0-D7 plus enable_245 (?)
-
-    printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
 
 #define CHAR_BIT 8
@@ -278,6 +247,39 @@ uint8_t reversi(uint8_t v) {
     return r;
 }
 
+void setup() {
+    setup_main_databus();
+
+    stdio_init_all();  // so we can see stuff on UART
+
+    // TODO: Add an LED to the board
+    // gpio_init(LED_PIN);
+    // gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    // debug pin to trigger the external logic analyzer
+    gpio_init(DEBUG_PIN);
+    gpio_set_dir(DEBUG_PIN, GPIO_OUT);
+    gpio_put(DEBUG_PIN, 0x0);
+
+    // yay usb!
+    tusb_init();
+
+    // couple of times for funnsies
+    // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
+    add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
+    printf("(---------\n");
+    // printf("Connecting System Clock to Pin 21\n");
+    // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
+
+    printf("Configuring State Machine\n");
+    KBD_pio_setup();  //D0-D7 plus enable_245 (?)
+
+    printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
+}
+
+
+uint8_t key_value = 0x40;
+
 int main() {
     setup();
 
@@ -286,17 +288,63 @@ int main() {
         static uint8_t io_select = 0;
         hid_app_task();
         handle_tinyusb();
-        handle_serial();
+      //  handle_serial();
         check_keyboard_buffer();
 
         static uint32_t previous_key = 0;  //A1 is 0x20 and C1 is 0x41
         static uint8_t the_key = 0xC1;     //1010 0000   // 1100 0001
+        static uint32_t previous_anyclear = 0;
+        static bool new_key = false;
+        static bool any_clear = false;
 
-        if (millis() - previous_key >= 25) {
-            pio_sm_put(pio, pio_sm, reversi(the_key));
-            /* if (the_key > 0x5A)                  
-                the_key = 0x41;     */
-            previous_key = millis();
+        int incoming_char = getchar_timeout_us(0);
+      // if ((incoming_char > 31) && (incoming_char < 127)) {
+        if ((incoming_char > 0)) {
+            key_value = incoming_char;
+            printf("%c", key_value);
+            new_key = true;
+        }
+
+        if (new_key) {
+            new_key = false;
+            gpio_put(DEBUG_PIN, true);
+            pio_sm_put(pio, pio_sm, (0x3));
+            uint8_t io_mask = 0x40;
+            // 0000 0001
+            //  100 0001
+            printf(": ");
+            for (int gpio=5; gpio < 12; gpio++) {
+                if (io_mask & key_value) {
+                    gpio_put(gpio, 0x1);
+                    printf("1");
+                 } else {
+                    gpio_put(gpio,0x0);
+                    printf("0");
+                 }
+                io_mask = io_mask >> 1;
+            }
+            printf("\n");
+            any_clear = true;
+            previous_anyclear = millis();
+        }
+
+        // if (millis() - previous_key >= 2500) {
+        //     //pio_sm_put(pio, pio_sm, reversi(the_key));
+        //     static bool debug_state = 0x0;
+        //     //debug_state = ~debug_state;
+        //     gpio_put(DEBUG_PIN, true);
+        //     pio_sm_put(pio, pio_sm, (0x3));
+        //     /* if (the_key > 0x5A)                  
+        //         the_key = 0x41;     */
+        //     previous_key = millis();
+        //     any_clear = true;
+        //     previous_anyclear = millis();
+        // } 
+
+        if (any_clear && (millis() - previous_anyclear >= 5)) {
+            any_clear = false;
+            pio_sm_put(pio, pio_sm, (0x0));
+            gpio_put(DEBUG_PIN, false);
         }
 
         /*    if (millis() - previous_output >= 100) {  
