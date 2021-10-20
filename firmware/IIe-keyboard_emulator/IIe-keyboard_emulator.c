@@ -33,6 +33,7 @@
 #define IN false
 
 uint8_t keys[101] = {0};
+uint8_t modifiers = 0;
 
 // Useful flags for useful things
 volatile bool kbd_connected = false;
@@ -65,6 +66,7 @@ extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
 static inline void KBD_pio_setup();
+extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 12;
@@ -159,19 +161,20 @@ void check_keyboard_buffer() {
     // check the keyboard buffer
     static uint32_t prev_key_millis = 0;
     uint32_t current_millis = millis();
-    if (any_key || (current_millis - prev_key_millis >= key_delay)) {
+    if (any_key) {// (current_millis - prev_key_millis >= key_delay)) {
         bool did_print = false;
         any_key = false;
         for (uint8_t x = 0; x < 101; x++) {
             if (keys[x]) {
-                if (x > 0)
+                if (did_print)
                     printf(",");
-                printf("%d", x);
+                uint8_t ascii = get_ascii(x, modifiers);
+                printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
                 did_print = true;
             }
         }
         if (did_print)
-            printf("\n");
+            printf(",%d\n", modifiers);
 
         prev_key_millis = current_millis;
     }
@@ -278,14 +281,15 @@ void setup() {
 
     // couple of times for funnsies
     // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
-    // add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
+    printf("Enabling tuh_task\n");
+    add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
     printf("(---------\n");
     // printf("Connecting System Clock to Pin 21\n");
     // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
 
     printf("Configuring State Machine\n");
     KBD_pio_setup();  
-    printf("Configuring initial Keyvalue (%c)", 0x20);
+    printf("Configuring initial Keyvalue (%c)\n", 0x20);
     prepare_key_value(0x20);
 
     printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
