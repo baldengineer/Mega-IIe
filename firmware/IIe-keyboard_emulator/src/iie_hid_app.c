@@ -26,7 +26,7 @@
 #include "bsp/board.h"
 #include "tusb.h"
 #include "keyboard_mapping.h"
-//#include "hid_host.h"
+#include "utils.h"
 
 //--------------------------------------------------------------------+
 // MACRO TYPEDEF CONSTANT ENUM DECLARATION
@@ -38,16 +38,11 @@
 
 #define MAX_REPORT 4
 
-extern uint8_t keys[101];
-extern uint8_t modifiers;
-extern bool print_usb_report;
-extern uint32_t millis();
-extern volatile bool kbd_connected;
-extern void wtf_bbq_led(uint8_t state);
-extern volatile uint8_t kbd_led_state[1];
-uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
-
-bool any_key=false;
+uint8_t keys[101] = {0};
+uint8_t modifiers = 0;
+bool kbd_connected = false;
+uint8_t kbd_led_state[1] = {0x0};
+bool any_key = false;
 static uint8_t const keycode2ascii[128][2] = {HID_KEYCODE_TO_ASCII};
 
 // Each HID instance can has multiple reports
@@ -97,7 +92,6 @@ void tuh_hid_mount_cb(uint8_t dev_addr, uint8_t instance, uint8_t const* desc_re
         printf("Error: cannot request to receive report\r\n");
     }
     if (dev_addr == 0x1 && instance == 0x1){
-        // wtf_bbq_led(0x2);
         kbd_connected = true;
     }
 }
@@ -175,9 +169,9 @@ void imma_led(uint8_t state) {
 
     printf("%d: imma led: %d\n", call_counter++,kbd_led_state[0]);
     if (state == 0x2)
-        kbd_led_state[0] = kbd_led_state[0] | 0x02;
+        kbd_led_state[0] |= 0x02;
     if (state == 0x0)
-        kbd_led_state[0] = kbd_led_state[0] & 0xFD;
+        kbd_led_state[0] &= ~0x02;
 
     tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
 }
@@ -218,9 +212,6 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
     // apple ii would assert this when a key is pressed
     any_key = true;
-
-    // if (print_usb_report)
-    //     print_report_why_not(report);
 
     // see what keys were released
     check_for_released_key(&prev_report, report);

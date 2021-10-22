@@ -7,6 +7,9 @@
 #include "hardware/timer.h"
 #include "hardware/watchdog.h"
 #include "pico/stdlib.h"
+#include "tusb.h"
+#include "iie_hid_app.h"
+#include "utils.h"
 
 // So much easier to read
 #define ON 0x1
@@ -32,14 +35,8 @@
 #define OUT true
 #define IN false
 
-uint8_t keys[101] = {0};
-uint8_t modifiers = 0;
-
 // Useful flags for useful things
-volatile bool kbd_connected = false;
-volatile bool dousb = false;
-volatile uint8_t kbd_led_state[1] = {0x0};
-bool print_usb_report = false;
+bool dousb = false;
 struct repeating_timer timer1;
 struct repeating_timer timer2;
 
@@ -50,7 +47,8 @@ const uint16_t delay_time = 1000;
 
 // IO Pins
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin
-const uint8_t testpins[8] = {11, 10, 9, 8, 7, 6, 5, 4};
+
+const uint8_t testpins[8] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6, MD7};
 const uint DEBUG_PIN = 24;
 
 // PIO Globals
@@ -58,24 +56,9 @@ PIO pio;
 uint pio_offset;
 uint pio_sm;
 
-// From the outside scary world
-extern void imma_led(uint8_t state);
-extern void hid_app_task(void);
-extern bool tusb_init();
-extern bool tuh_task();
-extern bool any_key;
-extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
-static inline void KBD_pio_setup();
-extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
-
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 12;
 bool state_245 = DISABLED;
-
-// old habits die hard
-uint32_t millis() {
-    return ((time_us_32() / 1000));
-}
 
 void wtf_bbq_led() {
     static uint8_t dev_addr = 0x1;
@@ -102,9 +85,9 @@ bool blink_led_callback(struct repeating_timer *t) {
         static bool scroll_led_state = false;
         scroll_led_state = !scroll_led_state;
         if (scroll_led_state)
-            kbd_led_state[0] = kbd_led_state[0] | 0x04;
-        else
-            kbd_led_state[0] = kbd_led_state[0] & 0xFB;
+			kbd_led_state[0] |= 0x04;
+		else
+            kbd_led_state[0] &= ~0x04;
         wtf_bbq_led();
     }
 }
@@ -128,9 +111,6 @@ void handle_serial() {
                 state_245 = !state_245;
                 puts(state_245 == ENABLED ? "245 enabled" : "245 disabled");
                 gpio_put(enable_245_pin, state_245);
-                break;
-            case '.':
-                print_usb_report = !print_usb_report;
                 break;
             case 'p':
                 imma_led(0x01);
@@ -164,7 +144,7 @@ void check_keyboard_buffer() {
     if (any_key) {// (current_millis - prev_key_millis >= key_delay)) {
         bool did_print = false;
         any_key = false;
-        for (uint8_t x = 0; x < 101; x++) {
+		for (uint8_t x = 0; x < sizeof(keys); x++) {
             if (keys[x]) {
                 if (did_print)
                     printf(",");
@@ -188,12 +168,12 @@ void handle_tinyusb() {
 }
 
 void setup_main_databus() {
-    const uint8_t main_data[7] = {5, 6, 7, 8, 9, 10, 11};
-    for (int x = 0; x < 7; x++) {
-        gpio_init(main_data[x]);
+	const uint8_t main_data[7] = {MD6, MD5, MD4, MD3, MD2, MD1, MD0};
+	for (int x = 0; x < sizeof(main_data); x++) {
+		gpio_init(main_data[x]);
         gpio_set_dir(main_data[x], GPIO_OUT);
         gpio_put(main_data[x], 0x1);
-    }
+	}
 }
 
 static inline void KBD_pio_setup() {
@@ -225,6 +205,7 @@ static inline void KBD_pio_setup() {
 
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
+
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
 }
@@ -329,4 +310,3 @@ int main() {
 
     return 0;  // but you never will hah!
 }
-

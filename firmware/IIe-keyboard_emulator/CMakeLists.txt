@@ -22,6 +22,7 @@ pico_sdk_init()
 add_executable(IIe-keyboard_emulator 
         src/IIe-keyboard_emulator.c 
         src/iie_hid_app.c
+	src/utils.c
         )
 
         
