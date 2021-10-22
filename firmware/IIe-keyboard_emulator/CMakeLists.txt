@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 # initalize pico_sdk from installed location
 # (note this can come from environment, CMake cache etc)
-set(PICO_SDK_PATH "C:/Users/balde/Documents/Pico/pico-sdk")
+set(PICO_SDK_PATH "/home/user/apple2/pico-sdk")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
@@ -20,7 +20,7 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(IIe-keyboard_emulator 
-        IIe-keyboard_emulator.c 
+        src/IIe-keyboard_emulator.c 
         src/iie_hid_app.c
         )
 
