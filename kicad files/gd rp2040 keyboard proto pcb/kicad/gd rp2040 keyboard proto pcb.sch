@@ -1773,7 +1773,7 @@ Text Label 14800 6850 2    50   ~ 0
 GND
 Text Label 14800 7350 2    50   ~ 0
 GND
-Text Notes 13000 5500 0    100  ~ 0
+Text Notes 13000 5600 0    100  ~ 0
 Debug Plane IO
 Text Label 10350 4100 2    50   ~ 0
 USB_D-
@@ -1925,7 +1925,7 @@ Text Notes 12500 10950 0    50   ~ 0
 7 data bits\n----\n\nKSEL0\nKSEL1\nKSEL2 \n\n----\n\nPH0\nRW (? -yas!)\nAddress  A4\n  C000 \n  C010\n  0001 0000\n\n---\n13 inputs
 Text Label 9650 5400 2    50   ~ 0
 D7
-Text Label 11750 4750 2    50   ~ 0
+Text Label 11750 5250 2    50   ~ 0
 KSEL0
 Wire Wire Line
 	12800 3850 12550 3850
@@ -1982,15 +1982,15 @@ Text Label 9650 5700 2    50   ~ 0
 KSEL1rp
 Text Label 9650 5800 2    50   ~ 0
 KSEL2rp
-Text Label 11750 4850 2    50   ~ 0
+Text Label 11750 5350 2    50   ~ 0
 KSEL1
-Text Label 11750 4950 2    50   ~ 0
+Text Label 11750 5450 2    50   ~ 0
 KSEL2
 Text Label 11750 5050 2    50   ~ 0
 RW
 Text Label 11750 5150 2    50   ~ 0
 PH0
-Text Label 11750 5250 2    50   ~ 0
+Text Label 11750 4950 2    50   ~ 0
 ~RESET
 $Comp
 L My_Library:TXB0108PW U5
@@ -2004,39 +2004,39 @@ F 3 "" H 10850 5700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	11450 4750 11750 4750
+	11450 5250 11750 5250
 Wire Wire Line
-	11450 4850 11750 4850
+	11450 5350 11750 5350
 Wire Wire Line
-	11450 4950 11750 4950
+	11450 5450 11750 5450
 Wire Wire Line
 	11450 5050 11750 5050
 Wire Wire Line
 	11450 5150 11750 5150
 Wire Wire Line
-	11450 5250 11750 5250
-Text Label 10250 4850 0    50   ~ 0
+	11450 4950 11750 4950
+Text Label 10250 5350 0    50   ~ 0
 KSEL1rp
-Text Label 10250 4950 0    50   ~ 0
+Text Label 10250 5450 0    50   ~ 0
 KSEL2rp
 Text Label 10250 5050 0    50   ~ 0
 RWrp
 Text Label 10250 5150 0    50   ~ 0
 PH0rp
-Text Label 10250 5250 0    50   ~ 0
+Text Label 10250 4950 0    50   ~ 0
 RESETrp
 Wire Wire Line
-	10250 4750 10750 4750
+	10250 5250 10750 5250
 Wire Wire Line
-	10250 4850 10750 4850
+	10250 5350 10750 5350
 Wire Wire Line
-	10250 4950 10750 4950
+	10250 5450 10750 5450
 Wire Wire Line
 	10250 5050 10750 5050
 Wire Wire Line
 	10250 5150 10750 5150
 Wire Wire Line
-	10250 5250 10750 5250
+	10250 4950 10750 4950
 $Comp
 L power:+5V #PWR0106
 U 1 1 61D61039
@@ -2347,8 +2347,24 @@ F 3 "~" H 12300 4050 50  0001 C CNN
 $EndComp
 Text Label 9650 7100 2    50   ~ 0
 MEGA_POWER
-Text Label 10250 4750 0    50   ~ 0
+Text Label 10250 5250 0    50   ~ 0
 KSEL0rp
 Text Label 9650 4600 2    50   ~ 0
 KSEL0rp
+Wire Wire Line
+	10250 4750 10750 4750
+Wire Wire Line
+	10250 4850 10750 4850
+Wire Wire Line
+	11450 4750 11750 4750
+Wire Wire Line
+	11450 4850 11750 4850
+Text Label 11750 4850 2    50   ~ 0
+GND
+Text Label 11750 4750 2    50   ~ 0
+GND
+Text Label 10250 4750 0    50   ~ 0
+GND
+Text Label 10250 4850 0    50   ~ 0
+GND
 $EndSCHEMATC
