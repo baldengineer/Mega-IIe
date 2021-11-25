@@ -85,52 +85,52 @@ CY6
 Text Label 13100 4200 2    50   ~ 0
 CY7
 $Comp
-L Connector_Generic:Conn_01x09 J1
+L Connector_Generic:Conn_02x05_Odd_Even J1
 U 1 1 619EC0F8
-P 900 8900
-F 0 "J1" H 818 9517 50  0000 C CNN
-F 1 "ITU-656" H 818 9426 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x09_P2.54mm_Vertical" H 900 8900 50  0001 C CNN
-F 3 "~" H 900 8900 50  0001 C CNN
-	1    900  8900
+P 2300 7700
+F 0 "J1" H 2350 8150 50  0000 C CNN
+F 1 "ITU-656" H 2350 8050 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical" H 2300 7700 50  0001 C CNN
+F 3 "~" H 2300 7700 50  0001 C CNN
+	1    2300 7700
 	-1   0    0    -1  
 $EndComp
-Text Label 1400 8500 2    50   ~ 0
+Text Label 1700 7500 0    50   ~ 0
 CY0
-Text Label 1400 8600 2    50   ~ 0
+Text Label 2800 7600 2    50   ~ 0
 CY1
-Text Label 1400 8700 2    50   ~ 0
+Text Label 1700 7600 0    50   ~ 0
 CY2
-Text Label 1400 8800 2    50   ~ 0
+Text Label 2800 7700 2    50   ~ 0
 CY3
-Text Label 1400 8900 2    50   ~ 0
+Text Label 1700 7700 0    50   ~ 0
 CY4
-Text Label 1400 9000 2    50   ~ 0
+Text Label 2800 7800 2    50   ~ 0
 CY5
-Text Label 1400 9100 2    50   ~ 0
+Text Label 1700 7800 0    50   ~ 0
 CY6
-Text Label 1400 9200 2    50   ~ 0
+Text Label 2800 7900 2    50   ~ 0
 CY7
-Text Label 1400 9300 2    50   ~ 0
+Text Label 2800 7500 2    50   ~ 0
 PxCLK
 Wire Wire Line
-	1100 8500 1400 8500
+	2000 7500 1700 7500
 Wire Wire Line
-	1100 8600 1400 8600
+	2500 7600 2800 7600
 Wire Wire Line
-	1100 8700 1400 8700
+	2000 7600 1700 7600
 Wire Wire Line
-	1100 8800 1400 8800
+	2500 7700 2800 7700
 Wire Wire Line
-	1100 8900 1400 8900
+	2000 7700 1700 7700
 Wire Wire Line
-	1100 9000 1400 9000
+	2500 7800 2800 7800
 Wire Wire Line
-	1100 9100 1400 9100
+	2000 7800 1700 7800
 Wire Wire Line
-	1100 9200 1400 9200
+	2500 7900 2800 7900
 Wire Wire Line
-	1100 9300 1400 9300
+	2500 7500 2800 7500
 Wire Wire Line
 	8300 4600 7500 4600
 Text Label 7500 4600 0    50   ~ 0
@@ -1332,12 +1332,12 @@ F 3 "" H 1950 8700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x05 J4
+L Connector_Generic:Conn_01x04 J4
 U 1 1 61EEC080
 P 1750 10050
 F 0 "J4" H 1668 10467 50  0000 C CNN
 F 1 "SND_LA" H 1668 10376 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 1750 10050 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 1750 10050 50  0001 C CNN
 F 3 "~" H 1750 10050 50  0001 C CNN
 	1    1750 10050
 	-1   0    0    -1  
@@ -1353,22 +1353,18 @@ F 3 "" H 1950 10250 50  0001 C CNN
 	1    1950 10250
 	1    0    0    -1  
 $EndComp
-Text Label 2500 9850 2    50   ~ 0
-PIO_I2S_CLK
-Text Label 2500 9950 2    50   ~ 0
-PIO_I2S_DATA
-Text Label 2500 10050 2    50   ~ 0
-PIO_I2S_WS
 Text Label 2500 10150 2    50   ~ 0
-SPKR_IN
+PIO_I2S_CLK
+Text Label 2500 10050 2    50   ~ 0
+PIO_I2S_DATA
+Text Label 2500 9950 2    50   ~ 0
+PIO_I2S_WS
 Wire Wire Line
-	1950 9850 2500 9850
-Wire Wire Line
-	1950 9950 2500 9950
+	1950 10150 2500 10150
 Wire Wire Line
 	1950 10050 2500 10050
 Wire Wire Line
-	1950 10150 2500 10150
+	1950 9950 2500 9950
 Wire Wire Line
 	1950 8500 2500 8500
 Wire Wire Line
@@ -1915,8 +1911,6 @@ Wire Wire Line
 	5200 5150 6000 5150
 Wire Wire Line
 	5200 5050 6000 5050
-Text Label 6000 6350 2    50   ~ 0
-SPKR_ADC
 Text Label 6000 6250 2    50   ~ 0
 PIO_I2S_WS
 Text Label 6000 6150 2    50   ~ 0
@@ -3014,7 +3008,7 @@ U 1 1 62FC705C
 P 1400 5050
 F 0 "R12" V 1350 5050 25  0000 C CNN
 F 1 "1k" V 1400 5050 25  0000 C CNN
-F 2 "Resistor_SMD:R_0805_2012Metric" H 1400 5050 50  0001 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" H 1400 5050 50  0001 C CNN
 F 3 "~" H 1400 5050 50  0001 C CNN
 	1    1400 5050
 	0    -1   -1   0   
@@ -3112,28 +3106,24 @@ Connection ~ 5900 7650
 Text Label 6300 7650 2    50   ~ 0
 SPKR_RC
 $Comp
-L Connector_Generic:Conn_01x03 J11
+L Connector_Generic:Conn_01x02 J11
 U 1 1 6327C4B1
 P 5400 7100
-F 0 "J11" H 5318 7417 50  0000 C CNN
-F 1 "SPKR" H 5318 7326 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5400 7100 50  0001 C CNN
+F 0 "J11" H 5400 7350 50  0000 C CNN
+F 1 "SPKR" H 5400 7250 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 5400 7100 50  0001 C CNN
 F 3 "~" H 5400 7100 50  0001 C CNN
 	1    5400 7100
 	-1   0    0    -1  
 $EndComp
-Text Label 6050 7100 2    50   ~ 0
-SPKR_ADC
 Wire Wire Line
 	5600 7100 6050 7100
 Text Label 6050 7200 2    50   ~ 0
 SPKR_IN
 Wire Wire Line
 	6050 7200 5600 7200
-Text Label 6050 7000 2    50   ~ 0
+Text Label 6050 7100 2    50   ~ 0
 SPKR_RC
-Wire Wire Line
-	6050 7000 5600 7000
 $Comp
 L Connector:TestPoint TP2
 U 1 1 634CDC89
@@ -3144,17 +3134,6 @@ F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 5350 7650 50  0001 C CNN
 F 3 "~" H 5350 7650 50  0001 C CNN
 	1    5150 7650
 	0    -1   -1   0   
-$EndComp
-$Comp
-L Connector:TestPoint TP3
-U 1 1 634CE480
-P 6000 6350
-F 0 "TP3" V 5954 6538 50  0000 L CNN
-F 1 "TP_SPKR_ADC" V 6045 6538 50  0000 L CNN
-F 2 "My Libraries:Harwin-S1751-46-Test-Point" H 6200 6350 50  0001 C CNN
-F 3 "~" H 6200 6350 50  0001 C CNN
-	1    6000 6350
-	0    1    1    0   
 $EndComp
 $Comp
 L Connector:TestPoint TP4
@@ -3168,4 +3147,62 @@ F 3 "~" H 6500 7650 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 NoConn ~ 15350 6200
+$Comp
+L Connector_Generic:Conn_01x03 J12
+U 1 1 61A2D615
+P 4100 8600
+F 0 "J12" H 4018 8917 50  0000 C CNN
+F 1 "PWR" H 4018 8826 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 4100 8600 50  0001 C CNN
+F 3 "~" H 4100 8600 50  0001 C CNN
+	1    4100 8600
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0179
+U 1 1 61A2DBD9
+P 4350 8750
+F 0 "#PWR0179" H 4350 8500 50  0001 C CNN
+F 1 "GND" H 4355 8577 50  0000 C CNN
+F 2 "" H 4350 8750 50  0001 C CNN
+F 3 "" H 4350 8750 50  0001 C CNN
+	1    4350 8750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4300 8700 4350 8700
+Wire Wire Line
+	4350 8700 4350 8750
+Wire Wire Line
+	4300 8500 4550 8500
+Wire Wire Line
+	4300 8600 4550 8600
+$Comp
+L power:+5V #PWR0180
+U 1 1 61AE4A71
+P 4550 8500
+F 0 "#PWR0180" H 4550 8350 50  0001 C CNN
+F 1 "+5V" H 4565 8673 50  0000 C CNN
+F 2 "" H 4550 8500 50  0001 C CNN
+F 3 "" H 4550 8500 50  0001 C CNN
+	1    4550 8500
+	1    0    0    -1  
+$EndComp
+Text Label 4550 8600 2    50   ~ 0
+3v3
+$Comp
+L power:GND #PWR0181
+U 1 1 61DBAE27
+P 2000 7900
+F 0 "#PWR0181" H 2000 7650 50  0001 C CNN
+F 1 "GND" H 2005 7727 50  0000 C CNN
+F 2 "" H 2000 7900 50  0001 C CNN
+F 3 "" H 2000 7900 50  0001 C CNN
+	1    2000 7900
+	1    0    0    -1  
+$EndComp
+Text Label 2500 5450 2    50   ~ 0
+Run
+Text Label 6000 6350 2    50   ~ 0
+SPKR_RC
 $EndSCHEMATC
