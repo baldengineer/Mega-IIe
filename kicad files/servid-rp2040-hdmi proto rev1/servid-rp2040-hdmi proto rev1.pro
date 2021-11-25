@@ -1,4 +1,4 @@
-update=11/24/2021 11:40:06 PM
+update=11/25/2021 10:05:44 AM
 version=1
 last_client=kicad
 [general]
@@ -45,9 +45,9 @@ dPairWidth1=0.1524
 dPairGap1=0.1524
 dPairViaGap1=0.25
 SilkLineWidth=0.12
-SilkTextSizeV=1
-SilkTextSizeH=1
-SilkTextSizeThickness=0.15
+SilkTextSizeV=0.7999999999999999
+SilkTextSizeH=0.7999999999999999
+SilkTextSizeThickness=0.2
 SilkTextItalic=0
 SilkTextUpright=1
 CopperLineWidth=0.2
@@ -77,7 +77,7 @@ Name=In1.Cu
 Type=2
 Enabled=1
 [pcbnew/Layer.In2.Cu]
-Name=In2.Cu
+Name=Pwr.Cu
 Type=1
 Enabled=1
 [pcbnew/Layer.In3.Cu]
