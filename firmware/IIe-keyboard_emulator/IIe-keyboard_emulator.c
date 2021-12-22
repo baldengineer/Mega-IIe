@@ -1,3 +1,28 @@
+/* 
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2020-2021 James Lewis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
 #include <stdio.h>
 
 // These aren't all used yet, but they will be
@@ -18,7 +43,7 @@
 #define OUT true
 #define IN false
 
-uint8_t keys[101] = {0};
+	uint8_t keys[101] = {0};
 
 // Useful flags for useful things
 volatile bool kbd_connected = false;
@@ -203,6 +228,8 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     // init GPIO for OUT (not needed for IN)
     pio_gpio_init(pio, 4);
 
+    // set pin direction to 
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 22, IN);
 
 // map MD7:0 to PINS for output
 // KSEL0 to LSB to PINS for input
@@ -224,7 +251,7 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // create the KSEL0 set pin why is there a pio_sm and sm_config?
    // pio_sm_set_set_pins(pio, pio_sm, PIN_TO_USE, NUM_PINS);
-    sm_config_set_set_pins(&c, 4, 1);
+//#    sm_config_set_set_pins(&c, 4, 1);
 
     // side set for OE signal
     sm_config_set_sideset_pins(&c, enable_245_pin);
