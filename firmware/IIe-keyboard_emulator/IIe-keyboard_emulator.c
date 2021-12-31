@@ -37,6 +37,7 @@
 #define ON 0x1
 #define OFF 0x0
 
+// valid for active LOW signals
 #define ENABLED 0x0
 #define DISABLED 0x1
 
@@ -84,7 +85,7 @@ const uint16_t key_delay = 100;
 const uint16_t delay_time = 1000;
 
 // IO Pins
-const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin
+//const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin (that we don't have)
 const uint DEBUG_PIN = 24;
 
 // PIO Globals
@@ -128,8 +129,8 @@ bool blink_led_callback(struct repeating_timer *t) {
     static bool led_state = OFF;
 
     // blink GP25 LED (which I don't have)
-    led_state = !led_state;
-    gpio_put(LED_PIN, led_state);
+    // led_state = !led_state;
+    // gpio_put(LED_PIN, led_state);
 
     // blink keyboard's scrolllock key
     if (kbd_connected) {
@@ -320,7 +321,7 @@ void setup() {
 
     stdio_init_all();  // so we can see stuff on UART
 
-    // TODO: Add an LED to the board
+    // TODO: Add an LED to the board (Whooops)
     // gpio_init(LED_PIN);
     // gpio_set_dir(LED_PIN, GPIO_OUT);
 
