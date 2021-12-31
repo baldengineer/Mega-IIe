@@ -95,6 +95,7 @@ const uint DEBUG_PIN = 24;
 PIO pio;
 uint pio_offset;
 uint pio_sm;
+uint pio_sm_1;
 
 // From the outside scary world
 extern void imma_led(uint8_t state);
@@ -238,8 +239,8 @@ void setup_main_databus() {
 static inline void KBD_pio_setup() {
 PIO pio;
 uint pio_offset;
-uint pio_sm;
-uint pio_sm_1;
+//uint pio_sm;
+//uint pio_sm_1;
     pio = pio0;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);
@@ -405,20 +406,18 @@ int main() {
 
     return 0;  // but you never will hah!
 }
-/*
-void write_key(uint8_t key)
-{
+
+void write_key(uint8_t key) {
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm,0x3);
     pio_interrupt_clear(pio,1);
 }
-void raise_key()
-{
-    if(!pio_interrupt_get(pio,1)){  //If irq 1 is clear we have a new key still
+
+void raise_key() {
+    if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
-    }else{
+    } else {
         pio_sm_put(pio, pio_sm,0x0);
     }
     
 }
-*/
