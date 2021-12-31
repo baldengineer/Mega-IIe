@@ -284,26 +284,25 @@ uint pio_sm_1;
     pio_sm_set_enabled(pio, pio_sm_1, true);
 }
 
-
 void prepare_key_value(uint8_t key_value) {
         // direction of mask and for() depends on GPIO to MDx mapping
-        uint8_t io_mask = 0x40; 
-        //printf("(%#04x): ", key_value);
-        printf("%c", key_value);
+        uint8_t io_mask = 0x01; 
+        printf("(%#04x): ", key_value);
+        //printf("%c", key_value);
         // make sure we don't respond with valid data while
         // changing the GPIO pins
         pio_sm_put(pio, pio_sm, (0x0));
-        for (int gpio = MD6; gpio <= MD0; gpio++) {
+        for (int gpio = MD0; gpio < MD7; gpio++) {
             if (io_mask & key_value) {
-                gpio_put(gpio, 0x1);
-                // printf("1");
+                gpio_put(gpio,0x1);
+                printf("1");
             } else {
-                gpio_put(gpio, 0x0);
-                // printf("0");
+                gpio_put(gpio,0x0);
+                printf("0");
             }
-            io_mask = io_mask >> 1; 
+            io_mask = io_mask << 1;
         }
-//        printf("\n");
+        printf("\n");
         pio_sm_put(pio, pio_sm, (0x1));
 }
 
