@@ -1,3 +1,28 @@
+/* 
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2020-2021 James Lewis
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
 #include <stdio.h>
 
 // These aren't all used yet, but they will be
@@ -196,7 +221,12 @@ void setup_main_databus() {
     }
 }
 
+// static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 static inline void KBD_pio_setup() {
+PIO pio;
+uint pio_offset;
+uint pio_sm;
+uint pio_sm_1;
     pio = pio0;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);
@@ -219,14 +249,29 @@ static inline void KBD_pio_setup() {
     pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
     sm_config_set_sideset_pins(&c, enable_245_pin);
-
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, RW);
 
+   // sm_config_set_in_shift 	(&c,false,false,0);
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
+    
+    pio_offset = pio_add_program(pio, &dataout_program);
+    pio_sm = pio_claim_unused_sm(pio, true);
+
+    c = dataout_program_get_default_config(pio_offset);
+    pio_sm_set_enabled(pio, pio_sm_1, false);
+    //Set GPIO
+    for (int x = 5; x < 13; x++){
+         pio_gpio_init(pio, x);
+    }
+    sm_config_set_out_pins(&c, 5, 1); // TODO: Fix this later
+    pio_sm_set_consecutive_pindirs(pio, pio_sm_1, 5, 7, OUT);
+    pio_sm_set_enabled(pio, pio_sm_1, true);
+    
+
 }
 
 
@@ -298,7 +343,23 @@ void setup() {
 int main() {
 
     setup();
+    gpio_init(22);
+    gpio_init(17);
+    gpio_init(16);
+    gpio_init(13);
+    gpio_init(14);
+    gpio_set_dir(22,true);
+    gpio_set_dir(17,true);
+    gpio_set_dir(16,true);
+    gpio_set_dir(13,true);
+    gpio_set_dir(14,true);
 
+    gpio_put(13,true); //RW
+    gpio_put(22,true); //KSEL0
+    gpio_put(17,true); //KSEL1
+    gpio_put(16,true); //KSEL2
+    gpio_put(14,false); //PH
+    bool a = false;
     while (true) {
         static uint32_t previous_output = 0;
         static uint32_t previous_anyclear = 0;
@@ -329,4 +390,20 @@ int main() {
 
     return 0;  // but you never will hah!
 }
-
+/*
+void write_key(uint8_t key)
+{
+    pio_sm_put(pio, pio_sm_1, key & 0x7F); 
+    pio_sm_put(pio, pio_sm,0x3);
+    pio_interrupt_clear(pio,1);
+}
+void raise_key()
+{
+    if(!pio_interrupt_get(pio,1)){  //If irq 1 is clear we have a new key still
+        pio_sm_put(pio, pio_sm,0x1);
+    }else{
+        pio_sm_put(pio, pio_sm,0x0);
+    }
+    
+}
+*/

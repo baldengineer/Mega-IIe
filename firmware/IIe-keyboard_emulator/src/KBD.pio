@@ -1,3 +1,25 @@
+; The MIT License (MIT)
+; 
+; Copyright (c) 2021 James Lewis
+; 
+; Permission is hereby granted, free of charge, to any person obtaining a copy
+; of this software and associated documentation files (the "Software"), to deal
+; in the Software without restriction, including without limitation the rights
+; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+; copies of the Software, and to permit persons to whom the Software is
+; furnished to do so, subject to the following conditions:
+; 
+; The above copyright notice and this permission notice shall be included in
+; all copies or substantial portions of the Software.
+; 
+; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+; THE SOFTWARE.
+
 .program KBD
 .side_set 1 opt
 
@@ -16,9 +38,9 @@
 ; 25:
 
 ; used to store/repeat last key press
-mov x, null             ; fallback char if TX FIFO is empty
-mov y, null             ; will store last decoded characters
-
+;mov x, null             ; fallback char if TX FIFO is empty
+;mov y, null             ; will store last decoded characters
+;Should not need these...
 ; make sure the data bus is set to output
 mov osr, ~ null         ; load FFs into OSR (for change to output)
 out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
@@ -29,7 +51,7 @@ start:
     wait 0 gpio KSEL2 side 1 [6]  ; KSEL2 and de-assert 245
     wait 0 gpio KSEL1  [6] ; KSEL1 both seem to do the same thing
 C0XX:
-    pull noblock   [6]     ; Get Values 0xYX Y = anykey X = KeyRDY
+    pull noblock   [6]     ; Get Values 0xYX Y = anykey X = Key
     
     mov isr,null        ; Clear ISR
     in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
@@ -37,6 +59,8 @@ C0XX:
     jmp !Y, C000        ; KSEL0 0 C000
 C010:
     ;Clear bit 0        ;Clear Keystrobe
+
+    irq 1
     out null,1 ;Delete KeyRDY 0xxx xxxx xxxx xxxx xxxx xxxx xxxx xxxY | X
     mov isr,::osr
     in null,1  ; xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxy0 
@@ -53,12 +77,20 @@ C000:
 wait_phase:
     wait 1 gpio PH0     ; wait for Data Cycle
 
+    irq clear 0
 set_245en:
     jmp PIN,read        ;If RW is High Read Cycle
     jmp not_read
-
 read:
-    nop side 0          ;Enable databus via on-board '245
+    nop side 0          ;Enable DB
 not_read:  
     wait 0 gpio PH0     ; wait for data phase to end
 .wrap          
+
+.program dataout
+    .wrap_target
+    irq wait 0
+    pull noblock
+    mov x,osr
+    out pins,7
+    .wrap
