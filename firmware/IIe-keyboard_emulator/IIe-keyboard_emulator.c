@@ -40,7 +40,7 @@
 #define ENABLED 0x0
 #define DISABLED 0x1
 
-// IIe But Pins
+// Corrected data bus on rev2
 #define KSEL0 2
 #define RW 15
 #define MD7 10
@@ -52,6 +52,7 @@
 #define MD1 4
 #define MD0 3
 
+// Reversed data bus on rev2 (fix the for loop in the SM setup if you use these)
 // #define MD7 4
 // #define MD6 5
 // #define MD5 6
@@ -84,7 +85,6 @@ const uint16_t delay_time = 1000;
 
 // IO Pins
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin
-const uint8_t testpins[7] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
 const uint DEBUG_PIN = 24;
 
 // PIO Globals
@@ -222,8 +222,8 @@ void handle_tinyusb() {
 }
 
 void setup_main_databus() {
-    const uint8_t main_data[7] = {5, 6, 7, 8, 9, 10, 11};
-    for (int x = 0; x < 7; x++) {
+    const uint8_t main_data[] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
+    for (int x = 0; x < (sizeof(main_data)/sizeof(main_data[0])); x++) {
         gpio_init(main_data[x]);
         gpio_set_dir(main_data[x], GPIO_OUT);
         gpio_put(main_data[x], 0x1);
@@ -258,12 +258,14 @@ uint pio_sm_1;
     pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
     sm_config_set_sideset_pins(&c, enable_245_pin);
+
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, RW);
 
-   // sm_config_set_in_shift 	(&c,false,false,0);
+    // sm_config_set_in_shift 	(&c,false,false,0);
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
+
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
     
@@ -272,15 +274,14 @@ uint pio_sm_1;
 
     c = dataout_program_get_default_config(pio_offset);
     pio_sm_set_enabled(pio, pio_sm_1, false);
+
     //Set GPIO
-    for (int x = 5; x < 13; x++){
+    for (int x = MD0; x < MD7; x++){
          pio_gpio_init(pio, x);
     }
-    sm_config_set_out_pins(&c, 5, 1); // TODO: Fix this later
-    pio_sm_set_consecutive_pindirs(pio, pio_sm_1, 5, 7, OUT);
+    sm_config_set_out_pins(&c, MD0, 1); // TODO: Fix this later
+    pio_sm_set_consecutive_pindirs(pio, pio_sm_1, MD0, 7, OUT);
     pio_sm_set_enabled(pio, pio_sm_1, true);
-    
-
 }
 
 
