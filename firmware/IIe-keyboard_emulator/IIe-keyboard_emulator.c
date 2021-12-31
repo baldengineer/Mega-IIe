@@ -43,7 +43,10 @@
 
 // Corrected data bus on rev2
 #define KSEL0 2
+#define KSEL1 13
+#define KSEL2 14
 #define RW 15
+#define PH0 16
 #define MD7 10
 #define MD6 9
 #define MD5 8
@@ -347,28 +350,30 @@ void setup() {
     printf("Configuring initial Keyvalue (%c)\n", 0x20);
     prepare_key_value(0x20);
 
+    // configure I/O control lines
+    gpio_init(KSEL0); 
+    gpio_init(KSEL1);
+    gpio_init(KSEL2);
+    gpio_init(RW);
+    gpio_init(PH0);
+    gpio_set_dir(KSEL0,true);
+    gpio_set_dir(KSEL1,true);
+    gpio_set_dir(KSEL2,true);
+    gpio_set_dir(RW,true);
+    gpio_set_dir(PH0,true);
+
+    gpio_put(RW,true); //RW
+    gpio_put(KSEL0,true); //KSEL0
+    gpio_put(KSEL1,true); //KSEL1
+    gpio_put(KSEL2,true); //KSEL2
+    gpio_put(PH0,false); //PH
+
     printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
 
 int main() {
-
     setup();
-    gpio_init(22);
-    gpio_init(17);
-    gpio_init(16);
-    gpio_init(13);
-    gpio_init(14);
-    gpio_set_dir(22,true);
-    gpio_set_dir(17,true);
-    gpio_set_dir(16,true);
-    gpio_set_dir(13,true);
-    gpio_set_dir(14,true);
 
-    gpio_put(13,true); //RW
-    gpio_put(22,true); //KSEL0
-    gpio_put(17,true); //KSEL1
-    gpio_put(16,true); //KSEL2
-    gpio_put(14,false); //PH
     bool a = false;
     while (true) {
         static uint32_t previous_output = 0;
