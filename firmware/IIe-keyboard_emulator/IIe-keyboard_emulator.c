@@ -41,16 +41,25 @@
 #define DISABLED 0x1
 
 // IIe But Pins
-#define KSEL0 3
-#define RW 20
-#define MD7 4
-#define MD6 5
-#define MD5 6
+#define KSEL0 2
+#define RW 15
+#define MD7 10
+#define MD6 9
+#define MD5 8
 #define MD4 7
-#define MD3 8
-#define MD2 9
-#define MD1 10
-#define MD0 11
+#define MD3 6
+#define MD2 5
+#define MD1 4
+#define MD0 3
+
+// #define MD7 4
+// #define MD6 5
+// #define MD5 6
+// #define MD4 7
+// #define MD3 8
+// #define MD2 9
+// #define MD1 10
+// #define MD0 11
 
 #define SERIAL_ANYKEY_CLEAR_INTERVAL 50
 
@@ -75,7 +84,7 @@ const uint16_t delay_time = 1000;
 
 // IO Pins
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin
-const uint8_t testpins[8] = {11, 10, 9, 8, 7, 6, 5, 4};
+const uint8_t testpins[7] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
 const uint DEBUG_PIN = 24;
 
 // PIO Globals
@@ -94,7 +103,7 @@ static inline void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 // Pins for us to use somewhere else
-const uint8_t enable_245_pin = 12;
+const uint8_t enable_245_pin = 11;
 bool state_245 = DISABLED;
 
 // old habits die hard
