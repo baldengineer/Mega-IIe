@@ -38,59 +38,57 @@
 ; 25:
 
 ; used to store/repeat last key press
-mov x, null             ; fallback char if TX FIFO is empty
-mov y, null             ; will store last decoded characters
-
+;mov x, null             ; fallback char if TX FIFO is empty
+;mov y, null             ; will store last decoded characters
+;Should not need these...
 ; make sure the data bus is set to output
 mov osr, ~ null         ; load FFs into OSR (for change to output)
 out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
                         ; and disable data buffer
 .wrap_target 
 start:
-    nop side 1           ; disable output buffer
-    wait 0 gpio KSEL2    ; KSEL2 and
+    
+    wait 0 gpio KSEL2 side 1   ; KSEL2 and de-assert 245
     wait 0 gpio KSEL1   ; KSEL1 both seem to do the same thing
-    ; is this a C000 or C010? KSEL0 is the key
-  ;  in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
-  ;  mov X, ISR          ; move to x for comparison
-    set X, 1
-    jmp X--, valid_cyc  ; KSEL0 is HIGH, so C010   
-    ; this is C000, can only respond to a READ
-    jmp PIN, valid_cyc  ; R/W pin, jumps if HIGH (Read)
-    jmp start           ; if R/W low, this is a C000 call which is for 80col card
-
-valid_cyc:
-    pull noblock        ; if FIFO empty, MOV OSR, X happens
-    mov x, osr          ; check if there is a new character
-    jmp !x output       ; a zero means no new character
-    mov y, x            ; mmmm fresh char, save for next iteration
-    jmp one_time_out
-
-output:
-    mov osr, y          ; repeat previous character nothing new in FIFO
-
-one_time_out:
+C0XX:
+    pull noblock        ; Get Values 0xYX Y = anykey X = KeyRDY
+    
+    mov isr,null        ; Clear ISR
+    in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
+    mov Y, ISR          ; move to x for comparison
+    jmp !Y, C000        ; KSEL0 0 C000
+C010:
+    ;Clear bit 0        ;Clear Keystrobe
+    irq 1
+    out null,1 ;Delete KeyRDY 0xxx xxxx xxxx xxxx xxxx xxxx xxxx xxxY | X
+    mov isr,::osr
+    in null,1  ; xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxy0 
+    mov osr,::isr
+              ;Shift OSR into x 31 times re-aligning Anykey
+    mov x,osr ;Backup osr
+    out null,1
+    out pins,1
+    jmp wait_phase
+C000:
+    mov x,osr ;Backup osr
+    out pins,1          ;output keystrobe Gets reset when C side sends new values
+    
+wait_phase:
     wait 1 gpio PH0     ; wait for Data Cycle
-    out pins, 8   ; output keyboard value (7 data 1 strobe) from OSR 
-    nop side 0
-    ; was this C010 (or C000)?
-  ;  in PINS, 1           ; get KSEL0 from input PINS (bottom bit)
-    mov X, ISR           ; move to x for comparison
-    jmp X--, c010        ; KSEL0 is HIGH, so C010 (dk about the decrement)
-    jmp c000             ; if low then C000
-
-c010:
-; since it is a C010 we need to strip off the strobe bit
-; ******************
-; * but key to remember is that the data word is swizzled
-; * Strobe is MD7 on the bus, but it is bit 0 in the Y register / FIFO!
-; ******************
-;    set PINS, 0 ; ONLY sets MD7 to 0 (because of the set_set in the config)
-;    in y, 8     ; move 8 bits of PINS into y for later use
-
-c000:
-    mov X, null         ; reset x for next iteration
-past_c010:
+    irq clear 0
+set_245en:
+    jmp PIN,read        ;If RW is High Read Cycle
+    jmp not_read
+read:
+    nop side 0          ;Enable DB
+not_read:  
     wait 0 gpio PH0     ; wait for data phase to end
-;    nop side 1          ; turn off 245 buffer [made side on wait at start of loop]
 .wrap          
+
+.program dataout
+    .wrap_target
+    irq wait 0
+    pull noblock
+    mov x,osr
+    out pins,7
+    .wrap

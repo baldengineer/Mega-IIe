@@ -206,6 +206,7 @@ void setup_main_databus() {
 PIO pio;
 uint pio_offset;
 uint pio_sm;
+uint pio_sm_1;
 
 static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     pio = pio0;
@@ -220,9 +221,12 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     pio_sm_set_enabled(pio, pio_sm, false);
 
+    // for (int x = 0; x < pin_count; x++)
+    //     sm_config_set_in_pins(pio, (pin+x));
+    sm_config_set_out_pins(&c, 4, 1); // TODO: Fix this later
+
     // init GPIO for OUT (not needed for IN)
-    for (int x = 3; x < 26; x++)
-        pio_gpio_init(pio, x);
+    pio_gpio_init(pio, 4);
 
     // set pin direction to 
     pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 22, IN);
@@ -233,19 +237,15 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
     // configure KSEL0,MD[7:0], 
     // don't care 1,2 R/W, and PH0 as INPUT (17-21)
-    //for (int x = 3; x < 12; x++)
-   // sm_config_set_in_pins(&c, 3);
-     for (int x = 17; x < 22; x++)
-         sm_config_set_in_pins(&c, x);
-    sm_config_set_out_pins(&c, 4, 8); 
+    sm_config_set_in_pins(&c, 3);
+
+    // set pin direction to 
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 2, IN);
 
     // side set for the enable signal
-    //pio_gpio_init(pio, enable_245_pin);
+    pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
-
-    // set pin direction to input
-//    pio_sm_set_consecutive_pindirs(pio, pio_sm, 17, 5, IN);
-    
+  
     // configure JMP pin to be the R/W Signal
     sm_config_set_jmp_pin(&c, 20);
 
@@ -256,11 +256,27 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     // side set for OE signal
     sm_config_set_sideset_pins(&c, enable_245_pin);
 
+   // sm_config_set_in_shift 	(&c,false,false,0);
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
 
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
+    
+    pio_offset = pio_add_program(pio, &dataout_program);
+    pio_sm = pio_claim_unused_sm(pio, true);
+
+    c = dataout_program_get_default_config(pio_offset);
+    pio_sm_set_enabled(pio, pio_sm_1, false);
+    //Set GPIO
+    for (int x = 5; x < 13; x++){
+         pio_gpio_init(pio, x);
+    }
+    sm_config_set_out_pins(&c, 5, 1); // TODO: Fix this later
+    pio_sm_set_consecutive_pindirs(pio, pio_sm_1, 5, 7, OUT);
+    pio_sm_set_enabled(pio, pio_sm_1, true);
+    
+
 }
 
 void setup() {
@@ -307,25 +323,68 @@ uint8_t reversi(uint8_t v) {
 
 int main() {
     setup();
+    gpio_init(22);
+    gpio_init(17);
+    gpio_init(16);
+    gpio_init(13);
+    gpio_init(14);
+    gpio_set_dir(22,true);
+    gpio_set_dir(17,true);
+    gpio_set_dir(16,true);
+    gpio_set_dir(13,true);
+    gpio_set_dir(14,true);
 
+    gpio_put(13,true); //RW
+    gpio_put(22,true); //KSEL0
+    gpio_put(17,true); //KSEL1
+    gpio_put(16,true); //KSEL2
+    gpio_put(14,false); //PH
+    bool a = false;
     while (true) {
         static uint32_t previous_output = 0;
         static uint8_t io_select = 0;
-        hid_app_task();
-        handle_tinyusb();
-        handle_serial();
-        check_keyboard_buffer();
+      //  hid_app_task();
+      //  handle_tinyusb();
+     //   handle_serial();
+     //   check_keyboard_buffer();
 
         static uint32_t previous_key = 0;   //A1 is 0x20 and C1 is 0x41
+        static uint32_t previous_check = 0;
+        static uint8_t ksel = 0;
+         static uint8_t rsel = 0;
         static uint8_t the_key = 0xC1; //1010 0000   // 1100 0001
-
-        if (millis() - previous_key >= 25) {
-            pio_sm_put(pio, pio_sm, reversi(the_key)); 
-           /* if (the_key > 0x5A)                  
-                the_key = 0x41;     */             
+        static uint8_t c =0;
+        if (millis() - previous_key >= 400) {
+            pio_sm_put(pio, pio_sm, 0); 
             previous_key = millis();
+            a=false;
+        }else if (millis() - previous_key >= 300 && !a) {
+            a=true;
+           pio_sm_put(pio, pio_sm, 3);
         }
-
+        if (millis() - previous_check >= 2) {
+            
+            gpio_put(13,rsel); //RW
+            gpio_put(22,ksel); //KSEL0
+            gpio_put(17,false); //KSEL1
+            gpio_put(16,false); //KSEL2
+            gpio_put(14,true); //PH0 Data phase
+            busy_wait_ms(1);
+            gpio_put(13,true); //RW
+            gpio_put(22,true); //KSEL0
+            gpio_put(17,true); //KSEL1
+            gpio_put(16,true); //KSEL2
+            gpio_put(14,false); //PH
+            c++;
+            if(c>10){
+                rsel = (rsel+1) % 2;
+            }
+            if(c>20){
+            ksel = (ksel+1) % 2;//Toggle between c010 and c000
+            c=0;
+            }
+            previous_check = millis();
+        }
         /*    if (millis() - previous_output >= 100) {  
             // defaults to disabled, enable over serial
             // and remove this   
@@ -342,4 +401,19 @@ int main() {
     }
 
     return 0;  // but you never will hah!
+}
+void write_key(uint8_t key)
+{
+    pio_sm_put(pio, pio_sm_1, key & 0x7F); 
+    pio_sm_put(pio, pio_sm,0x3);
+    pio_interrupt_clear(pio,1);
+}
+void raise_key()
+{
+    if(!pio_interrupt_get(pio,1)){  //If irq 1 is clear we have a new key still
+        pio_sm_put(pio, pio_sm,0x1);
+    }else{
+        pio_sm_put(pio, pio_sm,0x0);
+    }
+    
 }
