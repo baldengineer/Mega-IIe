@@ -40,10 +40,25 @@
 #define ENABLED 0x0
 #define DISABLED 0x1
 
+// IIe But Pins
+#define KSEL0 3
+#define RW 20
+#define MD7 4
+#define MD6 5
+#define MD5 6
+#define MD4 7
+#define MD3 8
+#define MD2 9
+#define MD1 10
+#define MD0 11
+
+#define SERIAL_ANYKEY_CLEAR_INTERVAL 50
+
 #define OUT true
 #define IN false
 
-	uint8_t keys[101] = {0};
+uint8_t keys[101] = {0};
+uint8_t modifiers = 0;
 
 // Useful flags for useful things
 volatile bool kbd_connected = false;
@@ -61,6 +76,12 @@ const uint16_t delay_time = 1000;
 // IO Pins
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin
 const uint8_t testpins[8] = {11, 10, 9, 8, 7, 6, 5, 4};
+const uint DEBUG_PIN = 24;
+
+// PIO Globals
+PIO pio;
+uint pio_offset;
+uint pio_sm;
 
 // From the outside scary world
 extern void imma_led(uint8_t state);
@@ -69,7 +90,8 @@ extern bool tusb_init();
 extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
-static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count);
+static inline void KBD_pio_setup();
+extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 12;
@@ -119,6 +141,8 @@ bool repeating_timer_callback(struct repeating_timer *t) {
     return true;
 }
 
+// not sure what to do with this section. need a mode to 
+// enable and disable the "serial" passthrough
 void handle_serial() {
     // print something when receiving any character
     int incoming_char = getchar_timeout_us(0);
@@ -162,19 +186,20 @@ void check_keyboard_buffer() {
     // check the keyboard buffer
     static uint32_t prev_key_millis = 0;
     uint32_t current_millis = millis();
-    if (any_key || (current_millis - prev_key_millis >= key_delay)) {
+    if (any_key) {// (current_millis - prev_key_millis >= key_delay)) {
         bool did_print = false;
         any_key = false;
         for (uint8_t x = 0; x < 101; x++) {
             if (keys[x]) {
-                if (x > 0)
+                if (did_print)
                     printf(",");
-                printf("%d", x);
+                uint8_t ascii = get_ascii(x, modifiers);
+                printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
                 did_print = true;
             }
         }
         if (did_print)
-            printf("\n");
+            printf(",%d\n", modifiers);
 
         prev_key_millis = current_millis;
     }
@@ -188,78 +213,48 @@ void handle_tinyusb() {
 }
 
 void setup_main_databus() {
-    gpio_init(enable_245_pin);
-    gpio_set_dir(enable_245_pin, GPIO_OUT);
-
-    // disable our databus buffer
-    state_245 = ENABLED;
-    gpio_put(enable_245_pin, state_245);
-
-    // enable test pins to be output
-    /*  for (int x=0; x<8; x++) {
-        gpio_init(testpins[x]);
-        gpio_set_dir(testpins[x], GPIO_OUT);
+    const uint8_t main_data[7] = {5, 6, 7, 8, 9, 10, 11};
+    for (int x = 0; x < 7; x++) {
+        gpio_init(main_data[x]);
+        gpio_set_dir(main_data[x], GPIO_OUT);
+        gpio_put(main_data[x], 0x1);
     }
-  */
 }
 
+// static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
+static inline void KBD_pio_setup() {
 PIO pio;
 uint pio_offset;
 uint pio_sm;
 uint pio_sm_1;
-
-static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
     pio = pio0;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);
 
     pio_sm_config c = KBD_program_get_default_config(pio_offset);
+    pio_sm_set_enabled(pio, pio_sm, false); // make sure SM isn't running
 
-    // map SM's OUT pin group to one pin?
-    // sm_config_set_out_pins (pio_sm_config *c, uint out_base, uint out_count)
-    //sm_config_set_out_pins(&c, pin, pin_count);
+    // SM's only output is the "strobe" bit
+    pio_gpio_init(pio, MD7);  
+    sm_config_set_out_pins(&c, MD7, 1); // out is direction
+    sm_config_set_set_pins(&c, MD7, 1); // set is type
 
-    pio_sm_set_enabled(pio, pio_sm, false);
+    // so PIO can determine C000 or C010 access
+    sm_config_set_in_pins(&c, KSEL0); 
 
-    // for (int x = 0; x < pin_count; x++)
-    //     sm_config_set_in_pins(pio, (pin+x));
-    sm_config_set_out_pins(&c, 4, 1); // TODO: Fix this later
+    // HighZ KSEL0 and MD7
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, KSEL0, 2, IN); 
 
-    // init GPIO for OUT (not needed for IN)
-    pio_gpio_init(pio, 4);
-
-    // set pin direction to 
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 22, IN);
-
-// map MD7:0 to PINS for output
-// KSEL0 to LSB to PINS for input
-// give the PIO/SM the pins KSEL1, KSEL2, R/W, PH0
-
-    // configure KSEL0,MD[7:0], 
-    // don't care 1,2 R/W, and PH0 as INPUT (17-21)
-    sm_config_set_in_pins(&c, 3);
-
-    // set pin direction to 
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, 3, 2, IN);
-
-    // side set for the enable signal
+    // 74HCT245 Enable signal (via Side Set)
     pio_gpio_init(pio, enable_245_pin);
     pio_sm_set_consecutive_pindirs(pio, pio_sm, enable_245_pin, 1, OUT);
-  
-    // configure JMP pin to be the R/W Signal
-    sm_config_set_jmp_pin(&c, 20);
-
-    // create the KSEL0 set pin why is there a pio_sm and sm_config?
-   // pio_sm_set_set_pins(pio, pio_sm, PIN_TO_USE, NUM_PINS);
-//#    sm_config_set_set_pins(&c, 4, 1);
-
-    // side set for OE signal
     sm_config_set_sideset_pins(&c, enable_245_pin);
+    // configure JMP pin to be the R/W Signal
+    sm_config_set_jmp_pin(&c, RW);
 
    // sm_config_set_in_shift 	(&c,false,false,0);
     // Load our configraution, and jump to program start
     pio_sm_init(pio, pio_sm, pio_offset, &c);
-
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
     
@@ -279,9 +274,40 @@ static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 
 }
 
+
+void prepare_key_value(uint8_t key_value) {
+        // direction of mask and for() depends on GPIO to MDx mapping
+        uint8_t io_mask = 0x40; 
+        //printf("(%#04x): ", key_value);
+        printf("%c", key_value);
+        // make sure we don't respond with valid data while
+        // changing the GPIO pins
+        pio_sm_put(pio, pio_sm, (0x0));
+        for (int gpio = MD6; gpio <= MD0; gpio++) {
+            if (io_mask & key_value) {
+                gpio_put(gpio, 0x1);
+                // printf("1");
+            } else {
+                gpio_put(gpio, 0x0);
+                // printf("0");
+            }
+            io_mask = io_mask >> 1; 
+        }
+//        printf("\n");
+        pio_sm_put(pio, pio_sm, (0x1));
+}
+
+uint8_t handle_serial_keyboard() {
+    int incoming_char = getchar_timeout_us(0);
+    // MEGA-II only seems to like these values
+    if ((incoming_char > 0) && (incoming_char < 128)) {
+        return incoming_char;
+    }
+    return 0;
+}
+
 void setup() {
-    // get the 245 off MD as soon as possible
-   // setup_main_databus();
+    setup_main_databus();
 
     stdio_init_all();  // so we can see stuff on UART
 
@@ -289,39 +315,33 @@ void setup() {
     // gpio_init(LED_PIN);
     // gpio_set_dir(LED_PIN, GPIO_OUT);
 
+    // debug pin to trigger the external logic analyzer
+    printf("Configuring DEBUG Pin (%d)\n", DEBUG_PIN);
+    gpio_init(DEBUG_PIN);
+    gpio_set_dir(DEBUG_PIN, GPIO_OUT);
+    gpio_put(DEBUG_PIN, 0x0);
+
     // yay usb!
     tusb_init();
 
     // couple of times for funnsies
     // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
+    printf("Enabling tuh_task\n");
     add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
     printf("(---------\n");
     // printf("Connecting System Clock to Pin 21\n");
     // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
 
     printf("Configuring State Machine\n");
-    KBD_pio_setup(4, 8);  //D0-D7 plus enable_245 (?)
+    KBD_pio_setup();  
+    printf("Configuring initial Keyvalue (%c)\n", 0x20);
+    prepare_key_value(0x20);
 
     printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
 
-#define CHAR_BIT 8
-
-uint8_t reversi(uint8_t v) {
-  //  unsigned int v;                    // input bits to be reversed
-    uint8_t r = v & 1;            // r will be reversed bits of v; first get LSB of v
-    int s = sizeof(v) * CHAR_BIT - 1;  // extra shift needed at end
-
-    for (v >>= 1; v; v >>= 1) {
-        r <<= 1;
-        r |= v & 1;
-        s--;
-    }
-    r <<= s;  // shift when v's highest bits are zero
-    return r;
-}
-
 int main() {
+
     setup();
     gpio_init(22);
     gpio_init(17);
@@ -342,66 +362,35 @@ int main() {
     bool a = false;
     while (true) {
         static uint32_t previous_output = 0;
+        static uint32_t previous_anyclear = 0;
         static uint8_t io_select = 0;
-      //  hid_app_task();
-      //  handle_tinyusb();
-     //   handle_serial();
-     //   check_keyboard_buffer();
+        static bool any_clear = false;
+        hid_app_task();
+        handle_tinyusb();
+        //  handle_serial();
 
-        static uint32_t previous_key = 0;   //A1 is 0x20 and C1 is 0x41
-        static uint32_t previous_check = 0;
-        static uint8_t ksel = 0;
-         static uint8_t rsel = 0;
-        static uint8_t the_key = 0xC1; //1010 0000   // 1100 0001
-        static uint8_t c =0;
-        if (millis() - previous_key >= 400) {
-            pio_sm_put(pio, pio_sm, 0); 
-            previous_key = millis();
-            a=false;
-        }else if (millis() - previous_key >= 300 && !a) {
-            a=true;
-           pio_sm_put(pio, pio_sm, 3);
-        }
-        if (millis() - previous_check >= 2) {
-            
-            gpio_put(13,rsel); //RW
-            gpio_put(22,ksel); //KSEL0
-            gpio_put(17,false); //KSEL1
-            gpio_put(16,false); //KSEL2
-            gpio_put(14,true); //PH0 Data phase
-            busy_wait_ms(1);
-            gpio_put(13,true); //RW
-            gpio_put(22,true); //KSEL0
-            gpio_put(17,true); //KSEL1
-            gpio_put(16,true); //KSEL2
-            gpio_put(14,false); //PH
-            c++;
-            if(c>10){
-                rsel = (rsel+1) % 2;
-            }
-            if(c>20){
-            ksel = (ksel+1) % 2;//Toggle between c010 and c000
-            c=0;
-            }
-            previous_check = millis();
-        }
-        /*    if (millis() - previous_output >= 100) {  
-            // defaults to disabled, enable over serial
-            // and remove this   
-            gpio_put(enable_245_pin, state_245);
-            if (io_select > 7) {
-                io_select = 0;
-                for (int x=0; x<8; x++)
-                    gpio_put(testpins[x], 0x0);
-            }
-            gpio_put(testpins[io_select++], 0x1);
+        uint8_t key_value = 0;
+        // Check the USB keyboard
+        check_keyboard_buffer();
 
-            previous_output = millis();
-        }*/
+        // Check the serial buffer
+        key_value = handle_serial_keyboard(); 
+        if (key_value > 0) {
+            prepare_key_value(key_value);
+            any_clear = true;
+            previous_anyclear = millis();
+        }
+
+        // deassert ANYKEY when receiving characters over serial
+        if (any_clear && (millis() - previous_anyclear >= SERIAL_ANYKEY_CLEAR_INTERVAL)) {
+            any_clear = false;
+            pio_sm_put(pio, pio_sm, (0x0));
+        }
     }
 
     return 0;  // but you never will hah!
 }
+/*
 void write_key(uint8_t key)
 {
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
@@ -417,3 +406,4 @@ void raise_key()
     }
     
 }
+*/

@@ -26,6 +26,7 @@
 
 #include "bsp/board.h"
 #include "tusb.h"
+#include "keyboard_mapping.h"
 //#include "hid_host.h"
 
 //--------------------------------------------------------------------+
@@ -39,11 +40,13 @@
 #define MAX_REPORT 4
 
 extern uint8_t keys[101];
+extern uint8_t modifiers;
 extern bool print_usb_report;
 extern uint32_t millis();
 extern volatile bool kbd_connected;
 extern void wtf_bbq_led(uint8_t state);
 extern volatile uint8_t kbd_led_state[1];
+uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 bool any_key=false;
 static uint8_t const keycode2ascii[128][2] = {HID_KEYCODE_TO_ASCII};
@@ -192,6 +195,25 @@ void check_for_released_key(hid_keyboard_report_t const* prev_report, hid_keyboa
     }
 }
 
+uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
+    bool const is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+    bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
+    //uint8_t ch = keycode2ascii[keyboard_code][is_shift ? 1 : 0];
+
+    //maps: normal_kbd_map ctrl_kbd_map shift_kbd_map both_kbd_map
+    uint8_t ch = 0x0;
+    if (is_shift && is_ctrl)
+        ch = both_kbd_map[keyboard_code];
+    else if (is_shift)
+        ch = shift_kbd_map[keyboard_code];
+    else if (is_ctrl) 
+        ch = ctrl_kbd_map[keyboard_code];
+    else
+        ch = normal_kbd_map[keyboard_code];
+
+    return ch;
+}
+
 static void process_kbd_report(hid_keyboard_report_t const* report) {
     static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
 
@@ -210,6 +232,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         }
     }
 
+    modifiers = report->modifier;
     prev_report = *report;
 }
 

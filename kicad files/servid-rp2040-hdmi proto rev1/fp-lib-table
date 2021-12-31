@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name custom_components)(type KiCad)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/ossc/custom_components.pretty")(options "")(descr ""))
+  (lib (name RP2040_minimal)(type KiCad)(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/gd rp2040 keyboard proto pcb/kicad/RP2040_minimal.pretty")(options "")(descr ""))
+  (lib (name footprints)(type KiCad)(uri ${KIPRJMOD}/footprints)(options "")(descr ""))
+)

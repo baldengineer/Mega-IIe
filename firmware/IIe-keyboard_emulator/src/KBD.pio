@@ -45,13 +45,13 @@
 mov osr, ~ null         ; load FFs into OSR (for change to output)
 out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
                         ; and disable data buffer
+
 .wrap_target 
 start:
-    
-    wait 0 gpio KSEL2 side 1   ; KSEL2 and de-assert 245
-    wait 0 gpio KSEL1   ; KSEL1 both seem to do the same thing
+    wait 0 gpio KSEL2 side 1 [6]  ; KSEL2 and de-assert 245
+    wait 0 gpio KSEL1  [6] ; KSEL1 both seem to do the same thing
 C0XX:
-    pull noblock        ; Get Values 0xYX Y = anykey X = KeyRDY
+    pull noblock   [6]     ; Get Values 0xYX Y = anykey X = Key
     
     mov isr,null        ; Clear ISR
     in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
@@ -59,6 +59,7 @@ C0XX:
     jmp !Y, C000        ; KSEL0 0 C000
 C010:
     ;Clear bit 0        ;Clear Keystrobe
+
     irq 1
     out null,1 ;Delete KeyRDY 0xxx xxxx xxxx xxxx xxxx xxxx xxxx xxxY | X
     mov isr,::osr
@@ -75,6 +76,7 @@ C000:
     
 wait_phase:
     wait 1 gpio PH0     ; wait for Data Cycle
+
     irq clear 0
 set_245en:
     jmp PIN,read        ;If RW is High Read Cycle
