@@ -61,17 +61,16 @@ C0XX:
     
     mov isr,null        ; Clear ISR
     in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
-    mov Y, ISR          ; move to x for comparison
+    mov Y, ISR          ; move to y for comparison
     jmp !Y, C000        ; KSEL0 0 C000
 C010:
-    ;Clear bit 0        ;Clear Keystrobe
+    ; Clear bit 0        ; Clear Keystrobe
 
-    irq 1
-    out null,1 ;Delete KeyRDY 0xxx xxxx xxxx xxxx xxxx xxxx xxxx xxxY | X
+    irq 1               ; below here bit 0 is supposed to be KeyRDY/MD7
+    out null,1          ; Delete KeyRDY 0xxx xxxx xxxx xxxx xxxx xxxx xxxx xxxY | X
     mov isr,::osr
-    in null,1  ; xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxy0 
-    mov osr,::isr
-              ;Shift OSR into x 31 times re-aligning Anykey
+    in null,1           
+    mov osr,::isr       ; xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxy0 
     mov x,osr ;Backup osr
     out null,1
     out pins,1

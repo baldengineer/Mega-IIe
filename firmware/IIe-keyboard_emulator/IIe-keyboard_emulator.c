@@ -42,29 +42,19 @@
 #define DISABLED 0x1
 
 // Corrected data bus on rev2
-#define KSEL0 2
+#define KSEL0  2
+#define   MD0  3
+#define   MD1  4
+#define   MD2  5
+#define   MD3  6
+#define   MD4  7
+#define   MD5  8
+#define   MD6  9
+#define   MD7 10
 #define KSEL1 13
 #define KSEL2 14
-#define RW 15
-#define PH0 16
-#define MD7 10
-#define MD6 9
-#define MD5 8
-#define MD4 7
-#define MD3 6
-#define MD2 5
-#define MD1 4
-#define MD0 3
-
-// Reversed data bus on rev2 (fix the for loop in the SM setup if you use these)
-// #define MD7 4
-// #define MD6 5
-// #define MD5 6
-// #define MD4 7
-// #define MD3 8
-// #define MD2 9
-// #define MD1 10
-// #define MD0 11
+#define    RW 15
+#define   PH0 16
 
 #define SERIAL_ANYKEY_CLEAR_INTERVAL 50
 
@@ -235,7 +225,6 @@ void setup_main_databus() {
     }
 }
 
-// static inline void KBD_pio_setup(uint8_t pin, uint8_t pin_count) {
 static inline void KBD_pio_setup() {
 PIO pio;
 uint pio_offset;
@@ -257,7 +246,7 @@ uint pio_offset;
     sm_config_set_in_pins(&c, KSEL0); 
 
     // HighZ KSEL0 and MD7
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, KSEL0, 2, IN); 
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, KSEL0, 1, IN); 
 
     // 74HCT245 Enable signal (via Side Set)
     pio_gpio_init(pio, enable_245_pin);
@@ -273,7 +262,10 @@ uint pio_offset;
 
     // set the state machine running
     pio_sm_set_enabled(pio, pio_sm, true);
-    
+
+    //-------------------------------
+    // second state machine
+    //-------------------------------
     pio_offset = pio_add_program(pio, &dataout_program);
     pio_sm = pio_claim_unused_sm(pio, true);
 
@@ -284,7 +276,7 @@ uint pio_offset;
     for (int x = MD0; x < MD7; x++){
          pio_gpio_init(pio, x);
     }
-    sm_config_set_out_pins(&c, MD0, 1); // TODO: Fix this later
+    sm_config_set_out_pins(&c, MD0, 7); // TODO: Fix this later
     pio_sm_set_consecutive_pindirs(pio, pio_sm_1, MD0, 7, OUT);
     pio_sm_set_enabled(pio, pio_sm_1, true);
 }
