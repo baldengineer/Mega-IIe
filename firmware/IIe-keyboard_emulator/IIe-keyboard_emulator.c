@@ -96,10 +96,15 @@ extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
 static inline void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
+void raise_key();
+void write_key(uint8_t key);
 
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 11;
 bool state_245 = DISABLED;
+
+// Control the level shifter
+const uint8_t shifter_enable = 25;
 
 // old habits die hard
 uint32_t millis() {
@@ -288,19 +293,20 @@ void prepare_key_value(uint8_t key_value) {
         //printf("%c", key_value);
         // make sure we don't respond with valid data while
         // changing the GPIO pins
-        pio_sm_put(pio, pio_sm, (0x0));
+     //   pio_sm_put(pio, pio_sm, (0x0));
         for (int gpio = MD0; gpio < MD7; gpio++) {
             if (io_mask & key_value) {
-                gpio_put(gpio,0x1);
+     //           gpio_put(gpio,0x1);
                 printf("1");
             } else {
-                gpio_put(gpio,0x0);
+       //         gpio_put(gpio,0x0);
                 printf("0");
             }
             io_mask = io_mask << 1;
         }
         printf("\n");
-        pio_sm_put(pio, pio_sm, (0x1));
+       // pio_sm_put(pio, pio_sm, (0x1));
+       write_key(key_value);
 }
 
 uint8_t handle_serial_keyboard() {
@@ -320,6 +326,10 @@ void setup() {
     // TODO: Add an LED to the board (Whooops)
     // gpio_init(LED_PIN);
     // gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    gpio_init(shifter_enable);
+    gpio_set_dir(shifter_enable, GPIO_OUT);
+    gpio_put(shifter_enable, ENABLED);
 
     // debug pin to trigger the external logic analyzer
     printf("Configuring DEBUG Pin (%d)\n", DEBUG_PIN);
@@ -392,7 +402,8 @@ int main() {
         // deassert ANYKEY when receiving characters over serial
         if (any_clear && (millis() - previous_anyclear >= SERIAL_ANYKEY_CLEAR_INTERVAL)) {
             any_clear = false;
-            pio_sm_put(pio, pio_sm, (0x0));
+            //pio_sm_put(pio, pio_sm, (0x0));
+            raise_key();
         }
     }
 
@@ -400,12 +411,14 @@ int main() {
 }
 
 void write_key(uint8_t key) {
+    gpio_put(DEBUG_PIN, 0x1);
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
-    pio_sm_put(pio, pio_sm,0x3);
-    pio_interrupt_clear(pio,1);
+    pio_sm_put(pio, pio_sm, 0x3);
+    pio_interrupt_clear(pio, 1);
 }
 
 void raise_key() {
+    gpio_put(DEBUG_PIN, 0x0);
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
     } else {
