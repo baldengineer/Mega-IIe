@@ -54,10 +54,10 @@ out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
 
 .wrap_target 
 start:
-    wait 0 gpio KSEL2 side 1 [6]  ; KSEL2 and de-assert 245
-    wait 0 gpio KSEL1  [6] ; KSEL1 both seem to do the same thing
+    wait 0 gpio KSEL2 side 1 [7]  ; [6] KSEL2 and de-assert 245 
+    wait 0 gpio KSEL1   [7] ; [6] KSEL1 both seem to do the same thing 
 C0XX:
-    pull noblock   [6]     ; Get Values 0xYX Y = anykey X = Key
+    pull noblock       [7] ; [6] Get Values 0xYX Y = anykey X = Key 
     
     mov isr,null        ; Clear ISR
     in PINS, 1          ; get KSEL0 from the input pins (bottom bit)
@@ -90,9 +90,11 @@ read:
     nop side 0          ;Enable DB
 not_read:  
     wait 0 gpio PH0     ; wait for data phase to end
+    nop side 1 [6]
 .wrap          
 
 .program dataout
+    set x, 13
     .wrap_target
     irq wait 0
     pull noblock

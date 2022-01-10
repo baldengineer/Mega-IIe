@@ -56,6 +56,8 @@
 #define    RW 15
 #define   PH0 16
 
+#define RESET_CTL 18
+
 #define SERIAL_ANYKEY_CLEAR_INTERVAL 50
 
 #define OUT true
@@ -227,14 +229,11 @@ void setup_main_databus() {
         gpio_init(main_data[x]);
         gpio_set_dir(main_data[x], GPIO_OUT);
         gpio_put(main_data[x], 0x1);
+        busy_wait_ms(5);
     }
 }
 
 static inline void KBD_pio_setup() {
-PIO pio;
-uint pio_offset;
-//uint pio_sm;
-//uint pio_sm_1;
     pio = pio0;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);
@@ -272,7 +271,7 @@ uint pio_offset;
     // second state machine
     //-------------------------------
     pio_offset = pio_add_program(pio, &dataout_program);
-    pio_sm = pio_claim_unused_sm(pio, true);
+    pio_sm_1 = pio_claim_unused_sm(pio, true);
 
     c = dataout_program_get_default_config(pio_offset);
     pio_sm_set_enabled(pio, pio_sm_1, false);
@@ -283,26 +282,29 @@ uint pio_offset;
     }
     sm_config_set_out_pins(&c, MD0, 7); // TODO: Fix this later
     pio_sm_set_consecutive_pindirs(pio, pio_sm_1, MD0, 7, OUT);
+    pio_sm_init(pio, pio_sm_1, pio_offset, &c); // james add
     pio_sm_set_enabled(pio, pio_sm_1, true);
 }
 
 void prepare_key_value(uint8_t key_value) {
         // direction of mask and for() depends on GPIO to MDx mapping
-        uint8_t io_mask = 0x01; 
+        uint8_t io_mask = 0x80; 
         printf("(%#04x): ", key_value);
         //printf("%c", key_value);
         // make sure we don't respond with valid data while
         // changing the GPIO pins
      //   pio_sm_put(pio, pio_sm, (0x0));
-        for (int gpio = MD0; gpio < MD7; gpio++) {
+        for (int gpio = MD7; gpio >= MD0; gpio--) {
+            if (gpio == MD3)
+                printf(" ");
             if (io_mask & key_value) {
-     //           gpio_put(gpio,0x1);
+                gpio_put(gpio,0x1);
                 printf("1");
             } else {
-       //         gpio_put(gpio,0x0);
+                gpio_put(gpio,0x0);
                 printf("0");
             }
-            io_mask = io_mask << 1;
+            io_mask = io_mask >> 1;
         }
         printf("\n");
        // pio_sm_put(pio, pio_sm, (0x1));
@@ -320,8 +322,20 @@ uint8_t handle_serial_keyboard() {
 
 void setup() {
     setup_main_databus();
-
     stdio_init_all();  // so we can see stuff on UART
+
+    // debug pin to trigger the external logic analyzer
+    printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);
+    gpio_init(DEBUG_PIN);
+    gpio_set_dir(DEBUG_PIN, GPIO_OUT);
+    gpio_put(DEBUG_PIN, 0x0);
+
+    printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
+    gpio_init(RESET_CTL);
+    gpio_set_dir(RESET_CTL, GPIO_OUT);
+    gpio_put(RESET_CTL, 0x0);
+
+    // ************************************************************
 
     // TODO: Add an LED to the board (Whooops)
     // gpio_init(LED_PIN);
@@ -329,49 +343,29 @@ void setup() {
 
     gpio_init(shifter_enable);
     gpio_set_dir(shifter_enable, GPIO_OUT);
-    gpio_put(shifter_enable, ENABLED);
-
-    // debug pin to trigger the external logic analyzer
-    printf("Configuring DEBUG Pin (%d)\n", DEBUG_PIN);
-    gpio_init(DEBUG_PIN);
-    gpio_set_dir(DEBUG_PIN, GPIO_OUT);
-    gpio_put(DEBUG_PIN, 0x0);
+    gpio_put(shifter_enable, true); // the TXB0108 is active HI!
 
     // yay usb!
     tusb_init();
 
     // couple of times for funnsies
     // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
-    printf("Enabling tuh_task\n");
+    printf("\nEnabling tuh_task");
     add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
-    printf("(---------\n");
+    printf("\n(---------");
     // printf("Connecting System Clock to Pin 21\n");
     // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
 
-    printf("Configuring State Machine\n");
-    KBD_pio_setup();  
-    printf("Configuring initial Keyvalue (%c)\n", 0x20);
-    prepare_key_value(0x20);
-
     // configure I/O control lines
-    gpio_init(KSEL0); 
-    gpio_init(KSEL1);
-    gpio_init(KSEL2);
-    gpio_init(RW);
-    gpio_init(PH0);
-    gpio_set_dir(KSEL0,true);
-    gpio_set_dir(KSEL1,true);
-    gpio_set_dir(KSEL2,true);
-    gpio_set_dir(RW,true);
-    gpio_set_dir(PH0,true);
+    printf("\nConfiguring IO Pins");
+    printf("\nConfiguring State Machine");
+    KBD_pio_setup();  
 
-    gpio_put(RW,true); //RW
-    gpio_put(KSEL0,true); //KSEL0
-    gpio_put(KSEL1,true); //KSEL1
-    gpio_put(KSEL2,true); //KSEL2
-    gpio_put(PH0,false); //PH
+        printf("\nConfiguring initial Keyvalue (%c)", 0x20);
+    prepare_key_value(0x20);
+    raise_key();
 
-    printf("---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
+    printf("\n\n---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
 
 int main() {
@@ -394,15 +388,35 @@ int main() {
         // Check the serial buffer
         key_value = handle_serial_keyboard(); 
         if (key_value > 0) {
-            prepare_key_value(key_value);
-            any_clear = true;
-            previous_anyclear = millis();
+            if (key_value == 0x12) { // should be CTRL-R
+                printf("Resetting Mega-II...");
+                gpio_put(RESET_CTL, 0x1);
+                pio_sm_set_enabled(pio, pio_sm, false);
+                pio_sm_set_enabled(pio, pio_sm_1, false);
+                pio_sm_restart(pio, pio_sm);
+                pio_sm_restart(pio, pio_sm_1);
+                printf("Resetting Mega-II....");
+                busy_wait_ms(100);
+                printf(".");
+                hid_app_task();
+                handle_tinyusb();
+                printf("...[DONE]\n");
+                pio_sm_set_enabled(pio, pio_sm, true);
+                pio_sm_set_enabled(pio, pio_sm_1, true);
+                gpio_put(RESET_CTL, 0x0);
+
+            } else {
+                prepare_key_value(key_value);
+                any_clear = true;
+                previous_anyclear = millis();
+            }
+
         }
 
         // deassert ANYKEY when receiving characters over serial
         if (any_clear && (millis() - previous_anyclear >= SERIAL_ANYKEY_CLEAR_INTERVAL)) {
-            any_clear = false;
-            //pio_sm_put(pio, pio_sm, (0x0));
+            any_clear = false; 
+            pio_sm_put(pio, pio_sm, (0x0));
             raise_key();
         }
     }
@@ -411,6 +425,7 @@ int main() {
 }
 
 void write_key(uint8_t key) {
+   // gpio_put(enable_245_pin  , ENABLED);
     gpio_put(DEBUG_PIN, 0x1);
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
@@ -418,6 +433,7 @@ void write_key(uint8_t key) {
 }
 
 void raise_key() {
+  //  gpio_put(enable_245_pin  , DISABLED);
     gpio_put(DEBUG_PIN, 0x0);
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
