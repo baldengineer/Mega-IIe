@@ -206,6 +206,7 @@ void check_keyboard_buffer() {
                     printf(",");
                 uint8_t ascii = get_ascii(x, modifiers);
                 printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
+                write_key(ascii);
                 did_print = true;
             }
         }
