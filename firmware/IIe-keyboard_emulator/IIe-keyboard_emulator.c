@@ -58,7 +58,7 @@
 
 #define RESET_CTL 18
 
-#define SERIAL_ANYKEY_CLEAR_INTERVAL 50
+uint8_t serial_anykey_clear_interval = 100;
 
 #define OUT true
 #define IN false
@@ -361,9 +361,9 @@ void setup() {
     printf("\nConfiguring State Machine");
     KBD_pio_setup();  
 
-        printf("\nConfiguring initial Keyvalue (%c)", 0x20);
-    prepare_key_value(0x20);
-    raise_key();
+    // printf("\nConfiguring initial Keyvalue (%c)", 0x20);
+    // prepare_key_value(0x20);
+    // raise_key();
 
     printf("\n\n---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
@@ -414,7 +414,7 @@ int main() {
         }
 
         // deassert ANYKEY when receiving characters over serial
-        if (any_clear && (millis() - previous_anyclear >= SERIAL_ANYKEY_CLEAR_INTERVAL)) {
+        if (any_clear && (millis() - previous_anyclear >= serial_anykey_clear_interval)) {
             any_clear = false; 
             pio_sm_put(pio, pio_sm, (0x0));
             raise_key();
