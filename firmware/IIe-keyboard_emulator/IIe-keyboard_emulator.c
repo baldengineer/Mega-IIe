@@ -59,7 +59,8 @@
 #define RESET_CTL 18
 
 uint8_t serial_anykey_clear_interval = 100;
-
+extern uint8_t last_key_pressed;
+extern uint8_t nkey;
 #define OUT true
 #define IN false
 
@@ -100,6 +101,7 @@ static inline void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 void raise_key();
 void write_key(uint8_t key);
+void reset_mega(uint8_t reset_type);
 
 // Pins for us to use somewhere else
 const uint8_t enable_245_pin = 11;
@@ -205,12 +207,19 @@ void check_keyboard_buffer() {
                 if (did_print)
                     printf(",");
                 uint8_t ascii = get_ascii(x, modifiers);
-                printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
+                // handle special case :)
+                if ((x==76) && (modifiers==5)) {
+                    // ctrl-alt-del!!
+                    reset_mega(1);
+                    return;
+                }
+              //  printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
+                write_key(ascii);
                 did_print = true;
             }
         }
-        if (did_print)
-            printf(",%d\n", modifiers);
+        // if (did_print)
+        //     printf(",%d\n", modifiers);
 
         prev_key_millis = current_millis;
     }
@@ -368,6 +377,26 @@ void setup() {
     printf("\n\n---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
 }
 
+void reset_mega(uint8_t reset_type) {
+    //reset_type = cold or warm
+
+    printf("Resetting Mega-II...");
+    gpio_put(RESET_CTL, 0x1);
+    pio_sm_set_enabled(pio, pio_sm, false);
+    pio_sm_set_enabled(pio, pio_sm_1, false);
+    pio_sm_restart(pio, pio_sm);
+    pio_sm_restart(pio, pio_sm_1);
+    printf("Resetting Mega-II....");
+    busy_wait_ms(100);
+    printf(".");
+    hid_app_task();
+    handle_tinyusb();
+    printf("...[DONE]\n");
+    pio_sm_set_enabled(pio, pio_sm, true);
+    pio_sm_set_enabled(pio, pio_sm_1, true);
+    gpio_put(RESET_CTL, 0x0);
+}
+
 int main() {
     setup();
 
@@ -383,28 +412,20 @@ int main() {
 
         uint8_t key_value = 0;
         // Check the USB keyboard
-        check_keyboard_buffer();
+      //  check_keyboard_buffer();
+        static uint32_t previous_keypress = 0;
+        if (nkey > 0) {
+            if (millis() - previous_keypress >= 100) {
+                write_key(last_key_pressed);
+                previous_keypress = millis();
+            }
+        }
 
         // Check the serial buffer
         key_value = handle_serial_keyboard(); 
         if (key_value > 0) {
             if (key_value == 0x12) { // should be CTRL-R
-                printf("Resetting Mega-II...");
-                gpio_put(RESET_CTL, 0x1);
-                pio_sm_set_enabled(pio, pio_sm, false);
-                pio_sm_set_enabled(pio, pio_sm_1, false);
-                pio_sm_restart(pio, pio_sm);
-                pio_sm_restart(pio, pio_sm_1);
-                printf("Resetting Mega-II....");
-                busy_wait_ms(100);
-                printf(".");
-                hid_app_task();
-                handle_tinyusb();
-                printf("...[DONE]\n");
-                pio_sm_set_enabled(pio, pio_sm, true);
-                pio_sm_set_enabled(pio, pio_sm_1, true);
-                gpio_put(RESET_CTL, 0x0);
-
+                reset_mega(1); // 0 = cold, 1 = warm
             } else {
                 prepare_key_value(key_value);
                 any_clear = true;
@@ -426,6 +447,7 @@ int main() {
 
 void write_key(uint8_t key) {
    // gpio_put(enable_245_pin  , ENABLED);
+    printf("+");
     gpio_put(DEBUG_PIN, 0x1);
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
@@ -434,6 +456,7 @@ void write_key(uint8_t key) {
 
 void raise_key() {
   //  gpio_put(enable_245_pin  , DISABLED);
+    printf("-");
     gpio_put(DEBUG_PIN, 0x0);
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);

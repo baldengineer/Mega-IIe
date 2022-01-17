@@ -39,6 +39,8 @@
 
 #define MAX_REPORT 4
 
+uint8_t last_key_pressed=0;
+uint8_t nkey = 0;
 extern uint8_t keys[101];
 extern uint8_t modifiers;
 extern bool print_usb_report;
@@ -46,6 +48,8 @@ extern uint32_t millis();
 extern volatile bool kbd_connected;
 extern void wtf_bbq_led(uint8_t state);
 extern volatile uint8_t kbd_led_state[1];
+extern void write_key(uint8_t key);
+extern void raise_key();
 uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 bool any_key=false;
@@ -144,11 +148,11 @@ static inline bool find_key_in_report(hid_keyboard_report_t const* report, uint8
 }
 
 void print_report_why_not(hid_keyboard_report_t const* report) {
-    printf("Report: ");
-    for (uint8_t i = 0; i < 6; i++) {
-        printf("%d,", report->keycode[i]);
-    }
-    printf("\n");
+    // printf("Report: ");
+    // for (uint8_t i = 0; i < 6; i++) {
+    //     printf("%d,", report->keycode[i]);
+    // }
+    // printf("\n");
 }
 
 /*
@@ -190,8 +194,12 @@ void check_for_released_key(hid_keyboard_report_t const* prev_report, hid_keyboa
             if (prev_report->keycode[prev] == report->keycode[curr])
                 found_in_report = true;
         }
-        if (!found_in_report)
+        if (!found_in_report) {
+            printf("Raising '%c'(%d)\n", get_ascii(prev_report->keycode[prev],0), get_ascii(prev_report->keycode[prev],0));
+            raise_key(get_ascii(prev_report->keycode[prev],0));
             keys[(prev_report->keycode[prev])] = 0;
+        }
+
     }
 }
 
@@ -217,22 +225,51 @@ uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
 static void process_kbd_report(hid_keyboard_report_t const* report) {
     static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
 
-    // apple ii would assert this when a key is pressed
-    any_key = true;
+   // any_key = true; // should we do this?
 
     // if (print_usb_report)
     //     print_report_why_not(report);
 
     // see what keys were released
-    check_for_released_key(&prev_report, report);
+  //  check_for_released_key(&prev_report, report);
 
+  // 0,0,0,0,0
+  // 1,0,0,0,0 output: 1
+  // 1,2,0,0,0 output: 2
+  // 1,2,3,0,0 output: 3
+  // 1,2,0,0,0 output: 3
+  // 1,2,4     output: 4
+  // 1,2,4     output: 4
+  // 0,0,0,0,0
+  // 0,0,0,0,0
+  
+
+    modifiers = report->modifier;
+    printf("report: ");
+   // last_key_pressed = 0;
+    uint8_t pressed_count = 0;
     for (uint8_t i = 0; i < 6; i++) {
+        printf("%d,", report->keycode[i]);
         if (report->keycode[i]) {
+            pressed_count++;
             keys[report->keycode[i]] = 1;
+            if (pressed_count > nkey) {
+                nkey = pressed_count;
+                last_key_pressed = get_ascii(report->keycode[i],modifiers);
+            }
         }
     }
 
-    modifiers = report->modifier;
+    printf("\n");
+    if (pressed_count == 0) {
+        raise_key();
+        nkey = 0;
+    } 
+    // else {
+    //     write_key(last_key_pressed);
+    // }
+
+
     prev_report = *report;
 }
 
