@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name gd-audio-proto-pcb-rescue)(type Legacy)(uri "${KIPRJMOD}/gd audio proto pcb-rescue.lib")(options "")(descr ""))
+)
