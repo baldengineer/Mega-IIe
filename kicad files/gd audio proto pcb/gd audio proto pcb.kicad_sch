@@ -1376,7 +1376,7 @@
     (property "Value" "220n" (id 1) (at 160.02 76.2 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Resistor_SMD:R_0805_2012Metric" (id 2) (at 157.48 80.01 0)
+    (property "Footprint" "Resistor_SMD:R_1206_3216Metric" (id 2) (at 157.48 80.01 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 157.48 80.01 0)
@@ -2036,7 +2036,7 @@
       (reference "#PWR0118") (unit 1) (value "+5V") (footprint "")
     )
     (path "/00000000-0000-0000-0000-000061f55caf"
-      (reference "C1") (unit 1) (value "220n") (footprint "Resistor_SMD:R_0805_2012Metric")
+      (reference "C1") (unit 1) (value "220n") (footprint "Resistor_SMD:R_1206_3216Metric")
     )
     (path "/00000000-0000-0000-0000-000061f59587"
       (reference "C2") (unit 1) (value "1u") (footprint "Resistor_SMD:R_0805_2012Metric")
