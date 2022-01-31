@@ -437,7 +437,7 @@ int main() {
         // deassert ANYKEY when receiving characters over serial
         if (any_clear && (millis() - previous_anyclear >= serial_anykey_clear_interval)) {
             any_clear = false; 
-            pio_sm_put(pio, pio_sm, (0x0));
+            //pio_sm_put(pio, pio_sm, (0x0));
             raise_key();
         }
     }
