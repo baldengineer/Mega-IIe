@@ -22,6 +22,7 @@ pico_sdk_init()
 add_executable(IIe-keyboard_emulator 
         IIe-keyboard_emulator.c 
         src/iie_hid_app.c
+        src/power_sequence.c
         )
 
         
@@ -49,6 +50,6 @@ target_link_libraries(IIe-keyboard_emulator
         tinyusb_board
         tinyusb_host
         )
-
+        
 pico_add_extra_outputs(IIe-keyboard_emulator)
 

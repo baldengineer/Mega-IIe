@@ -23,104 +23,7 @@
  *
  */
 
-#include <stdio.h>
-
-// These aren't all used yet, but they will be
-#include "KBD.pio.h"
-#include "hardware/clocks.h"
-#include "hardware/pio.h"
-#include "hardware/timer.h"
-#include "hardware/watchdog.h"
-#include "pico/stdlib.h"
-
-// So much easier to read
-#define ON 0x1
-#define OFF 0x0
-
-// valid for active LOW signals
-#define ENABLED 0x0
-#define DISABLED 0x1
-
-// Corrected data bus on rev2
-#define KSEL0  2
-#define   MD0  3
-#define   MD1  4
-#define   MD2  5
-#define   MD3  6
-#define   MD4  7
-#define   MD5  8
-#define   MD6  9
-#define   MD7 10
-#define KSEL1 13
-#define KSEL2 14
-#define    RW 15
-#define   PH0 16
-
-// Power Sequencing
-#define   MEGA_POWER 26   // input!
-#define  Enable_p12V 27   // output
-#define  Enable_n12V 28   // output
-#define   Enable_p5V 29   // output
-#define PWR_SEQ_MASK 0x38000000  
-#define      PRESSED 0x0
-#define  NOT_PRESSED 0x1
-
-uint8_t mega_power_state = 0x0;
-
-
-#define RESET_CTL 18
-
-uint8_t serial_anykey_clear_interval = 100;
-extern uint8_t last_key_pressed;
-extern uint8_t nkey;
-#define OUT true
-#define IN false
-
-uint8_t keys[101] = {0};
-uint8_t modifiers = 0;
-
-// Useful flags for useful things
-volatile bool kbd_connected = false;
-volatile bool dousb = false;
-volatile uint8_t kbd_led_state[1] = {0x0};
-bool print_usb_report = false;
-struct repeating_timer timer1;
-struct repeating_timer timer2;
-
-// Constantly constant
-const uint16_t led_interval = 500;
-const uint16_t key_delay = 100;
-const uint16_t delay_time = 1000;
-
-// IO Pins
-//const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin (that we don't have)
-const uint DEBUG_PIN = 24;
-
-// PIO Globals
-PIO pio;
-uint pio_offset;
-uint pio_sm;
-uint pio_sm_1;
-
-// From the outside scary world
-extern void imma_led(uint8_t state);
-extern void hid_app_task(void);
-extern bool tusb_init();
-extern bool tuh_task();
-extern bool any_key;
-extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
-static inline void KBD_pio_setup();
-extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
-void raise_key();
-void write_key(uint8_t key);
-void reset_mega(uint8_t reset_type);
-
-// Pins for us to use somewhere else
-const uint8_t enable_245_pin = 11;
-bool state_245 = DISABLED;
-
-// Control the level shifter
-const uint8_t shifter_enable = 25;
+#include "IIe-keyboard_emulator.h"
 
 // old habits die hard
 uint32_t millis() {
@@ -139,7 +42,7 @@ void wtf_bbq_led() {
 
 // eventually this causes the keyboard to stop respoding
 // we took out the panic assertion that it normally causes
-bool blink_led_callback(struct repeating_timer *t) {
+/*bool blink_led_callback(struct repeating_timer *t) {
     (void)t;
     static bool led_state = OFF;
 
@@ -157,7 +60,7 @@ bool blink_led_callback(struct repeating_timer *t) {
             kbd_led_state[0] = kbd_led_state[0] & 0xFB;
         wtf_bbq_led();
     }
-}
+} */
 
 // Tim said this helps to prevent bus contention
 // it doesn't hurt but not sure if it helps
@@ -244,50 +147,11 @@ void handle_tinyusb() {
     }
 }
 
-void setup_power_sequence() {
-    // byte seq_pins[] = {MEGA_POWER, Enable_p12V, Enable_p5V, Enable_n12V};
 
-    // Init Outputs and turn it all off
-    gpio_init_mask(PWR_SEQ_MASK);
-    gpio_put_masked(PWR_SEQ_MASK, 0x0);   // does this set the value for output before enabling it?
-    gpio_set_dir_out_masked(PWR_SEQ_MASK);
-    gpio_put_masked(PWR_SEQ_MASK, 0x0);
 
-    // Get Mega Power Button Ready
-    gpio_init(MEGA_POWER);
-    gpio_set_input_enabled(MEGA_POWER, true);
-    gpio_pull_up(MEGA_POWER);
-}
 
-void handle_power_sequence(uint8_t state) {
-    // state 0: turn off everything
-    // state 1: turn on everything
-    // state 2: power cycle
-    switch(state) {
-        case 0:
-            printf("Turning off supplies.\n");
-            gpio_put_masked(PWR_SEQ_MASK, 0x0);
-        break;
 
-        case 1:
-            printf("Turning on Supplies.\n");
-            gpio_put_masked(PWR_SEQ_MASK, PWR_SEQ_MASK); // mask has the bits we want
-        break;
-
-        case 2:
-            printf("Cycling Power\n");
-            printf("Off...");
-            gpio_put_masked(PWR_SEQ_MASK, 0x0);
-            busy_wait_ms(250);
-            printf("---");
-            busy_wait_ms(250);
-            printf("On...\n");
-            gpio_put_masked(PWR_SEQ_MASK, PWR_SEQ_MASK);
-        break;
-    }
-
-}
-
+// todo: convert to using the _mask function calls
 void setup_main_databus() {
     const uint8_t main_data[] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
     for (int x = 0; x < (sizeof(main_data)/sizeof(main_data[0])); x++) {
@@ -385,24 +249,6 @@ uint8_t handle_serial_keyboard() {
     return 0;
 }
 
-void toggle_pwr_pins() {
-    static uint8_t pin_state = 0x0;
-    int32_t mask = 0x38000000;   // 0xF << 25 :)
-
-    // value_mask = 0011 1100 
-    //              0010 1000
-    //              0001 0100
-
-    pin_state = ~pin_state;
-    if (pin_state)
-        gpio_put_masked(mask,0x28FFFFFF);
-    else
-        gpio_put_masked(mask,0x10000000);
-    printf("Setting output pins to: %d\n", pin_state);
-
-}
-
-
 void setup() {
     setup_main_databus();
     stdio_init_all();  // so we can see stuff on UART
@@ -454,7 +300,7 @@ void setup() {
     // prepare_key_value(0x20);
     // raise_key();
 
-    printf("\n\n---------\nIIe Keyboard Emulatron 2000 READY\n]\n");
+    printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }
 
 
@@ -478,23 +324,7 @@ void reset_mega(uint8_t reset_type) {
     gpio_put(RESET_CTL, 0x0);
 }
 
-void handle_mega_power_button() {
-    static bool prev_mega_power = NOT_PRESSED;
 
-    bool curr_mega_power = gpio_get(MEGA_POWER);
-
-    if (curr_mega_power != prev_mega_power) {
-        if (curr_mega_power == PRESSED) {
-            mega_power_state++;
-            if (mega_power_state > 1)
-                mega_power_state = 0;
-            handle_power_sequence(mega_power_state);
-        }
-
-        prev_mega_power = curr_mega_power;
-    }
-
-}
 
 int main() {
     setup();
@@ -528,9 +358,6 @@ int main() {
         if (key_value > 0) {
             if (key_value == 0x12) { // should be CTRL-R
                 //reset_mega(1); // 0 = cold, 1 = warm
-                mega_power_state++;
-                if (mega_power_state > 1)
-                    mega_power_state = 0;
                 handle_power_sequence(mega_power_state);
             } else {
                 prepare_key_value(key_value);
