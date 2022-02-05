@@ -30,6 +30,7 @@ uint32_t millis() {
     return ((time_us_32() / 1000));
 }
 
+// example of setting leds on keyboard
 void wtf_bbq_led() {
     static uint8_t dev_addr = 0x1;
     static uint8_t instance = 0x0;
@@ -40,74 +41,10 @@ void wtf_bbq_led() {
         tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
 }
 
-// eventually this causes the keyboard to stop respoding
-// we took out the panic assertion that it normally causes
-/*bool blink_led_callback(struct repeating_timer *t) {
-    (void)t;
-    static bool led_state = OFF;
-
-    // blink GP25 LED (which I don't have)
-    // led_state = !led_state;
-    // gpio_put(LED_PIN, led_state);
-
-    // blink keyboard's scrolllock key
-    if (kbd_connected) {
-        static bool scroll_led_state = false;
-        scroll_led_state = !scroll_led_state;
-        if (scroll_led_state)
-            kbd_led_state[0] = kbd_led_state[0] | 0x04;
-        else
-            kbd_led_state[0] = kbd_led_state[0] & 0xFB;
-        wtf_bbq_led();
-    }
-} */
-
-// Tim said this helps to prevent bus contention
-// it doesn't hurt but not sure if it helps
+// trying to reduce bus contention
 bool repeating_timer_callback(struct repeating_timer *t) {
     dousb = true;
     return true;
-}
-
-// not sure what to do with this section. need a mode to 
-// enable and disable the "serial" passthrough
-void handle_serial() {
-    // print something when receiving any character
-    int incoming_char = getchar_timeout_us(0);
-    if ((incoming_char > 31) && (incoming_char < 127)) {
-        switch (incoming_char) {
-            case 'b':
-            case 'B':
-                state_245 = !state_245;
-                puts(state_245 == ENABLED ? "245 enabled" : "245 disabled");
-                gpio_put(enable_245_pin, state_245);
-                break;
-            case '.':
-                print_usb_report = !print_usb_report;
-                break;
-            case 'p':
-                imma_led(0x01);
-                break;
-            case 'o':
-                imma_led(0x02);
-                break;
-            case 'i':
-                imma_led(0x04);
-                break;
-            case 'u':
-                imma_led(0x08);
-                break;
-            case 'y':
-                imma_led(0x10);
-                break;
-            case 'z':
-                imma_led(0x00);
-                break;
-            default:
-                printf("millis(): %d\n", millis());
-                break;
-        }
-    }
 }
 
 void check_keyboard_buffer() {
@@ -222,7 +159,7 @@ void prepare_key_value(uint8_t key_value) {
         //printf("%c", key_value);
         // make sure we don't respond with valid data while
         // changing the GPIO pins
-     //   pio_sm_put(pio, pio_sm, (0x0));
+        // pio_sm_put(pio, pio_sm, (0x0));
         for (int gpio = MD7; gpio >= MD0; gpio--) {
             if (gpio == MD3)
                 printf(" ");
@@ -271,11 +208,6 @@ void setup() {
     gpio_put(RESET_CTL, 0x0);
 
     // ************************************************************
-
-    // TODO: Add an LED to the board (Whooops)
-    // gpio_init(LED_PIN);
-    // gpio_set_dir(LED_PIN, GPIO_OUT);
-
     gpio_init(shifter_enable);
     gpio_set_dir(shifter_enable, GPIO_OUT);
     gpio_put(shifter_enable, true); // the TXB0108 is active HI!
@@ -283,22 +215,15 @@ void setup() {
     // yay usb!
     tusb_init();
 
-    // couple of times for funnsies
-    // add_repeating_timer_ms(500, blink_led_callback, NULL, &timer1);
+    // helps with throtting usb (may get fixed in future TinyUSB, I hope)
     printf("\nEnabling tuh_task");
     add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
     printf("\n(---------");
-    // printf("Connecting System Clock to Pin 21\n");
-    // clock_gpio_init(21, CLOCKS_CLK_GPOUT0_CTRL_AUXSRC_VALUE_CLK_SYS, 10);
 
     // configure I/O control lines
     printf("\nConfiguring IO Pins");
     printf("\nConfiguring State Machine");
     KBD_pio_setup();  
-
-    // printf("\nConfiguring initial Keyvalue (%c)", 0x20);
-    // prepare_key_value(0x20);
-    // raise_key();
 
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }
@@ -338,7 +263,6 @@ int main() {
         
         hid_app_task();
         handle_tinyusb();
-        //  handle_serial();
 
         uint8_t key_value = 0;
         // Check the USB keyboard
