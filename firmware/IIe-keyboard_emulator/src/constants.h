@@ -1,5 +1,8 @@
 #ifndef constants_H
 
+#include <stdio.h>
+#include "pico/stdlib.h"
+
 // So much easier to read
 #define ON 0x1
 #define OFF 0x0

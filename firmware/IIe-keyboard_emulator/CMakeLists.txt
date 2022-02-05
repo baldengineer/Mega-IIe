@@ -23,6 +23,7 @@ add_executable(IIe-keyboard_emulator
         IIe-keyboard_emulator.c 
         src/iie_hid_app.c
         src/power_sequence.c
+        src/kbd_pio_handler.c
         )
 
         

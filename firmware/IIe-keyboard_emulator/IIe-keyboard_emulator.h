@@ -53,5 +53,5 @@ extern void toggle_pwr_pins();
 extern void handle_mega_power_button();
 extern void handle_power_sequence(uint8_t state);
 extern void setup_power_sequence();
-
+extern void KBD_pio_setup(PIO *pio, uint *pio_offset, uint *pio_sm, uint *pio_sm_1);
 #endif
