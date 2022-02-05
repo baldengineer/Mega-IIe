@@ -31,7 +31,7 @@ uint32_t millis() {
 }
 
 // example of setting leds on keyboard
-void wtf_bbq_led() {
+/*void wtf_bbq_led() {
     static uint8_t dev_addr = 0x1;
     static uint8_t instance = 0x0;
     static uint8_t report_id = 0x0;
@@ -39,7 +39,7 @@ void wtf_bbq_led() {
 
     if (kbd_connected)
         tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
-}
+}*/
 
 // trying to reduce bus contention
 bool repeating_timer_callback(struct repeating_timer *t) {
@@ -83,10 +83,6 @@ void handle_tinyusb() {
         dousb = false;
     }
 }
-
-
-
-
 
 // todo: convert to using the _mask function calls
 void setup_main_databus() {
@@ -177,6 +173,46 @@ void prepare_key_value(uint8_t key_value) {
        write_key(key_value);
 }
 
+// todo pass references to pio stuff so I can move to another file
+void reset_mega(uint8_t reset_type) {
+    //reset_type = cold or warm
+    printf("Resetting Mega-II...");
+    gpio_put(RESET_CTL, 0x1);
+    pio_sm_set_enabled(pio, pio_sm, false);
+    pio_sm_set_enabled(pio, pio_sm_1, false);
+    pio_sm_restart(pio, pio_sm);
+    pio_sm_restart(pio, pio_sm_1);
+    printf("Resetting Mega-II....");
+    busy_wait_ms(100);
+    printf(".");
+    hid_app_task();
+    handle_tinyusb();
+    printf("...[DONE]\n");
+    pio_sm_set_enabled(pio, pio_sm, true);
+    pio_sm_set_enabled(pio, pio_sm_1, true);
+    gpio_put(RESET_CTL, 0x0);
+}
+
+void write_key(uint8_t key) {
+   // gpio_put(enable_245_pin  , ENABLED);
+    printf("+");
+    gpio_put(DEBUG_PIN, 0x1);
+    pio_sm_put(pio, pio_sm_1, key & 0x7F); 
+    pio_sm_put(pio, pio_sm, 0x3);
+    pio_interrupt_clear(pio, 1);
+}
+
+void raise_key() {
+  //  gpio_put(enable_245_pin  , DISABLED);
+    printf("-");
+    gpio_put(DEBUG_PIN, 0x0);
+    if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
+        pio_sm_put(pio, pio_sm,0x1);
+    } else {
+        pio_sm_put(pio, pio_sm,0x0);
+    }
+}
+
 uint8_t handle_serial_keyboard() {
     int incoming_char = getchar_timeout_us(0);
     // MEGA-II only seems to like these values
@@ -229,25 +265,7 @@ void setup() {
 }
 
 
-void reset_mega(uint8_t reset_type) {
-    //reset_type = cold or warm
 
-    printf("Resetting Mega-II...");
-    gpio_put(RESET_CTL, 0x1);
-    pio_sm_set_enabled(pio, pio_sm, false);
-    pio_sm_set_enabled(pio, pio_sm_1, false);
-    pio_sm_restart(pio, pio_sm);
-    pio_sm_restart(pio, pio_sm_1);
-    printf("Resetting Mega-II....");
-    busy_wait_ms(100);
-    printf(".");
-    hid_app_task();
-    handle_tinyusb();
-    printf("...[DONE]\n");
-    pio_sm_set_enabled(pio, pio_sm, true);
-    pio_sm_set_enabled(pio, pio_sm_1, true);
-    gpio_put(RESET_CTL, 0x0);
-}
 
 
 
@@ -302,23 +320,4 @@ int main() {
     return 0;  // but you never will hah!
 }
 
-void write_key(uint8_t key) {
-   // gpio_put(enable_245_pin  , ENABLED);
-    printf("+");
-    gpio_put(DEBUG_PIN, 0x1);
-    pio_sm_put(pio, pio_sm_1, key & 0x7F); 
-    pio_sm_put(pio, pio_sm, 0x3);
-    pio_interrupt_clear(pio, 1);
-}
 
-void raise_key() {
-  //  gpio_put(enable_245_pin  , DISABLED);
-    printf("-");
-    gpio_put(DEBUG_PIN, 0x0);
-    if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
-        pio_sm_put(pio, pio_sm,0x1);
-    } else {
-        pio_sm_put(pio, pio_sm,0x0);
-    }
-    
-}
