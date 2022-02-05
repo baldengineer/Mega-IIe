@@ -48,7 +48,7 @@ static const uint8_t shifter_enable = 25;
 #define  Enable_p12V 27   // output
 #define  Enable_n12V 28   // output
 #define   Enable_p5V 29   // output
-#define PWR_SEQ_MASK 0x38000000  
+#define PWR_SEQ_MASK 0x38000000  // should match 29,28,27
 #define      PRESSED 0x0
 #define  NOT_PRESSED 0x1
 
