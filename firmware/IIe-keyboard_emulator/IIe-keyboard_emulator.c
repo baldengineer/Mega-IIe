@@ -91,7 +91,6 @@ void setup_main_databus() {
         gpio_init(main_data[x]);
         gpio_set_dir(main_data[x], GPIO_OUT);
         gpio_put(main_data[x], 0x1);
-        busy_wait_ms(5);
     }
 }
 
@@ -99,10 +98,8 @@ void prepare_key_value(uint8_t key_value) {
         // direction of mask and for() depends on GPIO to MDx mapping
         uint8_t io_mask = 0x80; 
         printf("(%#04x): ", key_value);
-        //printf("%c", key_value);
-        // make sure we don't respond with valid data while
+
         // changing the GPIO pins
-        // pio_sm_put(pio, pio_sm, (0x0));
         for (int gpio = MD7; gpio >= MD0; gpio--) {
             if (gpio == MD3)
                 printf(" ");
@@ -116,20 +113,20 @@ void prepare_key_value(uint8_t key_value) {
             io_mask = io_mask >> 1;
         }
         printf("\n");
-       // pio_sm_put(pio, pio_sm, (0x1));
-       write_key(key_value);
+        write_key(key_value);
 }
 
 // todo pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
     //reset_type = cold or warm
-    printf("Resetting Mega-II...");
+    printf("Disabling Mega-II...");
     gpio_put(RESET_CTL, 0x1);
+    printf("\nReseting PIO...");
     pio_sm_set_enabled(pio, pio_sm, false);
     pio_sm_set_enabled(pio, pio_sm_1, false);
     pio_sm_restart(pio, pio_sm);
     pio_sm_restart(pio, pio_sm_1);
-    printf("Resetting Mega-II....");
+    printf("\nPausing");
     busy_wait_ms(100);
     printf(".");
     hid_app_task();
@@ -137,6 +134,7 @@ void reset_mega(uint8_t reset_type) {
     printf("...[DONE]\n");
     pio_sm_set_enabled(pio, pio_sm, true);
     pio_sm_set_enabled(pio, pio_sm_1, true);
+    printf("Enabling Mega-II...\n");
     gpio_put(RESET_CTL, 0x0);
 }
 
