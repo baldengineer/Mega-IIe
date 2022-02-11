@@ -60,6 +60,10 @@ extern bool shift_lock_state;
 static bool last_shift_lock_state;
 
 bool any_key=false;
+extern bool OAPL_state;
+extern bool CAPL_state;
+extern bool do_a_reset;
+
 static uint8_t const keycode2ascii[128][2] = {HID_KEYCODE_TO_ASCII};
 
 // Each HID instance can has multiple reports
@@ -284,6 +288,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         nkey = 0;
     } 
 
+
     // looking for special key sequences
     OAPL_state = false;
     CAPL_state = false;
@@ -303,8 +308,6 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                     do_a_reset = true;
             }
     }
-
-
 
     prev_report = *report;
 }

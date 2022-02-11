@@ -23,6 +23,7 @@
  *
  */
 
+
 #include "IIe-keyboard_emulator.h"
 
 // old habits die hard
@@ -229,6 +230,23 @@ int main() {
         
         hid_app_task();
         handle_tinyusb();
+
+        if (OAPL_state) {
+            gpio_put(OAPL_pin, 0x1);
+            //printf("OA\n");
+        } else
+            gpio_put(OAPL_pin, 0x0);
+
+        if (CAPL_state) {
+            gpio_put(CAPL_pin, 0x1);
+            //printf("CA\n");
+        } else
+            gpio_put(CAPL_pin, 0x0);
+    
+        if (do_a_reset) {
+            do_a_reset = false;
+            reset_mega(0);
+        }
 
         uint8_t key_value = 0;
         // Check the USB keyboard
