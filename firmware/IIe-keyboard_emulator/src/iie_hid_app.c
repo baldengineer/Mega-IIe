@@ -51,6 +51,9 @@ extern volatile uint8_t kbd_led_state[1];
 extern void write_key(uint8_t key);
 extern void raise_key();
 uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
+extern bool OAPL_state;
+extern bool CAPL_state;
+extern bool do_a_reset;
 
 bool any_key=false;
 static uint8_t const keycode2ascii[128][2] = {HID_KEYCODE_TO_ASCII};
@@ -259,12 +262,36 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
             }
         }
     }
+  printf("; modifiers=%d",report->modifier);
 
     printf("\n");
     if (pressed_count == 0) {
         raise_key();
         nkey = 0;
     } 
+
+    OAPL_state = false;
+    CAPL_state = false;
+    if (report->modifier > 0) {
+        if ((report->modifier & 0x08)) {
+            OAPL_state = true;
+           // printf("OA\n");
+        }
+            
+        if ((report->modifier & 0x80)) {
+            CAPL_state = true;
+            //printf("CA\n");
+        }
+
+        if ((report->modifier == 5)) {
+            for (uint8_t i = 0; i < 6; i++) {
+                if (report->keycode[i]==76) {
+                    do_a_reset = true;
+                    printf("\n\nImma CTL-ALT-DEL!\n\n");
+                }
+            }
+        }
+    }
     // else {
     //     write_key(last_key_pressed);
     // }

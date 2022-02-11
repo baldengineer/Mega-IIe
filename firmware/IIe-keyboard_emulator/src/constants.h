@@ -1,4 +1,5 @@
 #ifndef constants_H
+#define constants_H
 
 #include <stdio.h>
 #include "pico/stdlib.h"
@@ -39,9 +40,9 @@ static const uint16_t delay_time = 1000;
 
 // IO Pins
 //const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin (that we don't have)
-static const uint DEBUG_PIN = 24;
-static const uint8_t enable_245_pin = 11;
-static const uint8_t shifter_enable = 25;
+extern const uint DEBUG_PIN;
+extern const uint8_t enable_245_pin;
+extern const uint8_t shifter_enable;
 
 // Power Sequencing
 #define   MEGA_POWER 26   // input!
@@ -51,5 +52,12 @@ static const uint8_t shifter_enable = 25;
 #define PWR_SEQ_MASK 0x38000000  // should match 29,28,27
 #define      PRESSED 0x0
 #define  NOT_PRESSED 0x1
+
+// Apple Keys and RESET
+extern bool OAPL_state;
+extern bool CAPL_state;
+extern bool do_a_reset;
+extern const uint8_t OAPL_pin;
+extern const uint8_t CAPL_pin;
 
 #endif

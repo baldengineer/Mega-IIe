@@ -1,4 +1,5 @@
 #ifndef IIe_keyboard_emulator_h
+#define IIe_keyboard_emulator_h
 
 #include <stdio.h>
 
@@ -27,6 +28,16 @@ bool print_usb_report = false;
 struct repeating_timer timer1;
 struct repeating_timer timer2;
 bool state_245 = DISABLED;
+
+bool OAPL_state=false;
+bool CAPL_state=false;
+bool do_a_reset=false;
+const uint8_t OAPL_pin = 20;
+const uint8_t CAPL_pin = 23;
+
+const uint DEBUG_PIN = 24;
+const uint8_t enable_245_pin = 11;
+const uint8_t shifter_enable = 25;
 
 // PIO Globals
 PIO pio;

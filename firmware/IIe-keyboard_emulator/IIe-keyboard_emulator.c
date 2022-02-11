@@ -168,6 +168,7 @@ uint8_t handle_serial_keyboard() {
 }
 
 void setup() {
+
     setup_main_databus();
     stdio_init_all();  // so we can see stuff on UART
 
@@ -202,7 +203,14 @@ void setup() {
     printf("\n(---------");
 
     // configure I/O control lines
-    printf("\nConfiguring IO Pins");
+    printf("\nConfiguring OAPL and CAPL");
+    gpio_init(OAPL_pin);
+    gpio_init(CAPL_pin);
+    gpio_put(OAPL_pin, 0x0);
+    gpio_put(CAPL_pin, 0x0);
+    gpio_set_dir(OAPL_pin, GPIO_OUT); // true for out, false for in
+    gpio_set_dir(CAPL_pin, GPIO_OUT); // true for out, false for in
+
     printf("\nConfiguring State Machine");
     KBD_pio_setup();  
 
@@ -235,12 +243,31 @@ int main() {
         // getting Mega Attention
         handle_mega_power_button();
 
+        if (OAPL_state) {
+            gpio_put(OAPL_pin, 0x1);
+            //printf("OA\n");
+        } else
+            gpio_put(OAPL_pin, 0x0);
+
+        if (CAPL_state) {
+            gpio_put(CAPL_pin, 0x1);
+            //printf("CA\n");
+        } else
+            gpio_put(CAPL_pin, 0x0);
+    
+        if (do_a_reset) {
+            do_a_reset = false;
+            busy_wait_ms(250); // give time to let go of 3-key sequence
+            reset_mega(0);
+        }
+
+
         // Check the serial buffer
         key_value = handle_serial_keyboard(); 
         if (key_value > 0) {
             if (key_value == 0x12) { // should be CTRL-R
-                //reset_mega(1); // 0 = cold, 1 = warm
-                handle_power_sequence(mega_power_state);
+                reset_mega(1); // 0 = cold, 1 = warm
+                //handle_power_sequence(mega_power_state);
             } else {
                 prepare_key_value(key_value);
                 any_clear = true;
