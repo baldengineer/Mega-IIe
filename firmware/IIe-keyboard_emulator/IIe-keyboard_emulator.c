@@ -249,7 +249,7 @@ int main() {
  
         if (do_a_reset) {
             do_a_reset = false;
-            busy_wait_ms(750); // give time to let go of 3-key sequence
+            busy_wait_ms(THREE_FINGER_RESET_TIME); // give time to let go of 3-key sequence
             reset_mega(0);
         }
 
