@@ -90,6 +90,13 @@ uint pio_offset;
 uint pio_sm;
 uint pio_sm_1;
 
+// OAPL and CAPL
+bool OAPL_state = false;
+bool CAPL_state = false;
+bool do_a_reset = false;
+const uint OAPL_pin = 20;
+const uint CAPL_pin = 23;
+
 // From the outside scary world
 extern void imma_led(uint8_t state);
 extern void hid_app_task(void);
@@ -367,6 +374,12 @@ void setup() {
 
     // configure I/O control lines
     printf("\nConfiguring IO Pins");
+    printf("\nConfiguring OAPL and CAPL");
+    gpio_init(OAPL_pin);
+    gpio_init(CAPL_pin);
+    gpio_set_dir(OAPL_pin, GPIO_OUT); // true for out, false for in
+    gpio_set_dir(CAPL_pin, GPIO_OUT); // true for out, false for in
+
     printf("\nConfiguring State Machine");
     KBD_pio_setup();  
 
@@ -409,6 +422,23 @@ int main() {
         hid_app_task();
         handle_tinyusb();
         //  handle_serial();
+
+        if (OAPL_state) {
+            gpio_put(OAPL_pin, 0x1);
+            //printf("OA\n");
+        } else
+            gpio_put(OAPL_pin, 0x0);
+
+        if (CAPL_state) {
+            gpio_put(CAPL_pin, 0x1);
+            //printf("CA\n");
+        } else
+            gpio_put(CAPL_pin, 0x0);
+    
+        if (do_a_reset) {
+            do_a_reset = false;
+            reset_mega(0);
+        }
 
         uint8_t key_value = 0;
         // Check the USB keyboard
