@@ -240,27 +240,18 @@ int main() {
                 previous_keypress = millis();
             }
         }
+
         // getting Mega Attention
         handle_mega_power_button();
 
-        if (OAPL_state) {
-            gpio_put(OAPL_pin, 0x1);
-            //printf("OA\n");
-        } else
-            gpio_put(OAPL_pin, 0x0);
-
-        if (CAPL_state) {
-            gpio_put(CAPL_pin, 0x1);
-            //printf("CA\n");
-        } else
-            gpio_put(CAPL_pin, 0x0);
-    
+        gpio_put(OAPL_pin, OAPL_state);
+        gpio_put(CAPL_pin, CAPL_state);
+ 
         if (do_a_reset) {
             do_a_reset = false;
-            busy_wait_ms(250); // give time to let go of 3-key sequence
+            busy_wait_ms(750); // give time to let go of 3-key sequence
             reset_mega(0);
         }
-
 
         // Check the serial buffer
         key_value = handle_serial_keyboard(); 
