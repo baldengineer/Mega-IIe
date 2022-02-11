@@ -1,6 +1,8 @@
 {
   "cmake.configureOnOpen": true,
   "files.associations": {
-    "kbd.pio.h": "c"
+    "kbd.pio.h": "c",
+    "stdio.h": "c",
+    "iie-keyboard_emulator.h": "c"
   },
 }

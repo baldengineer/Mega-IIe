@@ -1,3 +1,4 @@
+
 /*
  * The MIT License (MIT)
  *
@@ -51,6 +52,12 @@ extern volatile uint8_t kbd_led_state[1];
 extern void write_key(uint8_t key);
 extern void raise_key();
 uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
+extern bool OAPL_state;
+extern bool CAPL_state;
+extern bool do_a_reset;
+
+extern bool shift_lock_state;
+static bool last_shift_lock_state;
 
 bool any_key=false;
 extern bool OAPL_state;
@@ -261,9 +268,19 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                 nkey = pressed_count;
                 last_key_pressed = get_ascii(report->keycode[i],modifiers);
             }
+            // did we hit the caps lock?
+            if (report->keycode[i] == 57) {
+                printf("Caps lock was: %d", shift_lock_state);
+                if (shift_lock_state != last_shift_lock_state) {
+                    shift_lock_state = !shift_lock_state;
+                    last_shift_lock_state = shift_lock_state;
+                    printf("Caps lock is now: %d", shift_lock_state);
+                }
+
+            }
         }
     }
-    printf("; modifiers=%d",report->modifier);
+  printf("; modifiers=%d",modifiers);
 
     printf("\n");
     if (pressed_count == 0) {
@@ -271,32 +288,26 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         nkey = 0;
     } 
 
+
+    // looking for special key sequences
     OAPL_state = false;
     CAPL_state = false;
-    if (report->modifier > 0) {
-        if ((report->modifier & 0x08)) {
+    if (modifiers > 0) {
+        // left-windows key (open-apple)
+        if ((modifiers & 0x08))
             OAPL_state = true;
-           // printf("OA\n");
-        }
-            
-        if ((report->modifier & 0x80)) {
+
+        // right-windows key (closed-apple)
+        if ((modifiers & 0x80))
             CAPL_state = true;
-            //printf("CA\n");
-        }
 
-        if ((report->modifier == 5)) {
+        // ctrl-alt-delete (same as IIe ctrl-reset)
+        if ((modifiers == 5))
             for (uint8_t i = 0; i < 6; i++) {
-                if (report->keycode[i]==76) {
+                if (report->keycode[i]==76)
                     do_a_reset = true;
-                    printf("\n\nImma CTL-ALT-DEL!\n\n");
-                }
             }
-        }
     }
-    // else {
-    //     write_key(last_key_pressed);
-    // }
-
 
     prev_report = *report;
 }
