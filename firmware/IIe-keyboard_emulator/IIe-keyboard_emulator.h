@@ -36,6 +36,7 @@ bool CAPL_state=false;
 bool do_a_reset=false;
 const uint8_t OAPL_pin = 20;
 const uint8_t CAPL_pin = 23;
+bool shift_lock_state=false;
 
 const uint DEBUG_PIN = 24;
 const uint8_t enable_245_pin = 11;

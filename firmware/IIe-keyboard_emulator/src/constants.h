@@ -57,6 +57,7 @@ extern const uint8_t shifter_enable;
 extern bool OAPL_state;
 extern bool CAPL_state;
 extern bool do_a_reset;
+extern bool shift_lock_state;
 extern const uint8_t OAPL_pin;
 extern const uint8_t CAPL_pin;
 
