@@ -3,7 +3,13 @@
 #include "KBD.pio.h"
 #include "hardware/pio.h"
 
-void KBD_pio_setup(PIO *pio, uint *pio_offset, uint *pio_sm, uint *pio_sm_1) {
+extern PIO pio;
+extern uint pio_offset;
+extern uint pio_sm;
+extern uint pio_sm_1;
+
+
+void KBD_pio_setup() {
     pio = pio0;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);

@@ -90,7 +90,7 @@ void setup_main_databus() {
     for (int x = 0; x < (sizeof(main_data)/sizeof(main_data[0])); x++) {
         gpio_init(main_data[x]);
         gpio_set_dir(main_data[x], GPIO_OUT);
-        gpio_put(main_data[x], 0x1);
+        gpio_put(main_data[x], 0x0);
     }
 }
 
@@ -204,7 +204,7 @@ void setup() {
     // configure I/O control lines
     printf("\nConfiguring IO Pins");
     printf("\nConfiguring State Machine");
-    KBD_pio_setup(&pio, &pio_offset, &pio_sm, &pio_sm_1);  
+    KBD_pio_setup();  
 
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }

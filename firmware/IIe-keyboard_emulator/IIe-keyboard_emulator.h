@@ -46,12 +46,12 @@ extern bool tusb_init();
 extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
-static inline void KBD_pio_setup();
+extern void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 extern void toggle_pwr_pins();
 extern void handle_mega_power_button();
 extern void handle_power_sequence(uint8_t state);
 extern void setup_power_sequence();
-extern void KBD_pio_setup(PIO *pio, uint *pio_offset, uint *pio_sm, uint *pio_sm_1);
+//extern void KBD_pio_setup(PIO *pio, uint *pio_offset, uint *pio_sm, uint *pio_sm_1);
 #endif
