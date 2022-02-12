@@ -28,12 +28,16 @@
 
 //#include "hid_host.h"
 
+#define DEBUG
+
 #include "bsp/board.h"
 #include "tusb.h"
 #include <iie_hid_app.h>
 #include <keyboard_mapping.h>
 
 #define MAX_REPORT 4
+
+
 
 void hid_app_task(void) {
     // nothing to do
@@ -173,7 +177,7 @@ void check_for_released_key(hid_keyboard_report_t const* prev_report, hid_keyboa
     }
 }
 
-uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
+inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     bool const is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
     bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
     //uint8_t ch = keycode2ascii[keyboard_code][is_shift ? 1 : 0];
@@ -208,56 +212,8 @@ static uint8_t get_new_key(hid_keyboard_report_t const* prev_report, hid_keyboar
     return 0;
 }
 
-static void process_kbd_report(hid_keyboard_report_t const* report) {
-    static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
-    modifiers = report->modifier;
-
-    // count the reports
-    uint8_t report_count = 0;
-    for (uint8_t i = 0; i < 6; i++) {
-        if (report->keycode[i] > 0) {
-            report_count++;
-        }
-    }
-
-    if (report_count > 0) {
-        // print the report
-        D(printf("report: ");)
-        for (uint8_t i = 0; i < 6; i++) {
-            if (report->keycode[i] > 0) {
-                D(printf("%d,", report->keycode[i]);)
-            }
-        }
-        D(printf("\n");)
-    }
-
-    if (modifiers > 0) {  
-       D(printf("Modifiers=%d\n",modifiers);)
-    }
-
-    // are all keys released?
-    //  if ((report_count) == 0 && (modifiers == 0)) {
-    if ((report_count == 0) && (modifiers == 0)) {
-        D(printf("\nAll keys released!\n");)
-        nkey = NKEY_NONE; 
-        raise_key();
-        prev_report = *report;
-        return;
-    }
-
-    // if we're this far, at least 1 key is down... and the keys changed, so re-wait
-    // old or new key
-    // new key
-    // modifiers...
-    D(printf("New Key!");)
-    nkey = NKEY_NEW;
-    nkey_last_press = time_us_32();
-
-    uint8_t new_key = get_new_key(&prev_report, report);
-    if (new_key > 0)
-        last_key_pressed = get_ascii(new_key, modifiers);
-
-    // looking for special key sequences
+static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_t modifiers) {
+        // looking for special key sequences
     OAPL_state = false;
     CAPL_state = false;
     if (modifiers > 0) {
@@ -276,7 +232,114 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                     do_a_reset = true;
             }
     }
+}
 
+static void process_kbd_report(hid_keyboard_report_t const* report) {
+    static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
+    static uint8_t prev_report_count = 0;
+    static uint8_t prev_modifiers = 0;
+  
+    modifiers = report->modifier;
+// when two keys are pressed (or reported) at the same time:
+// report: 22,4,Modifiers=0
+// report: Modifiers=0
+// report: Modifiers=0
+// report: 4,22,Modifiers=0
+// report: Modifiers=0
+// report: Modifiers=0
+//
+// so, the order of the report is the order of the presses
+
+/* possible states:
+ did previous report and this report have keys?
+*/
+
+    if (modifiers > 0) {
+        handle_special_sequences(report, modifiers);
+    }
+
+    // count the current reports
+    uint8_t report_count = 0;
+    for (uint8_t i = 0; i < 6; i++) {
+        if (report->keycode[i] > 0) {
+            report_count++;
+        }
+    }
+
+    // was previous report AND this report empty? ignore it
+    if ((prev_report_count==0) && (report_count==0)) {
+        D(printf("Ignorning report\n");)
+        nkey = NKEY_IDLE;
+        prev_report_count = report_count;
+        prev_report = *report;       
+        return;
+    }
+
+    //  did previous report have keys but this one is empty? then release everything
+    if ((prev_report_count>0) && (report_count==0)) {
+        D(printf("All Keys Released\n");)
+        raise_key();
+        nkey = NKEY_IDLE;
+        prev_report_count = report_count;
+        prev_report = *report;         
+    }
+
+    // was previous report empty? AND this report is not if so, queue up each key (new event)
+    if ((prev_report_count==0) && (report_count>0)) {
+        nkey = NKEY_NEW;
+        nkey_last_press = time_us_32();
+        for (uint8_t i = 0; i <= report_count; i++) {
+            if (report->keycode[i] > 0) {
+                uint8_t ascii = get_ascii(report->keycode[i], modifiers);
+                write_key(ascii);
+                last_key_pressed = ascii; // last one in report is the "last" key pressed
+                D(printf("W[%d]\n",ascii));
+            }
+        }
+    }
+
+
+/*
+    if (true || (report_count > 0)) {
+        // print the report
+        D(printf("Report: (%lu)", (unsigned long)time_us_32());)
+        for (uint8_t i = 0; i < 6; i++) {
+                D(printf("%d,", report->keycode[i]);)
+            }
+        }
+        D(printf("\n");)
+    }
+
+    if (true || modifiers > 0) {  
+       D(printf("Modifiers=%d\n",modifiers);)
+       printf("Modifiers=%d\n",modifiers);
+    }
+
+    // are all keys released?
+    //  if ((report_count) == 0 && (modifiers == 0)) {
+    if ((report_count == 0) && (modifiers == 0)) {
+        D(printf("\nAll keys released!\n");)
+        nkey = NKEY_NONE; 
+        raise_key();
+        prev_report_count = report_count;
+        prev_report = *report;
+        return;
+    }
+
+    // if we're this far, at least 1 key is down... and the keys changed, so re-wait
+    // old or new key
+    // new key
+    // modifiers...
+    D(printf("New Key!");)
+    nkey = NKEY_NEW;
+    nkey_last_press = time_us_32();
+
+    uint8_t new_key = get_new_key(&prev_report, report);
+    if (new_key > 0)
+        last_key_pressed = get_ascii(new_key, modifiers);
+*/
+
+    prev_report_count = report_count;
     prev_report = *report;
 }
 

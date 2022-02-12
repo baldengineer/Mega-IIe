@@ -24,7 +24,7 @@ extern void wtf_bbq_led(uint8_t state);
 extern volatile uint8_t kbd_led_state[1];
 extern void write_key(uint8_t key);
 extern void raise_key();
-uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
+inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 extern bool OAPL_state;
 extern bool CAPL_state;
 extern bool do_a_reset;

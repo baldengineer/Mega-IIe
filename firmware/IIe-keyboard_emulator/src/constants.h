@@ -54,6 +54,7 @@ extern const uint8_t shifter_enable;
 #define  NOT_PRESSED 0x1
 
 // Apple Keys and RESET
+#define THREE_FINGER_WAIT 500
 extern bool OAPL_state;
 extern bool CAPL_state;
 extern bool do_a_reset;

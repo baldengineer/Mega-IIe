@@ -85,7 +85,7 @@ void handle_tinyusb() {
    // }
 }
 
-// todo: convert to using the _mask function calls
+// TODO: convert to using the _mask function calls
 void setup_main_databus() {
     const uint8_t main_data[] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
     for (int x = 0; x < (sizeof(main_data)/sizeof(main_data[0])); x++) {
@@ -105,10 +105,10 @@ void prepare_key_value(uint8_t key_value) {
             if (gpio == MD3)
                 printf(" ");
             if (io_mask & key_value) {
-                gpio_put(gpio,0x1);
+               // gpio_put(gpio,0x1);
                 printf("1");
             } else {
-                gpio_put(gpio,0x0);
+               // gpio_put(gpio,0x0);
                 printf("0");
             }
             io_mask = io_mask >> 1;
@@ -117,7 +117,7 @@ void prepare_key_value(uint8_t key_value) {
         write_key(key_value);
 }
 
-// todo pass references to pio stuff so I can move to another file
+// TODO  pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
     //reset_type = cold or warm
     printf("Disabling Mega-II...");
@@ -139,19 +139,16 @@ void reset_mega(uint8_t reset_type) {
     gpio_put(RESET_CTL, 0x0);
 }
 
-void write_key(uint8_t key) {
+inline void write_key(uint8_t key) {
    // gpio_put(enable_245_pin  , ENABLED);
-    printf("+");
-    gpio_put(DEBUG_PIN, 0x1);
+    //printf("+");
+  //  gpio_put(DEBUG_PIN, 0x1);
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
     pio_interrupt_clear(pio, 1);
 }
 
-void raise_key() {
-  //  gpio_put(enable_245_pin  , DISABLED);
-    //printf("-");
-    gpio_put(DEBUG_PIN, 0x0);
+inline void raise_key() {
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
     } else {
@@ -159,7 +156,7 @@ void raise_key() {
     }
 }
 
-uint8_t handle_serial_keyboard() {
+inline static uint8_t handle_serial_keyboard() {
     int incoming_char = getchar_timeout_us(0);
     // MEGA-II only seems to like these values
     if ((incoming_char > 0) && (incoming_char < 128)) {
@@ -170,7 +167,7 @@ uint8_t handle_serial_keyboard() {
 
 void setup() {
 
-    setup_main_databus();
+    //setup_main_databus();
     stdio_init_all();  // so we can see stuff on UART
 
     // power sequence
@@ -218,38 +215,63 @@ void setup() {
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }
 
+inline static void handle_apple_keys() {
+    gpio_put(OAPL_pin, OAPL_state);
+    gpio_put(CAPL_pin, CAPL_state);
+}
+
+inline static void handle_serial_buffer() {
+    static uint32_t prev_serial_clear = 0;
+    static bool serial_clear = false;
+
+    uint8_t key_value = handle_serial_keyboard(); 
+    if (key_value > 0) {
+        if (key_value == 0x12) { // should be CTRL-R
+            reset_mega(1); // 0 = cold, 1 = warm
+            //handle_power_sequence(mega_power_state);
+        } else {
+            prepare_key_value(key_value);
+            serial_clear = true;
+            prev_serial_clear = millis();
+        }
+    }
+
+    // deassert ANYKEY when receiving characters over serial
+    if (serial_clear && (millis() - prev_serial_clear >= serial_anykey_clear_interval)) {
+        serial_clear = false; 
+        //pio_sm_put(pio, pio_sm, (0x0));
+        raise_key();
+    }
+}
+
+inline static void handle_three_finger_reset() {
+    if (do_a_reset) {
+        do_a_reset = false;
+        busy_wait_ms(THREE_FINGER_WAIT);
+        reset_mega(0);
+    }
+}   
+
 int main() {
     setup();
 
     bool a = false;
     while (true) {
-        static uint32_t previous_output = 0;
-        static uint32_t previous_anyclear = 0;
-        static uint8_t io_select = 0;
-        static bool any_clear = false;
-        
         hid_app_task();
         handle_tinyusb();
 
-        if (OAPL_state) {
-            gpio_put(OAPL_pin, 0x1);
-            //printf("OA\n");
-        } else
-            gpio_put(OAPL_pin, 0x0);
+        handle_apple_keys();
+        handle_three_finger_reset();
 
-        if (CAPL_state) {
-            gpio_put(CAPL_pin, 0x1);
-            //printf("CA\n");
-        } else
-            gpio_put(CAPL_pin, 0x0);
-    
-        if (do_a_reset) {
-            do_a_reset = false;
-            reset_mega(0);
-        }
+        // getting Mega Attention
+        handle_mega_power_button();
+
+        // Check the serial buffer
+        handle_serial_buffer();
 
         // handle usb keyboard
         uint8_t key_value = last_key_pressed;
+     /*
         switch (nkey) {               
             case NKEY_NEW:
                 nkey_last_press = time_us_32();
@@ -288,42 +310,10 @@ int main() {
                 write_key(last_key_pressed);
                 previous_keypress = millis();
             }
-        }
+        } */
 
-        // getting Mega Attention
-        handle_mega_power_button();
-
-        gpio_put(OAPL_pin, OAPL_state);
-        gpio_put(CAPL_pin, CAPL_state);
- 
-        if (do_a_reset) {
-            do_a_reset = false;
-            busy_wait_ms(THREE_FINGER_RESET_TIME); // give time to let go of 3-key sequence
-            reset_mega(0);
-        }
-
-        // Check the serial buffer
-        key_value = handle_serial_keyboard(); 
-        if (key_value > 0) {
-            if (key_value == 0x12) { // should be CTRL-R
-                reset_mega(1); // 0 = cold, 1 = warm
-                //handle_power_sequence(mega_power_state);
-            } else {
-                prepare_key_value(key_value);
-                any_clear = true;
-                previous_anyclear = millis();
-            }
-
-        }
-
-        // deassert ANYKEY when receiving characters over serial
-        if (any_clear && (millis() - previous_anyclear >= serial_anykey_clear_interval)) {
-            any_clear = false; 
-            //pio_sm_put(pio, pio_sm, (0x0));
-            raise_key();
-        }
-    }
+    } // while (true)
     return 0;  // but you never will hah!
-}
+} // it's da main thing
 
 

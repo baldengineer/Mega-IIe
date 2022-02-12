@@ -30,7 +30,7 @@ void setup_power_sequence() {
     gpio_pull_up(MEGA_POWER);
 }
 
-void handle_mega_power_button() {
+inline void handle_mega_power_button() {
     static bool prev_mega_power = NOT_PRESSED;
 
     bool curr_mega_power = gpio_get(MEGA_POWER);

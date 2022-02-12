@@ -13,8 +13,6 @@
 #include "src/constants.h"
 #include "src/enums.h"
 
-#define THREE_FINGER_RESET_TIME 500  // in milliseconds
-
 uint8_t mega_power_state = 0x0;
 uint8_t serial_anykey_clear_interval = 100;
 extern uint8_t last_key_pressed;
