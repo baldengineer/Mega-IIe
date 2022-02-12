@@ -13,7 +13,6 @@
 
 #define MAX_REPORT 4
 
-
 uint8_t last_key_pressed=0;
 extern uint8_t keys[101];
 extern uint8_t modifiers;
@@ -22,6 +21,7 @@ extern uint32_t millis();
 extern volatile bool kbd_connected;
 extern void wtf_bbq_led(uint8_t state);
 extern volatile uint8_t kbd_led_state[1];
+extern void queue_key(uint8_t key);
 extern void write_key(uint8_t key);
 extern void raise_key();
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);

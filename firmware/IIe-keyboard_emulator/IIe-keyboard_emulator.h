@@ -5,11 +5,14 @@
 
 // These aren't all used yet, but they will be
 #include "KBD.pio.h"
+
+#include "pico/stdlib.h"
 #include "hardware/clocks.h"
 #include "hardware/pio.h"
 #include "hardware/timer.h"
 #include "hardware/watchdog.h"
-#include "pico/stdlib.h"
+#include "pico/util/queue.h"
+
 #include "src/constants.h"
 #include "src/enums.h"
 
@@ -53,6 +56,7 @@ uint pio_sm_1;
 // prototypes
 void raise_key();
 void write_key(uint8_t key);
+void queue_key(uint8_t key);
 void reset_mega(uint8_t reset_type);
 
 // From the outside scary world

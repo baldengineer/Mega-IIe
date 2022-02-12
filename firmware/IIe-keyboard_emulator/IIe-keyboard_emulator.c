@@ -26,6 +26,8 @@
 
 #include "IIe-keyboard_emulator.h"
 
+queue_t keycode_queue;
+
 // old habits die hard
 uint32_t millis() {
     return ((time_us_32() / 1000));
@@ -95,6 +97,11 @@ void setup_main_databus() {
     }
 }
 
+inline void queue_key(uint8_t key) {
+    if (!queue_try_add(&keycode_queue, &key))
+        printf("Failed to add [%c]\n", key);
+}
+
 void prepare_key_value(uint8_t key_value) {
         // direction of mask and for() depends on GPIO to MDx mapping
         uint8_t io_mask = 0x80; 
@@ -114,7 +121,8 @@ void prepare_key_value(uint8_t key_value) {
             io_mask = io_mask >> 1;
         }
         printf("\n");
-        write_key(key_value);
+        //write_key(key_value);
+        queue_key(key_value);
 }
 
 // TODO  pass references to pio stuff so I can move to another file
@@ -139,10 +147,9 @@ void reset_mega(uint8_t reset_type) {
     gpio_put(RESET_CTL, 0x0);
 }
 
+
+
 inline void write_key(uint8_t key) {
-   // gpio_put(enable_245_pin  , ENABLED);
-    //printf("+");
-  //  gpio_put(DEBUG_PIN, 0x1);
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
     pio_interrupt_clear(pio, 1);
@@ -166,7 +173,6 @@ inline static uint8_t handle_serial_keyboard() {
 }
 
 void setup() {
-
     //setup_main_databus();
     stdio_init_all();  // so we can see stuff on UART
 
@@ -211,6 +217,9 @@ void setup() {
 
     printf("\nConfiguring State Machine");
     KBD_pio_setup();  
+
+    printf("\nConfiguring keyboard queue");
+    queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
 
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }
@@ -271,6 +280,13 @@ int main() {
 
         // handle usb keyboard
         uint8_t key_value = last_key_pressed;
+
+        // keep the PIO queue full I think
+        if (pio_interrupt_get(pio,1) && !queue_is_empty(&keycode_queue)) {
+            uint8_t next_key;
+            if (queue_try_remove(&keycode_queue, &next_key))
+                write_key(next_key);
+        }
      /*
         switch (nkey) {               
             case NKEY_NEW:

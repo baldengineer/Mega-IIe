@@ -51,6 +51,7 @@ target_link_libraries(IIe-keyboard_emulator
         hardware_timer
         hardware_watchdog
         hardware_clocks
+        pico_util
         tinyusb_board
         tinyusb_host
         )

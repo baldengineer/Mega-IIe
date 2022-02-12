@@ -291,11 +291,15 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         for (uint8_t i = 0; i <= report_count; i++) {
             if (report->keycode[i] > 0) {
                 uint8_t ascii = get_ascii(report->keycode[i], modifiers);
-                write_key(ascii);
+                queue_key(ascii);
                 last_key_pressed = ascii; // last one in report is the "last" key pressed
                 D(printf("W[%d]\n",ascii));
             }
         }
+    }
+
+    if ((prev_report_count > 0) && (report_count>0)) {
+        D(printf("Ignoring report with added keys... (for NOW!!)\n");)
     }
 
 
