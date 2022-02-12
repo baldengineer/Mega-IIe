@@ -33,6 +33,8 @@
 #include <iie_hid_app.h>
 #include <keyboard_mapping.h>
 
+#define MAX_REPORT 4
+
 void hid_app_task(void) {
     // nothing to do
 }
@@ -190,61 +192,70 @@ uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     return ch;
 }
 
-static void process_kbd_report(hid_keyboard_report_t const* report) {
-    static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
-
-   // any_key = true; // should we do this?
-
-    // if (print_usb_report)
-    //     print_report_why_not(report);
-
-    // see what keys were released
-  //  check_for_released_key(&prev_report, report);
-
-  // 0,0,0,0,0
-  // 1,0,0,0,0 output: 1
-  // 1,2,0,0,0 output: 2
-  // 1,2,3,0,0 output: 3
-  // 1,2,0,0,0 output: 3
-  // 1,2,4     output: 4
-  // 1,2,4     output: 4
-  // 0,0,0,0,0
-  // 0,0,0,0,0
-  
-
-    modifiers = report->modifier;
-    printf("report: ");
-   // last_key_pressed = 0;
-    uint8_t pressed_count = 0;
-    for (uint8_t i = 0; i < 6; i++) {
-        printf("%d,", report->keycode[i]);
-        if (report->keycode[i]) {
-            pressed_count++;
-            keys[report->keycode[i]] = 1;
-            if (pressed_count > nkey) {
-                nkey = pressed_count;
-                last_key_pressed = get_ascii(report->keycode[i],modifiers);
-            }
-            // did we hit the caps lock?
-            if (report->keycode[i] == 57) {
-                printf("Caps lock was: %d", shift_lock_state);
-                if (shift_lock_state != last_shift_lock_state) {
-                    shift_lock_state = !shift_lock_state;
-                    last_shift_lock_state = shift_lock_state;
-                    printf("Caps lock is now: %d", shift_lock_state);
-                }
-
-            }
+static uint8_t get_new_key(hid_keyboard_report_t const* prev_report, hid_keyboard_report_t const* report) {
+    // check each new report to see if it was in the old one
+    for (uint8_t curr = 0; curr < 6; curr++) {
+        bool found_in_report = false;
+        for (uint8_t prev = 0; prev < 6; prev++) {
+            if (prev_report->keycode[prev] == report->keycode[curr])
+                found_in_report = true; // this key isn't new!
+        }
+        if (!found_in_report) { // hey, we don't recognize this key{
+            return report->keycode[curr]; // bail (could fail if two reports at same time...)
         }
     }
-  printf("; modifiers=%d",modifiers);
+    // boo, no new keys! (or nothing is pressed?)
+    return 0;
+}
 
-    printf("\n");
-    if (pressed_count == 0) {
+static void process_kbd_report(hid_keyboard_report_t const* report) {
+    static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
+    modifiers = report->modifier;
+
+    // count the reports
+    uint8_t report_count = 0;
+    for (uint8_t i = 0; i < 6; i++) {
+        if (report->keycode[i] > 0) {
+            report_count++;
+        }
+    }
+
+    if (report_count > 0) {
+        // print the report
+        D(printf("report: ");)
+        for (uint8_t i = 0; i < 6; i++) {
+            if (report->keycode[i] > 0) {
+                D(printf("%d,", report->keycode[i]);)
+            }
+        }
+        D(printf("\n");)
+    }
+
+    if (modifiers > 0) {  
+       D(printf("Modifiers=%d\n",modifiers);)
+    }
+
+    // are all keys released?
+    //  if ((report_count) == 0 && (modifiers == 0)) {
+    if ((report_count == 0) && (modifiers == 0)) {
+        D(printf("\nAll keys released!\n");)
+        nkey = NKEY_NONE; 
         raise_key();
-        nkey = 0;
-    } 
+        prev_report = *report;
+        return;
+    }
 
+    // if we're this far, at least 1 key is down... and the keys changed, so re-wait
+    // old or new key
+    // new key
+    // modifiers...
+    D(printf("New Key!");)
+    nkey = NKEY_NEW;
+    nkey_last_press = time_us_32();
+
+    uint8_t new_key = get_new_key(&prev_report, report);
+    if (new_key > 0)
+        last_key_pressed = get_ascii(new_key, modifiers);
 
     // looking for special key sequences
     OAPL_state = false;

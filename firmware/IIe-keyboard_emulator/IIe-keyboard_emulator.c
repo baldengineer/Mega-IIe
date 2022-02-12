@@ -79,10 +79,10 @@ void check_keyboard_buffer() {
 }
 
 void handle_tinyusb() {
-    if (dousb) {
+   // if (dousb) {
         tuh_task();
-        dousb = false;
-    }
+   //     dousb = false;
+   // }
 }
 
 // todo: convert to using the _mask function calls
@@ -150,7 +150,7 @@ void write_key(uint8_t key) {
 
 void raise_key() {
   //  gpio_put(enable_245_pin  , DISABLED);
-    printf("-");
+    //printf("-");
     gpio_put(DEBUG_PIN, 0x0);
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
@@ -248,9 +248,40 @@ int main() {
             reset_mega(0);
         }
 
-        uint8_t key_value = 0;
-        // Check the USB keyboard
-      //  check_keyboard_buffer();
+        // handle usb keyboard
+        uint8_t key_value = last_key_pressed;
+        switch (nkey) {               
+            case NKEY_NEW:
+                nkey_last_press = time_us_32();
+                nkey = NKEY_ARMED;
+            break;
+
+            case NKEY_ARMED:
+                if ((time_us_32() - nkey_last_press) >= nkey_wait_us) {
+                    nkey = NKEY_REPEATING;
+                    write_key(last_key_pressed);
+                }
+            break;
+
+            case NKEY_REPEATING:
+                if ((time_us_32() - nkey_last_press) >= nkey_repeat_us) {
+                    write_key(last_key_pressed);
+                    nkey_last_press = time_us_32();
+                }
+            break;
+
+            case NKEY_NONE:
+                //  ¯\_(ツ)_/¯
+                raise_key(); // no moar keys
+                nkey = NKEY_IDLE;
+            break;
+
+            case NKEY_IDLE:
+            default:
+ 
+            break;
+        }
+        
         static uint32_t previous_keypress = 0;
         if (nkey > 0) {
             if (millis() - previous_keypress >= 100) {

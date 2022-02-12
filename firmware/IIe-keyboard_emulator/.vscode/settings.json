@@ -3,6 +3,7 @@
   "files.associations": {
     "kbd.pio.h": "c",
     "stdio.h": "c",
-    "iie-keyboard_emulator.h": "c"
+    "iie-keyboard_emulator.h": "c",
+    "clocks.h": "c"
   },
 }

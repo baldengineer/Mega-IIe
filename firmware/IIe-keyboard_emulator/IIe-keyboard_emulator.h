@@ -11,13 +11,17 @@
 #include "hardware/watchdog.h"
 #include "pico/stdlib.h"
 #include "src/constants.h"
+#include "src/enums.h"
 
 #define THREE_FINGER_RESET_TIME 500  // in milliseconds
 
 uint8_t mega_power_state = 0x0;
 uint8_t serial_anykey_clear_interval = 100;
 extern uint8_t last_key_pressed;
-extern uint8_t nkey;
+extern enum nkey_states nkey;
+extern uint32_t nkey_last_press;
+uint32_t   nkey_wait_us = 500000;
+uint32_t nkey_repeat_us = 100000;
 
 uint8_t keys[101] = {0};
 uint8_t modifiers = 0;
@@ -61,7 +65,7 @@ extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
 extern void KBD_pio_setup();
-extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
+extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys); 
 
 extern void toggle_pwr_pins();
 extern void handle_mega_power_button();

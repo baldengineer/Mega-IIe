@@ -1,6 +1,8 @@
 #ifndef iie_hid_app_h
 #define iie_hid_app_h
 
+#include <enums.h>
+
 //--------------------------------------------------------------------+
 // MACRO TYPEDEF CONSTANT ENUM DECLARATION
 //--------------------------------------------------------------------+
@@ -11,8 +13,8 @@
 
 #define MAX_REPORT 4
 
+
 uint8_t last_key_pressed=0;
-uint8_t nkey = 0;
 extern uint8_t keys[101];
 extern uint8_t modifiers;
 extern bool print_usb_report;
@@ -46,5 +48,13 @@ static struct{
 static void process_kbd_report(hid_keyboard_report_t const* report);
 static void process_generic_report(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
 
+enum nkey_states nkey;
+uint32_t nkey_last_press;
+
+#ifdef DEBUG
+#  define D(x) x
+#else
+#  define D(x) 
+#endif
 
 #endif
