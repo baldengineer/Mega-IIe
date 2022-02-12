@@ -50,66 +50,19 @@ bool repeating_timer_callback(struct repeating_timer *t) {
     return true;
 }
 
-void check_keyboard_buffer() {
-    // check the keyboard buffer
-    static uint32_t prev_key_millis = 0;
-    uint32_t current_millis = millis();
-    if (any_key) {// (current_millis - prev_key_millis >= key_delay)) {
-        bool did_print = false;
-        any_key = false;
-        for (uint8_t x = 0; x < 101; x++) {
-            if (keys[x]) {
-                if (did_print)
-                    printf(",");
-                uint8_t ascii = get_ascii(x, modifiers);
-                // handle special case :)
-                if ((x==76) && (modifiers==5)) {
-                    // ctrl-alt-del!!
-                    reset_mega(1);
-                    return;
-                }
-              //  printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
-                write_key(ascii);
-                did_print = true;
-            }
-        }
-        // if (did_print)
-        //     printf(",%d\n", modifiers);
-
-        prev_key_millis = current_millis;
-    }
-}
-
-void handle_tinyusb() {
-   // if (dousb) {
-        tuh_task();
-   //     dousb = false;
-   // }
-}
-
-// TODO: convert to using the _mask function calls
-void setup_main_databus() {
-    const uint8_t main_data[] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
-    for (int x = 0; x < (sizeof(main_data)/sizeof(main_data[0])); x++) {
-        gpio_init(main_data[x]);
-        gpio_set_dir(main_data[x], GPIO_OUT);
-        gpio_put(main_data[x], 0x0);
-    }
-}
-
 inline void queue_key(uint8_t key) {
     // if the PIO is ready, let's send in the character now
     if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
         write_key(key);
-        printf("Im[%c]", key);
+        D(printf("Im[%c]", key);)
     }  else if (!queue_try_add(&keycode_queue, &key))
         printf("Failed to add [%c]\n", key);
 }
 
-void prepare_key_value(uint8_t key_value) {
+/*void prepare_key_value(uint8_t key_value) {
         // direction of mask and for() depends on GPIO to MDx mapping
         uint8_t io_mask = 0x80; 
-        printf("(%#04x): ", key_value);
+        D(printf("(%#04x): ", key_value);)
 
         // changing the GPIO pins
         for (int gpio = MD7; gpio >= MD0; gpio--) {
@@ -127,11 +80,12 @@ void prepare_key_value(uint8_t key_value) {
         printf("\n");
         //write_key(key_value);
         queue_key(key_value);
-}
+}*/
 
 // TODO  pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
     //reset_type = cold or warm
+
     printf("Disabling Mega-II...");
     gpio_put(RESET_CTL, 0x1);
     printf("\nReseting PIO...");
@@ -139,15 +93,24 @@ void reset_mega(uint8_t reset_type) {
     pio_sm_set_enabled(pio, pio_sm_1, false);
     pio_sm_restart(pio, pio_sm);
     pio_sm_restart(pio, pio_sm_1);
+   // hid_app_task();
+    tuh_task();
     printf("\nPausing");
-    busy_wait_ms(100);
-    printf(".");
-    hid_app_task();
-    handle_tinyusb();
-    printf("...[DONE]\n");
+    busy_wait_ms(250);
+   // hid_app_task();
+    tuh_task();
+    printf("...[DONE]");
+    printf("\nClearing Keyboard Queue..."); // queue_free() keeps causing hardfault
+    while (!queue_is_empty(&keycode_queue)) {
+        uint8_t throwaway = '\0';
+        queue_try_remove(&keycode_queue, &throwaway);
+        printf("%c",throwaway);
+    }
+    printf(" [Done].");
+    printf("\nRenabling PIO...");
     pio_sm_set_enabled(pio, pio_sm, true);
     pio_sm_set_enabled(pio, pio_sm_1, true);
-    printf("Enabling Mega-II...\n");
+    printf("\nEnabling Mega-II...\n");
     gpio_put(RESET_CTL, 0x0);
 }
 
@@ -183,42 +146,43 @@ static void out_init(uint8_t pin, bool state) {
 }
 
 void setup() {
-    //setup_main_databus();
     stdio_init_all();  // so we can see stuff on UART
 
     // power sequence
     printf("\nInit Suppy Pins");
     setup_power_sequence();
+
     printf("\nTurning on Supply Pins\n");
     handle_power_sequence(0);
 
-    // debug pin to trigger the external logic analyzer
-    printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);
+    printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
     out_init(DEBUG_PIN, 0x0);
 
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
     out_init(RESET_CTL, 0x0);
 
     // ************************************************************
+    printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
     out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
 
     // yay usb!
+    printf("\nEnabling tinyUSB Host");
     tusb_init();
 
     // helps with throtting usb (may get fixed in future TinyUSB, I hope)
-    printf("\nEnabling tuh_task");
+ /*   printf("\nEnabling tuh_task");
     add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
-    printf("\n(---------");
+    printf("\n(---------");*/
 
     // configure I/O control lines
     printf("\nConfiguring OAPL and CAPL");
     out_init(OAPL_pin, 0x0);
     out_init(CAPL_pin, 0x0);
 
-    printf("\nConfiguring State Machine");
+    printf("\nConfiguring KBD PIO State Machine");
     KBD_pio_setup();  
 
-    printf("\nConfiguring keyboard queue");
+    printf("\nConfiguring key code queue");
     queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
 
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
@@ -239,7 +203,9 @@ inline static void handle_serial_buffer() {
             reset_mega(1); // 0 = cold, 1 = warm
             //handle_power_sequence(mega_power_state);
         } else {
-            prepare_key_value(key_value);
+            //prepare_key_value(key_value);
+            printf("%c",key_value);
+            queue_key(key_value);
             serial_clear = true;
             prev_serial_clear = millis();
         }
@@ -266,11 +232,14 @@ int main() {
 
     bool a = false;
     while (true) {
-        hid_app_task();
-        handle_tinyusb();
+        // hid_app_task();
+        tuh_task();
 
+        // do things with special apple keyboard keys
         handle_apple_keys();
         handle_three_finger_reset();
+
+        // future home of USB function keys
 
         // getting Mega Attention
         handle_mega_power_button();
