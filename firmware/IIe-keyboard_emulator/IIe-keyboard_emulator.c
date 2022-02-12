@@ -176,6 +176,12 @@ inline static uint8_t handle_serial_keyboard() {
     return 0;
 }
 
+static void out_init(uint8_t pin, bool state) {
+    gpio_init(pin);
+    gpio_set_dir(pin, GPIO_OUT);
+    gpio_put(pin, state);
+}
+
 void setup() {
     //setup_main_databus();
     stdio_init_all();  // so we can see stuff on UART
@@ -188,19 +194,13 @@ void setup() {
 
     // debug pin to trigger the external logic analyzer
     printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);
-    gpio_init(DEBUG_PIN);
-    gpio_set_dir(DEBUG_PIN, GPIO_OUT);
-    gpio_put(DEBUG_PIN, 0x0);
+    out_init(DEBUG_PIN, 0x0);
 
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
-    gpio_init(RESET_CTL);
-    gpio_set_dir(RESET_CTL, GPIO_OUT);
-    gpio_put(RESET_CTL, 0x0);
+    out_init(RESET_CTL, 0x0);
 
     // ************************************************************
-    gpio_init(shifter_enable);
-    gpio_set_dir(shifter_enable, GPIO_OUT);
-    gpio_put(shifter_enable, true); // the TXB0108 is active HI!
+    out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
 
     // yay usb!
     tusb_init();
@@ -212,12 +212,8 @@ void setup() {
 
     // configure I/O control lines
     printf("\nConfiguring OAPL and CAPL");
-    gpio_init(OAPL_pin);
-    gpio_init(CAPL_pin);
-    gpio_put(OAPL_pin, 0x0);
-    gpio_put(CAPL_pin, 0x0);
-    gpio_set_dir(OAPL_pin, GPIO_OUT); // true for out, false for in
-    gpio_set_dir(CAPL_pin, GPIO_OUT); // true for out, false for in
+    out_init(OAPL_pin, 0x0);
+    out_init(CAPL_pin, 0x0);
 
     printf("\nConfiguring State Machine");
     KBD_pio_setup();  

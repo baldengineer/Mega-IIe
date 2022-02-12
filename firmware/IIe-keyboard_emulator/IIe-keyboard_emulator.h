@@ -16,6 +16,8 @@
 #include "src/constants.h"
 #include "src/enums.h"
 
+//#define DEBUG_MAIN
+
 uint8_t mega_power_state = 0x0;
 uint8_t serial_anykey_clear_interval = 100;
 extern uint8_t last_key_pressed;
@@ -74,4 +76,11 @@ extern void handle_mega_power_button();
 extern void handle_power_sequence(uint8_t state);
 extern void setup_power_sequence();
 //extern void KBD_pio_setup(PIO *pio, uint *pio_offset, uint *pio_sm, uint *pio_sm_1);
+
+#ifdef DEBUG_MAIN
+#  define D(x) x
+#else
+#  define D(x) 
+#endif
+
 #endif
