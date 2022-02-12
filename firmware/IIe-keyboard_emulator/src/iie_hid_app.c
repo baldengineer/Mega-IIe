@@ -234,25 +234,27 @@ static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_
     }
 }
 
+static void find_new_keys(hid_keyboard_report_t const* report,hid_keyboard_report_t const* prev_report, uint8_t report_count, uint8_t modifiers ) {
+    D(printf("Getting new keys...\n");)
+    for (int i=0; i < report_count; i++) {
+        uint8_t curr_ascii = report->keycode[i];
+        uint8_t prev_ascii = prev_report->keycode[i];
+
+        if (curr_ascii != prev_ascii) {
+            D(printf("Queuing: %d\n", curr_ascii);)
+            queue_key(get_ascii(curr_ascii, modifiers));
+        } else {
+            D(printf("Repeated: %d\n", curr_ascii);)
+        }
+    }
+}
+
 static void process_kbd_report(hid_keyboard_report_t const* report) {
     static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
     static uint8_t prev_report_count = 0;
     static uint8_t prev_modifiers = 0;
   
     modifiers = report->modifier;
-// when two keys are pressed (or reported) at the same time:
-// report: 22,4,Modifiers=0
-// report: Modifiers=0
-// report: Modifiers=0
-// report: 4,22,Modifiers=0
-// report: Modifiers=0
-// report: Modifiers=0
-//
-// so, the order of the report is the order of the presses
-
-/* possible states:
- did previous report and this report have keys?
-*/
 
     if (modifiers > 0) {
         handle_special_sequences(report, modifiers);
@@ -266,25 +268,34 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         }
     }
 
-    // was previous report AND this report empty? ignore it
+    if ((report_count > 0)) {
+        // print the report
+        D(printf("Report: (%lu)", (unsigned long)time_us_32());)
+        for (uint8_t i = 0; i < 6; i++) {
+                D(printf("%d,", report->keycode[i]);)
+        }
+        D(printf("\n");)
+    }
+
+    // Condition #1: was previous report AND this report empty? ignore it
     if ((prev_report_count==0) && (report_count==0)) {
-        D(printf("Ignorning report\n");)
+        D(printf("Ignorning report\n\n\n");)
         nkey = NKEY_IDLE;
         prev_report_count = report_count;
         prev_report = *report;       
         return;
     }
 
-    //  did previous report have keys but this one is empty? then release everything
+    //  Condition #2: did previous report have keys but this one is empty? then release everything
     if ((prev_report_count>0) && (report_count==0)) {
-        D(printf("All Keys Released\n");)
+        D(printf("All Keys Released\n\n");)
         raise_key();
         nkey = NKEY_IDLE;
         prev_report_count = report_count;
         prev_report = *report;         
     }
 
-    // was previous report empty? AND this report is not if so, queue up each key (new event)
+    // Condition #3: was previous report empty? AND this report is not if so, queue up each key (new event)
     if ((prev_report_count==0) && (report_count>0)) {
         nkey = NKEY_NEW;
         nkey_last_press = time_us_32();
@@ -298,8 +309,14 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         }
     }
 
+    // Condition #4: did previous report and this report have keys?
     if ((prev_report_count > 0) && (report_count>0)) {
-        D(printf("Ignoring report with added keys... (for NOW!!)\n");)
+        // a new key was added to the queue
+        D(printf("BTB Reports with Keys\n");)
+        if ((report_count > prev_report_count)) {
+            // queue the new keys
+            find_new_keys(report, &prev_report, report_count, modifiers);
+        }
     }
 
 
