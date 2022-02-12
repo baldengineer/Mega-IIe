@@ -237,14 +237,15 @@ static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_
 static void find_new_keys(hid_keyboard_report_t const* report,hid_keyboard_report_t const* prev_report, uint8_t report_count, uint8_t modifiers ) {
     D(printf("Getting new keys...\n");)
     for (int i=0; i < report_count; i++) {
-        uint8_t curr_ascii = report->keycode[i];
-        uint8_t prev_ascii = prev_report->keycode[i];
+        uint8_t curr_keycode = report->keycode[i];
+        uint8_t prev_keycode = prev_report->keycode[i];
+        char curr_char = get_ascii(curr_char, modifiers);
 
-        if (curr_ascii != prev_ascii) {
-            D(printf("Queuing: %d\n", curr_ascii);)
-            queue_key(get_ascii(curr_ascii, modifiers));
+        if (curr_keycode != prev_keycode) {
+            D(printf("Queuing: [%d] %c\n", curr_keycode, curr_char);)
+            queue_key(get_ascii(curr_keycode, modifiers));
         } else {
-            D(printf("Repeated: %d\n", curr_ascii);)
+            D(printf("Repeated: %d\n", curr_keycode, curr_char);)
         }
     }
 }
@@ -272,7 +273,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         // print the report
         D(printf("Report: (%lu)", (unsigned long)time_us_32());)
         for (uint8_t i = 0; i < 6; i++) {
-                D(printf("%d,", report->keycode[i]);)
+                D(printf("%d [%c],", report->keycode[i], get_ascii(report->keycode[i], modifiers));)
         }
         D(printf("\n");)
     }
@@ -313,7 +314,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
     if ((prev_report_count > 0) && (report_count>0)) {
         // a new key was added to the queue
         D(printf("BTB Reports with Keys\n");)
-        if ((report_count > prev_report_count)) {
+        if ((report_count >= prev_report_count)) {
             // queue the new keys
             find_new_keys(report, &prev_report, report_count, modifiers);
         }
