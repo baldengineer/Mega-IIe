@@ -98,7 +98,11 @@ void setup_main_databus() {
 }
 
 inline void queue_key(uint8_t key) {
-    if (!queue_try_add(&keycode_queue, &key))
+    // if the PIO is ready, let's send in the character now
+    if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
+        write_key(key);
+        printf("Im[%c]", key);
+    }  else if (!queue_try_add(&keycode_queue, &key))
         printf("Failed to add [%c]\n", key);
 }
 

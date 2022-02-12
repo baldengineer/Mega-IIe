@@ -51,7 +51,7 @@ static void process_generic_report(uint8_t dev_addr, uint8_t instance, uint8_t c
 enum nkey_states nkey;
 uint32_t nkey_last_press;
 
-#ifdef DEBUG
+#ifdef DEBUG_IIE_HID
 #  define D(x) x
 #else
 #  define D(x) 

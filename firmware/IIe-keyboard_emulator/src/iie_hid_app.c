@@ -28,7 +28,7 @@
 
 //#include "hid_host.h"
 
-#define DEBUG
+//#define DEBUG_IIE_HID
 
 #include "bsp/board.h"
 #include "tusb.h"
