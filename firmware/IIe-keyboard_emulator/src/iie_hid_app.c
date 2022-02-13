@@ -133,8 +133,7 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
 
     // this mirrors how IIe works (but not IIgs, I think)
-    uint8_t ascii = get_ascii(keyboard_code, mod_keys);
-    if (shift_lock_state && (ascii >= 97) && (ascii <= 122))
+    if (shift_lock_state && (keyboard_code >= 4) && (keyboard_code <= 29))  //a=4, z=29
         is_shift = true;
 
     uint8_t ch = 0x0;
@@ -212,7 +211,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
     if ((report_count > 0)) {
         // print the report
-        D(printf("Report: (%lu)", (unsigned long)time_us_32());)
+        D(printf("Report: (%lu) ", (unsigned long)time_us_32());)
         for (uint8_t i = 0; i < 6; i++) {
                 D(printf("%d [%c],", report->keycode[i], get_ascii(report->keycode[i], modifiers));)
         }

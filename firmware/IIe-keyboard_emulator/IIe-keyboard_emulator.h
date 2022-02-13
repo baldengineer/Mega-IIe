@@ -32,7 +32,7 @@ uint8_t modifiers = 0;
 // Useful flags for useful things
 volatile bool kbd_connected = false;
 volatile bool dousb = false;
-volatile uint8_t kbd_led_state[1] = {0x0};
+uint8_t kbd_led_state[1] = {0x0};
 bool print_usb_report = false;
 struct repeating_timer timer1;
 struct repeating_timer timer2;
