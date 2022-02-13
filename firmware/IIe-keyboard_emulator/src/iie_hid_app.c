@@ -1,4 +1,3 @@
-
 /*
  * The MIT License (MIT)
  *
@@ -36,8 +35,6 @@
 #include <keyboard_mapping.h>
 
 #define MAX_REPORT 4
-
-
 
 void hid_app_task(void) {
     // nothing to do
@@ -111,40 +108,10 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
 //--------------------------------------------------------------------+
 // Keyboard
 //--------------------------------------------------------------------+
-
-// look up new key in previous keys
-static inline bool find_key_in_report(hid_keyboard_report_t const* report, uint8_t keycode) {
-    for (uint8_t i = 0; i < 6; i++) {
-        if (report->keycode[i] == keycode) return true;
-    }
-
-    return false;
-}
-
-void print_report_why_not(hid_keyboard_report_t const* report) {
-    // printf("Report: ");
-    // for (uint8_t i = 0; i < 6; i++) {
-    //     printf("%d,", report->keycode[i]);
-    // }
-    // printf("\n");
-}
-
 /*
-SETUP = 0x21
-Request Code SetReport = 0x09
-Report Id = 0x00
-reprot type = 0x02 (these two might be backward, verify)
-
-Value field of Setup Packet contains the report ID in the low byte, which is Zero
-High byte contains the report type, which would be 0x02 for output report
-    output report = software to the hardware
-Index Field = Inteface number of USB Keyboard
-Data stage = 1 byte
-
- explains keyboard packets (verbosely): https://wiki.osdev.org/USB_Human_Interface_Devices
+  explains keyboard packets (verbosely): https://wiki.osdev.org/USB_Human_Interface_Devices
   explains setup packet: https://www.beyondlogic.org/usbnutshell/usb6.shtml
 */
-
 void imma_led(uint8_t state) {
     static uint32_t call_counter = 0;
     uint8_t dev_addr    = 0x01;
@@ -161,32 +128,14 @@ void imma_led(uint8_t state) {
     tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
 }
 
-void check_for_released_key(hid_keyboard_report_t const* prev_report, hid_keyboard_report_t const* report) {
-    for (uint8_t prev = 0; prev < 6; prev++) {
-        bool found_in_report = false;
-        for (uint8_t curr = 0; curr < 6; curr++) {
-            if (prev_report->keycode[prev] == report->keycode[curr])
-                found_in_report = true;
-        }
-        if (!found_in_report) {
-            printf("Raising '%c'(%d)\n", get_ascii(prev_report->keycode[prev],0), get_ascii(prev_report->keycode[prev],0));
-            raise_key(get_ascii(prev_report->keycode[prev],0));
-            keys[(prev_report->keycode[prev])] = 0;
-        }
-
-    }
-}
-
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     bool is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
     bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
 
     // this mirrors how IIe works (but not IIgs, I think)
-    if (shift_lock_state)
+    uint8_t ascii = get_ascii(keyboard_code, mod_keys);
+    if (shift_lock_state && (ascii >= 97) && (ascii <= 122))
         is_shift = true;
-
-    //uint8_t ch = keycode2ascii[keyboard_code][is_shift ? 1 : 0];
-    //maps: normal_kbd_map ctrl_kbd_map shift_kbd_map both_kbd_map
 
     uint8_t ch = 0x0;
     if (is_shift && is_ctrl)
@@ -199,22 +148,6 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
         ch = normal_kbd_map[keyboard_code];
 
     return ch;
-}
-
-static uint8_t get_new_key(hid_keyboard_report_t const* prev_report, hid_keyboard_report_t const* report) {
-    // check each new report to see if it was in the old one
-    for (uint8_t curr = 0; curr < 6; curr++) {
-        bool found_in_report = false;
-        for (uint8_t prev = 0; prev < 6; prev++) {
-            if (prev_report->keycode[prev] == report->keycode[curr])
-                found_in_report = true; // this key isn't new!
-        }
-        if (!found_in_report) { // hey, we don't recognize this key{
-            return report->keycode[curr]; // bail (could fail if two reports at same time...)
-        }
-    }
-    // boo, no new keys! (or nothing is pressed?)
-    return 0;
 }
 
 static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_t modifiers) {
@@ -364,48 +297,6 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
             find_new_keys(report, &prev_report, report_count, modifiers);
         }
     }
-
-
-/*
-    if (true || (report_count > 0)) {
-        // print the report
-        D(printf("Report: (%lu)", (unsigned long)time_us_32());)
-        for (uint8_t i = 0; i < 6; i++) {
-                D(printf("%d,", report->keycode[i]);)
-            }
-        }
-        D(printf("\n");)
-    }
-
-    if (true || modifiers > 0) {  
-       D(printf("Modifiers=%d\n",modifiers);)
-       printf("Modifiers=%d\n",modifiers);
-    }
-
-    // are all keys released?
-    //  if ((report_count) == 0 && (modifiers == 0)) {
-    if ((report_count == 0) && (modifiers == 0)) {
-        D(printf("\nAll keys released!\n");)
-        nkey = NKEY_NONE; 
-        raise_key();
-        prev_report_count = report_count;
-        prev_report = *report;
-        return;
-    }
-
-    // if we're this far, at least 1 key is down... and the keys changed, so re-wait
-    // old or new key
-    // new key
-    // modifiers...
-    D(printf("New Key!");)
-    nkey = NKEY_NEW;
-    nkey_last_press = time_us_32();
-
-    uint8_t new_key = get_new_key(&prev_report, report);
-    if (new_key > 0)
-        last_key_pressed = get_ascii(new_key, modifiers);
-*/
-
     prev_report_count = report_count;
     prev_report = *report;
 }
