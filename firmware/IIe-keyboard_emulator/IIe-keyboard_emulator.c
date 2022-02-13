@@ -158,6 +158,7 @@ void setup() {
 
     printf("\nTurning on Supply Pins\n");
     handle_power_sequence(PWR_ON);
+    mega_power_state = PWR_ON;
 
     printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
     out_init(DEBUG_PIN, 0x0);
@@ -244,9 +245,10 @@ int main() {
 
         if (power_cycle_key_counter >= 3) {
             // do a power cycle
-            D(printf("We should cycle...\n");)
-            handle_power_sequence(PWR_TOGGLE);
+            mega_power_state = !mega_power_state;
+            handle_power_sequence(mega_power_state);
             power_cycle_key_counter = 0;
+            D(printf("Power State Now: (%d)", mega_power_state);)
         }
 
         if (time_us_32() - power_cycle_timer >= POWER_CYCLE_INTERVAL)

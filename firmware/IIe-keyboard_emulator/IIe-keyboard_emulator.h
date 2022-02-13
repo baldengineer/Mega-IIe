@@ -18,7 +18,7 @@
 
 //#define DEBUG_MAIN
 
-uint8_t mega_power_state = 0x0;
+bool mega_power_state = 0x0;
 uint8_t serial_anykey_clear_interval = 100;
 extern uint8_t last_key_pressed;
 extern enum nkey_states nkey;
