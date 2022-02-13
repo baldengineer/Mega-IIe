@@ -14,6 +14,7 @@
 #define MAX_REPORT 4
 
 uint8_t last_key_pressed=0;
+
 extern uint8_t keys[101];
 extern uint8_t modifiers;
 extern bool print_usb_report;

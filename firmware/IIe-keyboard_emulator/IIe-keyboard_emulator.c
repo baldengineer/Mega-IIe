@@ -33,17 +33,6 @@ uint32_t millis() {
     return ((time_us_32() / 1000));
 }
 
-// example of setting leds on keyboard
-/*void wtf_bbq_led() {
-    static uint8_t dev_addr = 0x1;
-    static uint8_t instance = 0x0;
-    static uint8_t report_id = 0x0;
-    static uint8_t report_type = 0x2;
-
-    if (kbd_connected)
-        tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
-}*/
-
 // trying to reduce bus contention
 bool repeating_timer_callback(struct repeating_timer *t) {
     dousb = true;
@@ -62,29 +51,6 @@ void queue_key(uint8_t key) {
     }  else if (!queue_try_add(&keycode_queue, &key))
         printf("Failed to add [%c]\n", key);
 }
-
-/*void prepare_key_value(uint8_t key_value) {
-        // direction of mask and for() depends on GPIO to MDx mapping
-        uint8_t io_mask = 0x80; 
-        D(printf("(%#04x): ", key_value);)
-
-        // changing the GPIO pins
-        for (int gpio = MD7; gpio >= MD0; gpio--) {
-            if (gpio == MD3)
-                printf(" ");
-            if (io_mask & key_value) {
-               // gpio_put(gpio,0x1);
-                printf("1");
-            } else {
-               // gpio_put(gpio,0x0);
-                printf("0");
-            }
-            io_mask = io_mask >> 1;
-        }
-        printf("\n");
-        //write_key(key_value);
-        queue_key(key_value);
-}*/
 
 // TODO  pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
@@ -118,15 +84,13 @@ void reset_mega(uint8_t reset_type) {
     gpio_put(RESET_CTL, 0x0);
 }
 
-
-
 inline void write_key(uint8_t key) {
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
     pio_interrupt_clear(pio, 1);
 }
 
-inline void raise_key() {
+inline void raise_key() { // I don't remember why this is an if-statement, oh well, lolz.
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
     } else {
@@ -135,7 +99,7 @@ inline void raise_key() {
 }
 
 inline static uint8_t handle_serial_keyboard() {
-    int incoming_char = getchar_timeout_us(0);
+    uint8_t incoming_char = getchar_timeout_us(0);
     // MEGA-II only seems to like these values
     if ((incoming_char > 0) && (incoming_char < 128)) {
         return incoming_char;
@@ -143,16 +107,17 @@ inline static uint8_t handle_serial_keyboard() {
     return 0;
 }
 
+// shortcut for setting up output pins (there isn't a SDK call for this?)
 static void out_init(uint8_t pin, bool state) {
     gpio_init(pin);
     gpio_set_dir(pin, GPIO_OUT);
     gpio_put(pin, state);
 }
 
+// put your setup code here, to run once:
 void setup() {
-    stdio_init_all();  // so we can see stuff on UART
+    stdio_init_all();  // UART accepts input and displays debug infos
 
-    // power sequence
     printf("\nInit Suppy Pins");
     setup_power_sequence();
 
