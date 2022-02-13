@@ -313,6 +313,9 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
                 case 72: // Run/Stop
                     D(printf("Run/Stop\n");)
+                    power_cycle_timer = time_us_32();
+                    power_cycle_key_counter++;
+                    D(printf("PWR Cycle Count: (%d)\n", power_cycle_key_counter);)
                 break;
 
             }

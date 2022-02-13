@@ -23,7 +23,6 @@
  *
  */
 
-//#define DEBUG_MAIN
 
 #include "IIe-keyboard_emulator.h"
 
@@ -55,7 +54,7 @@ void set_color_mode(bool state) {
     gpio_put(COLOR_MODE_PIN, state);
 }
 
-inline void queue_key(uint8_t key) {
+void queue_key(uint8_t key) {
     // if the PIO is ready, let's send in the character now
     if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
         write_key(key);
@@ -158,7 +157,7 @@ void setup() {
     setup_power_sequence();
 
     printf("\nTurning on Supply Pins\n");
-    handle_power_sequence(0);
+    handle_power_sequence(PWR_ON);
 
     printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
     out_init(DEBUG_PIN, 0x0);
@@ -170,8 +169,8 @@ void setup() {
     printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
     out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
 
-    printf("\nColor Mode Pin (%d)", COLOR_MODE_PIN);
-    out_init(COLOR_MODE_PIN, 0x0);
+    printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
+    out_init(COLOR_MODE_PIN, 0x1);
 
     // yay usb!
     printf("\nEnabling tinyUSB Host");
@@ -186,8 +185,6 @@ void setup() {
     printf("\nConfiguring OAPL and CAPL");
     out_init(OAPL_pin, 0x0);
     out_init(CAPL_pin, 0x0);
-
-
 
     printf("\nConfiguring KBD PIO State Machine");
     KBD_pio_setup();  
@@ -244,6 +241,16 @@ int main() {
     while (true) {
         // hid_app_task();
         tuh_task();
+
+        if (power_cycle_key_counter >= 3) {
+            // do a power cycle
+            D(printf("We should cycle...\n");)
+            handle_power_sequence(PWR_TOGGLE);
+            power_cycle_key_counter = 0;
+        }
+
+        if (time_us_32() - power_cycle_timer >= POWER_CYCLE_INTERVAL)
+            power_cycle_key_counter = 0;
 
         // do things with special apple keyboard keys
         handle_apple_keys();

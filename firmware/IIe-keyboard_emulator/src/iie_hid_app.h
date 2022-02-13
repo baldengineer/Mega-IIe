@@ -25,6 +25,9 @@ extern void queue_key(uint8_t key);
 extern void write_key(uint8_t key);
 extern void raise_key();
 
+extern uint32_t power_cycle_timer;
+extern uint8_t power_cycle_key_counter;
+
 extern void set_color_mode(bool state);
 
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);

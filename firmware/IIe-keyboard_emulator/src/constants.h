@@ -54,9 +54,13 @@ extern const uint8_t shifter_enable;
 #define PWR_SEQ_MASK 0x38000000  // should match 29,28,27
 #define      PRESSED 0x0
 #define  NOT_PRESSED 0x1
+#define      PWR_OFF 0x0
+#define       PWR_ON 0x1
+#define   PWR_TOGGLE 0x2
 
 // Apple Keys and RESET
-#define THREE_FINGER_WAIT 500
+#define THREE_FINGER_WAIT 500  //milliseconds
+
 extern bool OAPL_state;
 extern bool CAPL_state;
 extern bool do_a_reset;
