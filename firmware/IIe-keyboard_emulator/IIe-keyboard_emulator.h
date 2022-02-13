@@ -66,7 +66,7 @@ uint8_t power_cycle_key_counter;
 #define POWER_CYCLE_INTERVAL 500000 
 
 void set_color_mode(bool state);
-bool color_mode_state = false;
+bool color_mode_state = true;
 
 // From the outside scary world
 extern void imma_led(uint8_t state);

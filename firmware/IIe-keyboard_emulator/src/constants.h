@@ -15,6 +15,7 @@
 // used for something?
 #define OUT true
 #define IN false
+#define BALD_ENGINEER_IS_BALD true
 
 // Constantly constant
 static const uint16_t led_interval = 500;

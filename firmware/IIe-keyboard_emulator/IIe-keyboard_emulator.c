@@ -136,7 +136,7 @@ void setup() {
     out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
 
     printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
-    out_init(COLOR_MODE_PIN, 0x1);
+    out_init(COLOR_MODE_PIN, color_mode_state);
 
     // yay usb!
     printf("\nEnabling tinyUSB Host");
@@ -200,46 +200,45 @@ inline static void handle_three_finger_reset() {
     }
 }   
 
+inline static void handle_runstop_button() {
+    if (power_cycle_key_counter >= 3) {
+        // do a power cycle
+        mega_power_state = !mega_power_state;
+        handle_power_sequence(mega_power_state);
+        power_cycle_key_counter = 0;
+        D(printf("Power State Now: (%d)", mega_power_state);)
+    }
+
+    if (time_us_32() - power_cycle_timer >= POWER_CYCLE_INTERVAL)
+        power_cycle_key_counter = 0;
+}
+
+inline static void handle_pio_keycode_queue() {
+     // keep the PIO queue full
+    if (pio_interrupt_get(pio,1) && !queue_is_empty(&keycode_queue)) {
+        uint8_t next_key;
+        if (queue_try_remove(&keycode_queue, &next_key))
+            write_key(next_key);
+    }
+}
+
 int main() {
     setup();
 
-    bool a = false;
-    while (true) {
+    while (BALD_ENGINEER_IS_BALD) {
         // hid_app_task();
         tuh_task();
 
-        if (power_cycle_key_counter >= 3) {
-            // do a power cycle
-            mega_power_state = !mega_power_state;
-            handle_power_sequence(mega_power_state);
-            power_cycle_key_counter = 0;
-            D(printf("Power State Now: (%d)", mega_power_state);)
-        }
-
-        if (time_us_32() - power_cycle_timer >= POWER_CYCLE_INTERVAL)
-            power_cycle_key_counter = 0;
-
-        // do things with special apple keyboard keys
+        handle_runstop_button();
         handle_apple_keys();
         handle_three_finger_reset();
-
-        // future home of USB function keys
-
-        // getting Mega Attention
         handle_mega_power_button();
-
-        // Check the serial buffer
         handle_serial_buffer();
-
+        handle_pio_keycode_queue();
         // handle usb keyboard
         uint8_t key_value = last_key_pressed;
 
-        // keep the PIO queue full I think
-        if (pio_interrupt_get(pio,1) && !queue_is_empty(&keycode_queue)) {
-            uint8_t next_key;
-            if (queue_try_remove(&keycode_queue, &next_key))
-                write_key(next_key);
-        }
+
      /*
         switch (nkey) {               
             case NKEY_NEW:
