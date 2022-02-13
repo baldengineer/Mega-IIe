@@ -27,7 +27,7 @@
 
 //#include "hid_host.h"
 
-#define DEBUG_IIE_HID
+//#define DEBUG_IIE_HID
 
 #include "bsp/board.h"
 #include "tusb.h"
@@ -181,6 +181,7 @@ static void find_new_keys(hid_keyboard_report_t const* report,hid_keyboard_repor
         if (curr_keycode != prev_keycode) {
             D(printf("Queuing: [%d] %c\n", curr_keycode, curr_char);)
             queue_key(get_ascii(curr_keycode, modifiers));
+            last_key_pressed = get_ascii(curr_keycode, modifiers); // last one in report is the "last" key pressed
         } else {
             D(printf("Repeated: %d\n", curr_keycode, curr_char);)
         }
@@ -249,9 +250,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                     power_cycle_key_counter++;
                     D(printf("PWR Cycle Count: (%d)\n", power_cycle_key_counter);)
                 break;
-
             }
-
         }
     }
 
@@ -276,7 +275,6 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
     // Condition #3: was previous report empty? AND this report is not if so, queue up each key (new event)
     if ((prev_report_count==0) && (report_count>0)) {
         nkey = NKEY_NEW;
-        nkey_last_press = time_us_32();
         for (uint8_t i = 0; i <= report_count; i++) {
             if (report->keycode[i] > 0) {
                 uint8_t ascii = get_ascii(report->keycode[i], modifiers);
@@ -290,6 +288,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
     // Condition #4: did previous report and this report have keys?
     if ((prev_report_count > 0) && (report_count>0)) {
         // a new key was added to the queue
+        nkey = NKEY_NEW;
         D(printf("BTB Reports with Keys\n");)
         if ((report_count >= prev_report_count)) {
             // queue the new keys

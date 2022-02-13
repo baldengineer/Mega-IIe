@@ -23,8 +23,8 @@ uint8_t serial_anykey_clear_interval = 100;
 extern uint8_t last_key_pressed;
 extern enum nkey_states nkey;
 extern uint32_t nkey_last_press;
-uint32_t   nkey_wait_us = 500000;
-uint32_t nkey_repeat_us = 100000;
+uint32_t   nkey_wait_us = 750e3;   //5M us =   5sec
+uint32_t nkey_repeat_us = 50e3; //500K us = 500 ms
 
 uint8_t keys[101] = {0};
 uint8_t modifiers = 0;

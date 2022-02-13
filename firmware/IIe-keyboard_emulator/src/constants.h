@@ -33,19 +33,25 @@ static const uint16_t delay_time = 1000;
 #define   MD5  8
 #define   MD6  9
 #define   MD7 10
+// EN_245 11
+// RESET 12
 #define KSEL1 13
 #define KSEL2 14
 #define    RW 15
 #define   PH0 16
 #define RESET_CTL 18
+#define COLOR_MODE_PIN 22
+
+// Free pins
+// 17, 19, 21
 
 // IO Pins
 //const uint LED_PIN = PICO_DEFAULT_LED_PIN;  // its the LED pin (that we don't have)
-extern const uint DEBUG_PIN;
-extern const uint8_t enable_245_pin;
-extern const uint8_t shifter_enable;
-
-#define COLOR_MODE_PIN 22
+extern const uint DEBUG_PIN; // 24
+extern const uint8_t enable_245_pin; // 11
+extern const uint8_t shifter_enable; // 25
+extern const uint8_t OAPL_pin; // 20
+extern const uint8_t CAPL_pin; // 23
 
 // Power Sequencing
 #define   MEGA_POWER 26   // input!
@@ -66,7 +72,5 @@ extern bool OAPL_state;
 extern bool CAPL_state;
 extern bool do_a_reset;
 extern bool shift_lock_state;
-extern const uint8_t OAPL_pin;
-extern const uint8_t CAPL_pin;
 
 #endif

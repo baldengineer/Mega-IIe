@@ -222,6 +222,33 @@ inline static void handle_pio_keycode_queue() {
     }
 }
 
+inline static void handle_nkey_repeats() {
+    switch (nkey) {               
+        case NKEY_NEW:
+            nkey_last_press = time_us_32();
+            nkey = NKEY_ARMED;
+        break;
+
+        case NKEY_ARMED:
+            if ((time_us_32() - nkey_last_press) >= nkey_wait_us) {
+                nkey = NKEY_REPEATING;
+            }
+        break;
+
+        case NKEY_REPEATING:
+            if ((time_us_32() - nkey_last_press) >= nkey_repeat_us) {
+                queue_key(last_key_pressed);
+                nkey_last_press = time_us_32();
+            }
+        break;
+
+        case NKEY_IDLE:
+        default:
+
+        break;
+    }
+}
+
 int main() {
     setup();
 
@@ -235,51 +262,7 @@ int main() {
         handle_mega_power_button();
         handle_serial_buffer();
         handle_pio_keycode_queue();
-        // handle usb keyboard
-        uint8_t key_value = last_key_pressed;
-
-
-     /*
-        switch (nkey) {               
-            case NKEY_NEW:
-                nkey_last_press = time_us_32();
-                nkey = NKEY_ARMED;
-            break;
-
-            case NKEY_ARMED:
-                if ((time_us_32() - nkey_last_press) >= nkey_wait_us) {
-                    nkey = NKEY_REPEATING;
-                    write_key(last_key_pressed);
-                }
-            break;
-
-            case NKEY_REPEATING:
-                if ((time_us_32() - nkey_last_press) >= nkey_repeat_us) {
-                    write_key(last_key_pressed);
-                    nkey_last_press = time_us_32();
-                }
-            break;
-
-            case NKEY_NONE:
-                //  ¯\_(ツ)_/¯
-                raise_key(); // no moar keys
-                nkey = NKEY_IDLE;
-            break;
-
-            case NKEY_IDLE:
-            default:
- 
-            break;
-        }
-        
-        static uint32_t previous_keypress = 0;
-        if (nkey > 0) {
-            if (millis() - previous_keypress >= 100) {
-                write_key(last_key_pressed);
-                previous_keypress = millis();
-            }
-        } */
-
+        handle_nkey_repeats();
     } // while (true)
     return 0;  // but you never will hah!
 } // it's da main thing
