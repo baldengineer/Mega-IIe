@@ -23,6 +23,7 @@
  *
  */
 
+//#define DEBUG_MAIN
 
 #include "IIe-keyboard_emulator.h"
 
@@ -48,6 +49,10 @@ uint32_t millis() {
 bool repeating_timer_callback(struct repeating_timer *t) {
     dousb = true;
     return true;
+}
+
+void set_color_mode(bool state) {
+    gpio_put(COLOR_MODE_PIN, state);
 }
 
 inline void queue_key(uint8_t key) {
@@ -165,6 +170,9 @@ void setup() {
     printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
     out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
 
+    printf("\nColor Mode Pin (%d)", COLOR_MODE_PIN);
+    out_init(COLOR_MODE_PIN, 0x0);
+
     // yay usb!
     printf("\nEnabling tinyUSB Host");
     tusb_init();
@@ -178,6 +186,8 @@ void setup() {
     printf("\nConfiguring OAPL and CAPL");
     out_init(OAPL_pin, 0x0);
     out_init(CAPL_pin, 0x0);
+
+
 
     printf("\nConfiguring KBD PIO State Machine");
     KBD_pio_setup();  

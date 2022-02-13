@@ -44,6 +44,8 @@ extern const uint DEBUG_PIN;
 extern const uint8_t enable_245_pin;
 extern const uint8_t shifter_enable;
 
+#define COLOR_MODE_PIN 22
+
 // Power Sequencing
 #define   MEGA_POWER 26   // input!
 #define  Enable_p12V 27   // output

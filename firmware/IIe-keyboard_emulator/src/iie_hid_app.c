@@ -28,7 +28,7 @@
 
 //#include "hid_host.h"
 
-//#define DEBUG_IIE_HID
+#define DEBUG_IIE_HID
 
 #include "bsp/board.h"
 #include "tusb.h"
@@ -152,7 +152,7 @@ void imma_led(uint8_t state) {
     uint8_t report_id   = 0x00;
     uint8_t report_type = 0x02;
 
-    printf("%d: imma led: %d\n", call_counter++,kbd_led_state[0]);
+    D(printf("%d: imma led: %d\n", call_counter++,kbd_led_state[0]);)
     if (state == 0x2)
         kbd_led_state[0] = kbd_led_state[0] | 0x02;
     if (state == 0x0)
@@ -178,11 +178,16 @@ void check_for_released_key(hid_keyboard_report_t const* prev_report, hid_keyboa
 }
 
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
-    bool const is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+    bool is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
     bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
-    //uint8_t ch = keycode2ascii[keyboard_code][is_shift ? 1 : 0];
 
+    // this mirrors how IIe works (but not IIgs, I think)
+    if (shift_lock_state)
+        is_shift = true;
+
+    //uint8_t ch = keycode2ascii[keyboard_code][is_shift ? 1 : 0];
     //maps: normal_kbd_map ctrl_kbd_map shift_kbd_map both_kbd_map
+
     uint8_t ch = 0x0;
     if (is_shift && is_ctrl)
         ch = both_kbd_map[keyboard_code];
@@ -262,9 +267,12 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
     }
 
     // count the current reports
+    bool special_function = false;
     uint8_t report_count = 0;
     for (uint8_t i = 0; i < 6; i++) {
         if (report->keycode[i] > 0) {
+            if ((report->keycode[i] >= 57) && (report->keycode[i] <= 72))
+                special_function = true;
             report_count++;
         }
     }
@@ -276,6 +284,40 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                 D(printf("%d [%c],", report->keycode[i], get_ascii(report->keycode[i], modifiers));)
         }
         D(printf("\n");)
+    }
+
+    // Condition #0: does this current report contain caps, Fx, restore, 40/80 or Run/stop?
+    if (special_function) {
+        for (uint8_t i = 0; i < report_count; i++) {
+            switch (report->keycode[i]) {
+                case 57: // caps lock
+                    D(printf("Caps Lock\n");)
+                    shift_lock_state = !shift_lock_state;
+                    if (shift_lock_state)
+                        imma_led(0x2);
+                    else
+                        imma_led(0x0);
+                    D(printf("Shift Lock: %d\n", shift_lock_state);)
+                break;
+
+                case 70: // restore
+                    D(printf("Restore\n");)
+                break;
+
+                case 71: // 40/80
+                    D(printf("40/80\n");)
+                    color_mode_state = !color_mode_state;
+                    D(printf("Color Mode State: %d\n", color_mode_state);)
+                    set_color_mode(color_mode_state);
+                break;
+
+                case 72: // Run/Stop
+                    D(printf("Run/Stop\n");)
+                break;
+
+            }
+
+        }
     }
 
     // Condition #1: was previous report AND this report empty? ignore it

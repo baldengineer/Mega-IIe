@@ -16,8 +16,6 @@
 #include "src/constants.h"
 #include "src/enums.h"
 
-//#define DEBUG_MAIN
-
 uint8_t mega_power_state = 0x0;
 uint8_t serial_anykey_clear_interval = 100;
 extern uint8_t last_key_pressed;
@@ -32,7 +30,7 @@ uint8_t modifiers = 0;
 // Useful flags for useful things
 volatile bool kbd_connected = false;
 volatile bool dousb = false;
-volatile uint8_t kbd_led_state[1] = {0x0};
+uint8_t kbd_led_state[1] = {0x0};
 bool print_usb_report = false;
 struct repeating_timer timer1;
 struct repeating_timer timer2;
@@ -43,7 +41,9 @@ bool CAPL_state=false;
 bool do_a_reset=false;
 const uint8_t OAPL_pin = 20;
 const uint8_t CAPL_pin = 23;
+
 bool shift_lock_state=false;
+bool color_mode_state = false;
 
 const uint DEBUG_PIN = 24;
 const uint8_t enable_245_pin = 11;
@@ -61,6 +61,8 @@ void write_key(uint8_t key);
 void queue_key(uint8_t key);
 void reset_mega(uint8_t reset_type);
 
+void set_color_mode(bool state);
+
 // From the outside scary world
 extern void imma_led(uint8_t state);
 extern void hid_app_task(void);
@@ -69,7 +71,7 @@ extern bool tuh_task();
 extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
 extern void KBD_pio_setup();
-extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys); 
+extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 
 extern void toggle_pwr_pins();
 extern void handle_mega_power_button();

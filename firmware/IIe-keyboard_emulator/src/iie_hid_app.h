@@ -24,13 +24,16 @@ extern volatile uint8_t kbd_led_state[1];
 extern void queue_key(uint8_t key);
 extern void write_key(uint8_t key);
 extern void raise_key();
+
+extern void set_color_mode(bool state);
+
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
 extern bool OAPL_state;
 extern bool CAPL_state;
 extern bool do_a_reset;
 
 extern bool shift_lock_state;
-static bool last_shift_lock_state;
+extern bool color_mode_state;
 
 bool any_key=false;
 extern bool OAPL_state;
