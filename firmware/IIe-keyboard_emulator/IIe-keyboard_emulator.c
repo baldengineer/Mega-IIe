@@ -26,21 +26,12 @@
 
 #include "IIe-keyboard_emulator.h"
 
+queue_t keycode_queue;
+
 // old habits die hard
 uint32_t millis() {
     return ((time_us_32() / 1000));
 }
-
-// example of setting leds on keyboard
-/*void wtf_bbq_led() {
-    static uint8_t dev_addr = 0x1;
-    static uint8_t instance = 0x0;
-    static uint8_t report_id = 0x0;
-    static uint8_t report_type = 0x2;
-
-    if (kbd_connected)
-        tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
-}*/
 
 // trying to reduce bus contention
 bool repeating_timer_callback(struct repeating_timer *t) {
@@ -48,78 +39,23 @@ bool repeating_timer_callback(struct repeating_timer *t) {
     return true;
 }
 
-void check_keyboard_buffer() {
-    // check the keyboard buffer
-    static uint32_t prev_key_millis = 0;
-    uint32_t current_millis = millis();
-    if (any_key) {// (current_millis - prev_key_millis >= key_delay)) {
-        bool did_print = false;
-        any_key = false;
-        for (uint8_t x = 0; x < 101; x++) {
-            if (keys[x]) {
-                if (did_print)
-                    printf(",");
-                uint8_t ascii = get_ascii(x, modifiers);
-                // handle special case :)
-                if ((x==76) && (modifiers==5)) {
-                    // ctrl-alt-del!!
-                    reset_mega(1);
-                    return;
-                }
-              //  printf("%d - %c (%d) (0x%02X)",x, ascii, ascii, ascii);
-                write_key(ascii);
-                did_print = true;
-            }
-        }
-        // if (did_print)
-        //     printf(",%d\n", modifiers);
-
-        prev_key_millis = current_millis;
-    }
+void set_color_mode(bool state) {
+    gpio_put(COLOR_MODE_PIN, state);
 }
 
-void handle_tinyusb() {
-    if (dousb) {
-        tuh_task();
-        dousb = false;
-    }
+void queue_key(uint8_t key) {
+    // if the PIO is ready, let's send in the character now
+    if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
+        write_key(key);
+        D(printf("Im[%c]", key);)
+    }  else if (!queue_try_add(&keycode_queue, &key))
+        printf("Failed to add [%c]\n", key);
 }
 
-// todo: convert to using the _mask function calls
-void setup_main_databus() {
-    const uint8_t main_data[] = {MD0, MD1, MD2, MD3, MD4, MD5, MD6};
-    for (int x = 0; x < (sizeof(main_data)/sizeof(main_data[0])); x++) {
-        gpio_init(main_data[x]);
-        gpio_set_dir(main_data[x], GPIO_OUT);
-        gpio_put(main_data[x], 0x0);
-    }
-}
-
-void prepare_key_value(uint8_t key_value) {
-        // direction of mask and for() depends on GPIO to MDx mapping
-        uint8_t io_mask = 0x80; 
-        printf("(%#04x): ", key_value);
-
-        // changing the GPIO pins
-        for (int gpio = MD7; gpio >= MD0; gpio--) {
-            if (gpio == MD3)
-                printf(" ");
-            if (io_mask & key_value) {
-                gpio_put(gpio,0x1);
-                printf("1");
-            } else {
-                gpio_put(gpio,0x0);
-                printf("0");
-            }
-            io_mask = io_mask >> 1;
-        }
-        printf("\n");
-        write_key(key_value);
-}
-
-// todo pass references to pio stuff so I can move to another file
+// TODO  pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
     //reset_type = cold or warm
+
     printf("Disabling Mega-II...");
     gpio_put(RESET_CTL, 0x1);
     printf("\nReseting PIO...");
@@ -127,31 +63,34 @@ void reset_mega(uint8_t reset_type) {
     pio_sm_set_enabled(pio, pio_sm_1, false);
     pio_sm_restart(pio, pio_sm);
     pio_sm_restart(pio, pio_sm_1);
+   // hid_app_task();
+    tuh_task();
     printf("\nPausing");
-    busy_wait_ms(100);
-    printf(".");
-    hid_app_task();
-    handle_tinyusb();
-    printf("...[DONE]\n");
+    busy_wait_ms(250);
+   // hid_app_task();
+    tuh_task();
+    printf("...[DONE]");
+    printf("\nClearing Keyboard Queue..."); // queue_free() keeps causing hardfault
+    while (!queue_is_empty(&keycode_queue)) {
+        uint8_t throwaway = '\0';
+        queue_try_remove(&keycode_queue, &throwaway);
+        printf("%c",throwaway);
+    }
+    printf(" [Done].");
+    printf("\nRenabling PIO...");
     pio_sm_set_enabled(pio, pio_sm, true);
     pio_sm_set_enabled(pio, pio_sm_1, true);
-    printf("Enabling Mega-II...\n");
+    printf("\nEnabling Mega-II...\n");
     gpio_put(RESET_CTL, 0x0);
 }
 
-void write_key(uint8_t key) {
-   // gpio_put(enable_245_pin  , ENABLED);
-    printf("+");
-    gpio_put(DEBUG_PIN, 0x1);
+inline void write_key(uint8_t key) {
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
     pio_interrupt_clear(pio, 1);
 }
 
-void raise_key() {
-  //  gpio_put(enable_245_pin  , DISABLED);
-    printf("-");
-    gpio_put(DEBUG_PIN, 0x0);
+inline void raise_key() { // I don't remember why this is an if-statement, oh well, lolz.
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
     } else {
@@ -159,8 +98,8 @@ void raise_key() {
     }
 }
 
-uint8_t handle_serial_keyboard() {
-    int incoming_char = getchar_timeout_us(0);
+inline static uint8_t handle_serial_keyboard() {
+    uint8_t incoming_char = getchar_timeout_us(0);
     // MEGA-II only seems to like these values
     if ((incoming_char > 0) && (incoming_char < 128)) {
         return incoming_char;
@@ -168,131 +107,164 @@ uint8_t handle_serial_keyboard() {
     return 0;
 }
 
+// shortcut for setting up output pins (there isn't a SDK call for this?)
+static void out_init(uint8_t pin, bool state) {
+    gpio_init(pin);
+    gpio_set_dir(pin, GPIO_OUT);
+    gpio_put(pin, state);
+}
+
+// put your setup code here, to run once:
 void setup() {
+    stdio_init_all();  // UART accepts input and displays debug infos
 
-    setup_main_databus();
-    stdio_init_all();  // so we can see stuff on UART
-
-    // power sequence
     printf("\nInit Suppy Pins");
     setup_power_sequence();
-    printf("\nTurning on Supply Pins\n");
-    handle_power_sequence(0);
 
-    // debug pin to trigger the external logic analyzer
-    printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);
-    gpio_init(DEBUG_PIN);
-    gpio_set_dir(DEBUG_PIN, GPIO_OUT);
-    gpio_put(DEBUG_PIN, 0x0);
+    printf("\nTurning on Supply Pins\n");
+    handle_power_sequence(PWR_ON);
+    mega_power_state = PWR_ON;
+
+    printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
+    out_init(DEBUG_PIN, 0x0);
 
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
-    gpio_init(RESET_CTL);
-    gpio_set_dir(RESET_CTL, GPIO_OUT);
-    gpio_put(RESET_CTL, 0x0);
+    out_init(RESET_CTL, 0x0);
 
     // ************************************************************
-    gpio_init(shifter_enable);
-    gpio_set_dir(shifter_enable, GPIO_OUT);
-    gpio_put(shifter_enable, true); // the TXB0108 is active HI!
+    printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
+    out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
+
+    printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
+    out_init(COLOR_MODE_PIN, color_mode_state);
 
     // yay usb!
+    printf("\nEnabling tinyUSB Host");
     tusb_init();
 
     // helps with throtting usb (may get fixed in future TinyUSB, I hope)
-    printf("\nEnabling tuh_task");
+ /*   printf("\nEnabling tuh_task");
     add_repeating_timer_ms(-2, repeating_timer_callback, NULL, &timer2);
-    printf("\n(---------");
+    printf("\n(---------");*/
 
     // configure I/O control lines
     printf("\nConfiguring OAPL and CAPL");
-    gpio_init(OAPL_pin);
-    gpio_init(CAPL_pin);
-    gpio_put(OAPL_pin, 0x0);
-    gpio_put(CAPL_pin, 0x0);
-    gpio_set_dir(OAPL_pin, GPIO_OUT); // true for out, false for in
-    gpio_set_dir(CAPL_pin, GPIO_OUT); // true for out, false for in
+    out_init(OAPL_pin, 0x0);
+    out_init(CAPL_pin, 0x0);
 
-    printf("\nConfiguring State Machine");
+    printf("\nConfiguring KBD PIO State Machine");
     KBD_pio_setup();  
 
+    printf("\nConfiguring key code queue");
+    queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
+
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
+}
+
+inline static void handle_apple_keys() {
+    gpio_put(OAPL_pin, OAPL_state);
+    gpio_put(CAPL_pin, CAPL_state);
+}
+
+inline static void handle_serial_buffer() {
+    static uint32_t prev_serial_clear = 0;
+    static bool serial_clear = false;
+
+    uint8_t key_value = handle_serial_keyboard(); 
+    if (key_value > 0) {
+        if (key_value == 0x12) { // should be CTRL-R
+            reset_mega(1); // 0 = cold, 1 = warm
+            //handle_power_sequence(mega_power_state);
+        } else {
+            //prepare_key_value(key_value);
+            printf("%c",key_value);
+            queue_key(key_value);
+            serial_clear = true;
+            prev_serial_clear = millis();
+        }
+    }
+
+    // deassert ANYKEY when receiving characters over serial
+    if (serial_clear && (millis() - prev_serial_clear >= serial_anykey_clear_interval)) {
+        serial_clear = false; 
+        //pio_sm_put(pio, pio_sm, (0x0));
+        raise_key();
+    }
+}
+
+inline static void handle_three_finger_reset() {
+    if (do_a_reset) {
+        do_a_reset = false;
+        busy_wait_ms(THREE_FINGER_WAIT);
+        reset_mega(0);
+    }
+}   
+
+inline static void handle_runstop_button() {
+    if (power_cycle_key_counter >= 3) {
+        // do a power cycle
+        mega_power_state = !mega_power_state;
+        handle_power_sequence(mega_power_state);
+        power_cycle_key_counter = 0;
+        D(printf("Power State Now: (%d)", mega_power_state);)
+    }
+
+    if (time_us_32() - power_cycle_timer >= POWER_CYCLE_INTERVAL)
+        power_cycle_key_counter = 0;
+}
+
+inline static void handle_pio_keycode_queue() {
+     // keep the PIO queue full
+    if (pio_interrupt_get(pio,1) && !queue_is_empty(&keycode_queue)) {
+        uint8_t next_key;
+        if (queue_try_remove(&keycode_queue, &next_key))
+            write_key(next_key);
+    }
+}
+
+inline static void handle_nkey_repeats() {
+    switch (nkey) {               
+        case NKEY_NEW:
+            nkey_last_press = time_us_32();
+            nkey = NKEY_ARMED;
+        break;
+
+        case NKEY_ARMED:
+            if ((time_us_32() - nkey_last_press) >= nkey_wait_us) {
+                nkey = NKEY_REPEATING;
+            }
+        break;
+
+        case NKEY_REPEATING:
+            if ((time_us_32() - nkey_last_press) >= nkey_repeat_us) {
+                queue_key(last_key_pressed);
+                nkey_last_press = time_us_32();
+            }
+        break;
+
+        case NKEY_IDLE:
+        default:
+
+        break;
+    }
 }
 
 int main() {
     setup();
 
-    bool a = false;
-    while (true) {
-        static uint32_t previous_output = 0;
-        static uint32_t previous_anyclear = 0;
-        static uint8_t io_select = 0;
-        static bool any_clear = false;
-        
-        hid_app_task();
-        handle_tinyusb();
+    while (BALD_ENGINEER_IS_BALD) {
+        // hid_app_task();
+        tuh_task();
 
-        if (OAPL_state) {
-            gpio_put(OAPL_pin, 0x1);
-            //printf("OA\n");
-        } else
-            gpio_put(OAPL_pin, 0x0);
-
-        if (CAPL_state) {
-            gpio_put(CAPL_pin, 0x1);
-            //printf("CA\n");
-        } else
-            gpio_put(CAPL_pin, 0x0);
-    
-        if (do_a_reset) {
-            do_a_reset = false;
-            reset_mega(0);
-        }
-
-        uint8_t key_value = 0;
-        // Check the USB keyboard
-      //  check_keyboard_buffer();
-        static uint32_t previous_keypress = 0;
-        if (nkey > 0) {
-            if (millis() - previous_keypress >= 100) {
-                write_key(last_key_pressed);
-                previous_keypress = millis();
-            }
-        }
-
-        // getting Mega Attention
+        handle_runstop_button();
+        handle_apple_keys();
+        handle_three_finger_reset();
         handle_mega_power_button();
-
-        gpio_put(OAPL_pin, OAPL_state);
-        gpio_put(CAPL_pin, CAPL_state);
- 
-        if (do_a_reset) {
-            do_a_reset = false;
-            busy_wait_ms(THREE_FINGER_RESET_TIME); // give time to let go of 3-key sequence
-            reset_mega(0);
-        }
-
-        // Check the serial buffer
-        key_value = handle_serial_keyboard(); 
-        if (key_value > 0) {
-            if (key_value == 0x12) { // should be CTRL-R
-                reset_mega(1); // 0 = cold, 1 = warm
-                //handle_power_sequence(mega_power_state);
-            } else {
-                prepare_key_value(key_value);
-                any_clear = true;
-                previous_anyclear = millis();
-            }
-
-        }
-
-        // deassert ANYKEY when receiving characters over serial
-        if (any_clear && (millis() - previous_anyclear >= serial_anykey_clear_interval)) {
-            any_clear = false; 
-            //pio_sm_put(pio, pio_sm, (0x0));
-            raise_key();
-        }
-    }
+        handle_serial_buffer();
+        handle_pio_keycode_queue();
+        handle_nkey_repeats();
+    } // while (true)
     return 0;  // but you never will hah!
-}
+} // it's da main thing
 
 

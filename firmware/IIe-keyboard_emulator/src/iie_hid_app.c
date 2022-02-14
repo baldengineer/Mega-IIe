@@ -1,4 +1,3 @@
-
 /*
  * The MIT License (MIT)
  *
@@ -25,56 +24,17 @@
  *
  */
 
-#include "bsp/board.h"
-#include "tusb.h"
-#include "keyboard_mapping.h"
+
 //#include "hid_host.h"
 
-//--------------------------------------------------------------------+
-// MACRO TYPEDEF CONSTANT ENUM DECLARATION
-//--------------------------------------------------------------------+
+//#define DEBUG_IIE_HID
 
-// If your host terminal support ansi escape code such as TeraTerm
-// it can be use to simulate mouse cursor movement within terminal
-#define USE_ANSI_ESCAPE 0
+#include "bsp/board.h"
+#include "tusb.h"
+#include <iie_hid_app.h>
+#include <keyboard_mapping.h>
 
 #define MAX_REPORT 4
-
-uint8_t last_key_pressed=0;
-uint8_t nkey = 0;
-extern uint8_t keys[101];
-extern uint8_t modifiers;
-extern bool print_usb_report;
-extern uint32_t millis();
-extern volatile bool kbd_connected;
-extern void wtf_bbq_led(uint8_t state);
-extern volatile uint8_t kbd_led_state[1];
-extern void write_key(uint8_t key);
-extern void raise_key();
-uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys);
-extern bool OAPL_state;
-extern bool CAPL_state;
-extern bool do_a_reset;
-
-extern bool shift_lock_state;
-static bool last_shift_lock_state;
-
-bool any_key=false;
-extern bool OAPL_state;
-extern bool CAPL_state;
-extern bool do_a_reset;
-
-static uint8_t const keycode2ascii[128][2] = {HID_KEYCODE_TO_ASCII};
-
-// Each HID instance can has multiple reports
-static struct
-{
-    uint8_t report_count;
-    tuh_hid_report_info_t report_info[MAX_REPORT];
-} hid_info[CFG_TUH_HID];
-
-static void process_kbd_report(hid_keyboard_report_t const* report);
-static void process_generic_report(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
 
 void hid_app_task(void) {
     // nothing to do
@@ -148,40 +108,10 @@ void tuh_hid_report_received_cb(uint8_t dev_addr, uint8_t instance, uint8_t cons
 //--------------------------------------------------------------------+
 // Keyboard
 //--------------------------------------------------------------------+
-
-// look up new key in previous keys
-static inline bool find_key_in_report(hid_keyboard_report_t const* report, uint8_t keycode) {
-    for (uint8_t i = 0; i < 6; i++) {
-        if (report->keycode[i] == keycode) return true;
-    }
-
-    return false;
-}
-
-void print_report_why_not(hid_keyboard_report_t const* report) {
-    // printf("Report: ");
-    // for (uint8_t i = 0; i < 6; i++) {
-    //     printf("%d,", report->keycode[i]);
-    // }
-    // printf("\n");
-}
-
 /*
-SETUP = 0x21
-Request Code SetReport = 0x09
-Report Id = 0x00
-reprot type = 0x02 (these two might be backward, verify)
-
-Value field of Setup Packet contains the report ID in the low byte, which is Zero
-High byte contains the report type, which would be 0x02 for output report
-    output report = software to the hardware
-Index Field = Inteface number of USB Keyboard
-Data stage = 1 byte
-
- explains keyboard packets (verbosely): https://wiki.osdev.org/USB_Human_Interface_Devices
+  explains keyboard packets (verbosely): https://wiki.osdev.org/USB_Human_Interface_Devices
   explains setup packet: https://www.beyondlogic.org/usbnutshell/usb6.shtml
 */
-
 void imma_led(uint8_t state) {
     static uint32_t call_counter = 0;
     uint8_t dev_addr    = 0x01;
@@ -189,7 +119,7 @@ void imma_led(uint8_t state) {
     uint8_t report_id   = 0x00;
     uint8_t report_type = 0x02;
 
-    printf("%d: imma led: %d\n", call_counter++,kbd_led_state[0]);
+    D(printf("%d: imma led: %d\n", call_counter++,kbd_led_state[0]);)
     if (state == 0x2)
         kbd_led_state[0] = kbd_led_state[0] | 0x02;
     if (state == 0x0)
@@ -198,28 +128,14 @@ void imma_led(uint8_t state) {
     tuh_hid_set_report(dev_addr, instance, report_id, report_type, kbd_led_state, 1);
 }
 
-void check_for_released_key(hid_keyboard_report_t const* prev_report, hid_keyboard_report_t const* report) {
-    for (uint8_t prev = 0; prev < 6; prev++) {
-        bool found_in_report = false;
-        for (uint8_t curr = 0; curr < 6; curr++) {
-            if (prev_report->keycode[prev] == report->keycode[curr])
-                found_in_report = true;
-        }
-        if (!found_in_report) {
-            printf("Raising '%c'(%d)\n", get_ascii(prev_report->keycode[prev],0), get_ascii(prev_report->keycode[prev],0));
-            raise_key(get_ascii(prev_report->keycode[prev],0));
-            keys[(prev_report->keycode[prev])] = 0;
-        }
-
-    }
-}
-
-uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
-    bool const is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
+    bool is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
     bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
-    //uint8_t ch = keycode2ascii[keyboard_code][is_shift ? 1 : 0];
 
-    //maps: normal_kbd_map ctrl_kbd_map shift_kbd_map both_kbd_map
+    // this mirrors how IIe works (but not IIgs, I think)
+    if (shift_lock_state && (keyboard_code >= 4) && (keyboard_code <= 29))  //a=4, z=29
+        is_shift = true;
+
     uint8_t ch = 0x0;
     if (is_shift && is_ctrl)
         ch = both_kbd_map[keyboard_code];
@@ -233,63 +149,8 @@ uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     return ch;
 }
 
-static void process_kbd_report(hid_keyboard_report_t const* report) {
-    static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
-
-   // any_key = true; // should we do this?
-
-    // if (print_usb_report)
-    //     print_report_why_not(report);
-
-    // see what keys were released
-  //  check_for_released_key(&prev_report, report);
-
-  // 0,0,0,0,0
-  // 1,0,0,0,0 output: 1
-  // 1,2,0,0,0 output: 2
-  // 1,2,3,0,0 output: 3
-  // 1,2,0,0,0 output: 3
-  // 1,2,4     output: 4
-  // 1,2,4     output: 4
-  // 0,0,0,0,0
-  // 0,0,0,0,0
-  
-
-    modifiers = report->modifier;
-    printf("report: ");
-   // last_key_pressed = 0;
-    uint8_t pressed_count = 0;
-    for (uint8_t i = 0; i < 6; i++) {
-        printf("%d,", report->keycode[i]);
-        if (report->keycode[i]) {
-            pressed_count++;
-            keys[report->keycode[i]] = 1;
-            if (pressed_count > nkey) {
-                nkey = pressed_count;
-                last_key_pressed = get_ascii(report->keycode[i],modifiers);
-            }
-            // did we hit the caps lock?
-            if (report->keycode[i] == 57) {
-                printf("Caps lock was: %d", shift_lock_state);
-                if (shift_lock_state != last_shift_lock_state) {
-                    shift_lock_state = !shift_lock_state;
-                    last_shift_lock_state = shift_lock_state;
-                    printf("Caps lock is now: %d", shift_lock_state);
-                }
-
-            }
-        }
-    }
-  printf("; modifiers=%d",modifiers);
-
-    printf("\n");
-    if (pressed_count == 0) {
-        raise_key();
-        nkey = 0;
-    } 
-
-
-    // looking for special key sequences
+static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_t modifiers) {
+        // looking for special key sequences
     OAPL_state = false;
     CAPL_state = false;
     if (modifiers > 0) {
@@ -308,7 +169,133 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                     do_a_reset = true;
             }
     }
+}
 
+static void find_new_keys(hid_keyboard_report_t const* report,hid_keyboard_report_t const* prev_report, uint8_t report_count, uint8_t modifiers ) {
+    D(printf("Getting new keys...\n");)
+    for (int i=0; i < report_count; i++) {
+        uint8_t curr_keycode = report->keycode[i];
+        uint8_t prev_keycode = prev_report->keycode[i];
+        char curr_char = get_ascii(curr_char, modifiers);
+
+        if (curr_keycode != prev_keycode) {
+            D(printf("Queuing: [%d] %c\n", curr_keycode, curr_char);)
+            queue_key(get_ascii(curr_keycode, modifiers));
+            last_key_pressed = get_ascii(curr_keycode, modifiers); // last one in report is the "last" key pressed
+        } else {
+            D(printf("Repeated: %d\n", curr_keycode, curr_char);)
+        }
+    }
+}
+
+static void process_kbd_report(hid_keyboard_report_t const* report) {
+    static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
+    static uint8_t prev_report_count = 0;
+    static uint8_t prev_modifiers = 0;
+  
+    modifiers = report->modifier;
+
+    if (modifiers > 0) {
+        handle_special_sequences(report, modifiers);
+    }
+
+    // count the current reports
+    bool special_function = false;
+    uint8_t report_count = 0;
+    for (uint8_t i = 0; i < 6; i++) {
+        if (report->keycode[i] > 0) {
+            if ((report->keycode[i] >= 57) && (report->keycode[i] <= 72))
+                special_function = true;
+            report_count++;
+        }
+    }
+
+    if ((report_count > 0)) {
+        // print the report
+        D(printf("Report: (%lu) ", (unsigned long)time_us_32());)
+        for (uint8_t i = 0; i < 6; i++) {
+                D(printf("%d [%c],", report->keycode[i], get_ascii(report->keycode[i], modifiers));)
+        }
+        D(printf("\n");)
+    }
+
+    // Condition #0: does this current report contain caps, Fx, restore, 40/80 or Run/stop?
+    if (special_function) {
+        for (uint8_t i = 0; i < report_count; i++) {
+            switch (report->keycode[i]) {
+                case 57: // caps lock
+                    D(printf("Caps Lock\n");)
+                    shift_lock_state = !shift_lock_state;
+                    if (shift_lock_state)
+                        imma_led(0x2);
+                    else
+                        imma_led(0x0);
+                    D(printf("Shift Lock: %d\n", shift_lock_state);)
+                break;
+
+                case 70: // restore
+                    D(printf("Restore\n");)
+                break;
+
+                case 71: // 40/80
+                    D(printf("40/80\n");)
+                    color_mode_state = !color_mode_state;
+                    D(printf("Color Mode State: %d\n", color_mode_state);)
+                    set_color_mode(color_mode_state);
+                break;
+
+                case 72: // Run/Stop
+                    D(printf("Run/Stop\n");)
+                    power_cycle_timer = time_us_32();
+                    power_cycle_key_counter++;
+                    D(printf("PWR Cycle Count: (%d)\n", power_cycle_key_counter);)
+                break;
+            }
+        }
+    }
+
+    // Condition #1: was previous report AND this report empty? ignore it
+    if ((prev_report_count==0) && (report_count==0)) {
+        D(printf("Ignorning report\n\n\n");)
+        nkey = NKEY_IDLE;
+        prev_report_count = report_count;
+        prev_report = *report;       
+        return;
+    }
+
+    //  Condition #2: did previous report have keys but this one is empty? then release everything
+    if ((prev_report_count>0) && (report_count==0)) {
+        D(printf("All Keys Released\n\n");)
+        raise_key();
+        nkey = NKEY_IDLE;
+        prev_report_count = report_count;
+        prev_report = *report;         
+    }
+
+    // Condition #3: was previous report empty? AND this report is not if so, queue up each key (new event)
+    if ((prev_report_count==0) && (report_count>0)) {
+        nkey = NKEY_NEW;
+        for (uint8_t i = 0; i <= report_count; i++) {
+            if (report->keycode[i] > 0) {
+                uint8_t ascii = get_ascii(report->keycode[i], modifiers);
+                queue_key(ascii);
+                last_key_pressed = ascii; // last one in report is the "last" key pressed
+                D(printf("W[%d]\n",ascii));
+            }
+        }
+    }
+
+    // Condition #4: did previous report and this report have keys?
+    if ((prev_report_count > 0) && (report_count>0)) {
+        // a new key was added to the queue
+        nkey = NKEY_NEW;
+        D(printf("BTB Reports with Keys\n");)
+        if ((report_count >= prev_report_count)) {
+            // queue the new keys
+            find_new_keys(report, &prev_report, report_count, modifiers);
+        }
+    }
+    prev_report_count = report_count;
     prev_report = *report;
 }
 

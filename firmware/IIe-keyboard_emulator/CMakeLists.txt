@@ -28,7 +28,10 @@ add_executable(IIe-keyboard_emulator
 
         
 pico_set_program_name(IIe-keyboard_emulator "IIe-keyboard_emulator")
-pico_set_program_version(IIe-keyboard_emulator "0.1")
+pico_set_program_version(IIe-keyboard_emulator "1.0")
+
+# no_flash means the target is to run from RAM
+#pico_set_binary_type(IIe-keyboard_emulator no_flash)
 
 pico_enable_stdio_uart(IIe-keyboard_emulator 1)
 pico_enable_stdio_usb(IIe-keyboard_emulator 0)
@@ -48,6 +51,7 @@ target_link_libraries(IIe-keyboard_emulator
         hardware_timer
         hardware_watchdog
         hardware_clocks
+        pico_util
         tinyusb_board
         tinyusb_host
         )
