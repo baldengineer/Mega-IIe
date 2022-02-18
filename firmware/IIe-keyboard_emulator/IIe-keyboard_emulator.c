@@ -45,7 +45,8 @@ void set_color_mode(bool state) {
 
 void queue_key(uint8_t key) {
     // if the PIO is ready, let's send in the character now
-    if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
+  //  if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
+      if (queue_is_empty(&keycode_queue)) {
         write_key(key);
         D(printf("Im[%c]", key);)
     }  else if (!queue_try_add(&keycode_queue, &key))
@@ -121,10 +122,15 @@ void setup() {
     printf("\nInit Suppy Pins");
     setup_power_sequence();
 
-    printf("\nTurning on Supply Pins\n");
-    handle_power_sequence(PWR_ON);
-    mega_power_state = PWR_ON;
-
+    printf("\nTurning OFF Supply Pins\n");
+    mega_power_state = PWR_OFF;
+    handle_power_sequence(mega_power_state);
+    printf("\nPausing for 5 seconds ...");
+    for (int x=5; x>=0; x--) {
+        printf("%d...",x);
+        busy_wait_ms(1000);
+    }
+    
     printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
     out_init(DEBUG_PIN, 0x0);
 
@@ -157,6 +163,10 @@ void setup() {
 
     printf("\nConfiguring key code queue");
     queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
+
+    printf("\nTurning ON Supply Pins\n");
+    mega_power_state = PWR_ON;
+    handle_power_sequence(mega_power_state);
 
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }

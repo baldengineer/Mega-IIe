@@ -54,6 +54,7 @@ out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
 
 .wrap_target 
 start:
+    wait 1 gpio PH0     ; wait for Data Cycle
     wait 0 gpio KSEL2 side 1 [7]  ; [6] KSEL2 and de-assert 245 
     wait 0 gpio KSEL1   [7] ; [6] KSEL1 both seem to do the same thing 
 C0XX:
@@ -80,7 +81,7 @@ C000:
     out pins,1          ;output keystrobe Gets reset when C side sends new values
     
 wait_phase:
-    wait 1 gpio PH0     ; wait for Data Cycle
+   
 
     irq clear 0
 set_245en:
