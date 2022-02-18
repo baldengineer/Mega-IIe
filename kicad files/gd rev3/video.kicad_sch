@@ -1317,6 +1317,7 @@
     )
   )
 
+
   (junction (at 140.97 22.86) (diameter 0) (color 0 0 0 0)
     (uuid 0447051a-319c-4c6f-a90e-118ba6100e9b)
   )
@@ -1455,6 +1456,8 @@
 
   (no_connect (at 233.68 123.19) (uuid 2ed4948e-59e2-4bfe-884a-1c527b3a5f14))
   (no_connect (at 248.92 107.95) (uuid 73ed628e-ed4b-4618-86ad-6e3060b18dcb))
+  (no_connect (at 177.8 180.34) (uuid a360e853-9ad3-4024-8737-806bb830f288))
+  (no_connect (at 177.8 170.18) (uuid a360e853-9ad3-4024-8737-806bb830f288))
 
   (bus_entry (at 40.64 66.04) (size 2.54 2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
