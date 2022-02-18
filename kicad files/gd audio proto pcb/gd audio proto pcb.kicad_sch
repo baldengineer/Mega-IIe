@@ -1072,6 +1072,11 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 7599133e-c681-4202-85d9-c20dac196c64)
   )
+  (text "54-00177 and 54-00178 seem to have\nsimilar functionality. Originally \nI ordered the `8 but seemingly \ndesigned to `7's pinout.\n\nIs the `7 the same as the \n\"default\" symbol in Kicad?"
+    (at 265.43 88.9 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid faad28a2-09fa-4ce9-a367-71b6860b94ed)
+  )
 
   (label "SPKR" (at 91.44 36.83 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
@@ -1174,7 +1179,7 @@
     (property "Footprint" "Connector_Audio:Jack_3.5mm_PJ311_Horizontal" (id 2) (at 251.46 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00177.pdf?X-Amz-Expires=600&X-Amz-Date=20220124T060305Z&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIS2S4WRDQDSWDRZQ%2F20220124%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-SignedHeaders=host&X-Amz-Signature=f29aa2fcc9e95073a664c3cd2871b5bf87d9725ad5d792b012eee0a99475bfa2" (id 3) (at 251.46 85.09 0)
+    (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00178.pdf" (id 3) (at 251.46 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "MFG" "Tensility International Corp" (id 4) (at 251.46 85.09 0)
