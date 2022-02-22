@@ -7,6 +7,7 @@
   (title_block
     (title "Audio")
     (rev "3a")
+    (company "twitch.tv/baldengineer")
   )
 
   (lib_symbols
@@ -684,7 +685,6 @@
       )
     )
   )
-
 
   (junction (at 198.12 101.6) (diameter 0) (color 0 0 0 0)
     (uuid 1c0c9ae9-4ddd-444b-9127-a2bce6edf65f)

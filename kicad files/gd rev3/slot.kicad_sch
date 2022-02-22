@@ -6,7 +6,8 @@
 
   (title_block
     (title "Slotmaker and Game DIP")
-    (rev "Rev 3")
+    (rev "3a")
+    (company "twitch.tv/baldengineer")
   )
 
   (lib_symbols
@@ -1414,7 +1415,6 @@
       )
     )
   )
-
 
   (junction (at 233.68 33.02) (diameter 0) (color 0 0 0 0)
     (uuid 013d43cc-2334-4930-82cd-ee48c0f706d6)
