@@ -1,0 +1,11 @@
+AR checking written on:
+'C:\Users\balde\Dropbox\Projects\Retro Computing Projects\Golden Delicious\GD-GitHub\kicad files\gd vga pico proto pcb\gd vga pico proto pcb_AR-Check.txt'
+'action_menu_annular_check.py'
+version = 1.7.2
+Testing PCB for Annular Rings
+TH Pads >= 0.125 Vias >= 0.125
+PHD margin on PTH = 0
+
+VIAS that Pass = 0; Fails = 0
+TH PADS that Pass = 54; Fails = 0
+NPTH PADS that Pass = 0; Fails = 0
