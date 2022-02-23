@@ -48,7 +48,13 @@
           "min_clearance": 0.2032
         }
       },
-      "diff_pair_dimensions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
       "drc_exclusions": [],
       "meta": {
         "filename": "board_design_settings.json",
@@ -341,7 +347,7 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "warning",
+      "pin_to_pin": "error",
       "power_pin_not_driven": "error",
       "similar_labels": "warning",
       "unannotated": "error",
@@ -412,12 +418,21 @@
           "/D0",
           "/D1",
           "/D2",
-          "/D3"
+          "/D3",
+          "/KSEL0",
+          "/KSEL0rp",
+          "/KSEL1",
+          "/KSEL1rp",
+          "/KSEL2",
+          "/KSEL2rp",
+          "/PH0rp",
+          "/RESETrp",
+          "/RWrp"
         ],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2032,
-        "via_diameter": 0.45,
+        "track_width": 0.1524,
+        "via_diameter": 0.5588,
         "via_drill": 0.3048,
         "wire_width": 6.0
       },
@@ -505,5 +520,9 @@
       ""
     ]
   ],
-  "text_variables": {}
+  "text_variables": {
+    "haircut": "bald",
+    "motto": "Nothing to see here",
+    "profession": "engineer"
+  }
 }
