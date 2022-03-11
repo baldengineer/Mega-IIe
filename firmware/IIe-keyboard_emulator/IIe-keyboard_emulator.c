@@ -125,11 +125,10 @@ void setup() {
     printf("\nTurning OFF Supply Pins\n");
     mega_power_state = PWR_OFF;
     handle_power_sequence(mega_power_state);
-    printf("\nPausing for 5 seconds ...");
-    for (int x=5; x>=0; x--) {
-        printf("%d...",x);
-        busy_wait_ms(1000);
-    }
+
+    // yay usb!
+    printf("\nEnabling tinyUSB Host");
+    tusb_init();
     
     printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
     out_init(DEBUG_PIN, 0x0);
@@ -144,9 +143,7 @@ void setup() {
     printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
     out_init(COLOR_MODE_PIN, color_mode_state);
 
-    // yay usb!
-    printf("\nEnabling tinyUSB Host");
-    tusb_init();
+
 
     // helps with throtting usb (may get fixed in future TinyUSB, I hope)
  /*   printf("\nEnabling tuh_task");
@@ -159,10 +156,20 @@ void setup() {
     out_init(CAPL_pin, 0x0);
 
     printf("\nConfiguring KBD PIO State Machine");
-    KBD_pio_setup();  
+    KBD_pio_setup();
 
     printf("\nConfiguring key code queue");
     queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
+ 
+    tuh_task();
+    printf("\nPausing for 5 seconds ...");
+    for (int x=5; x>=0; x--) {
+        printf("%d...",x);
+        for (int y=0; y<100; y++) {
+            busy_wait_ms(10);
+            tuh_task();
+        }
+    }
 
     printf("\nTurning ON Supply Pins\n");
     mega_power_state = PWR_ON;

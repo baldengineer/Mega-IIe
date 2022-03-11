@@ -56,7 +56,7 @@ out pindirs, 8 side 1   ; shift 8 FFs into pin direction register from OSR
 start:
     wait 1 gpio PH0     ; wait for Data Cycle
     wait 0 gpio KSEL2 side 1 [7]  ; [6] KSEL2 and de-assert 245 
-    wait 0 gpio KSEL1   [7] ; [6] KSEL1 both seem to do the same thing 
+    wait 0 gpio KSEL1 side 1  [7] ; [6] KSEL1 both seem to do the same thing 
 C0XX:
     pull noblock       [7] ; [6] Get Values 0xYX Y = anykey X = Key 
     
