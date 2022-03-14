@@ -324,26 +324,129 @@
         )
       )
     )
-    (symbol "Device:Q_PMOS_DGS" (pin_names (offset 0) hide) (in_bom yes) (on_board yes)
-      (property "Reference" "Q" (id 0) (at 5.08 1.27 0)
+    (symbol "My Library:D_1206" (pin_numbers hide) (pin_names (offset 0.254) hide) (in_bom yes) (on_board yes)
+      (property "Reference" "D" (id 0) (at -1.27 2.032 0)
         (effects (font (size 1.27 1.27)) (justify left))
       )
-      (property "Value" "Q_PMOS_DGS" (id 1) (at 5.08 -1.27 0)
+      (property "Value" "D_1206" (id 1) (at -3.81 -2.032 0)
         (effects (font (size 1.27 1.27)) (justify left))
       )
-      (property "Footprint" "" (id 2) (at 5.08 2.54 0)
+      (property "Footprint" "LED_SMD:LED_1206_3216Metric" (id 2) (at 0 0 90)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "~" (id 3) (at 0 0 90)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "diode" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Diode, small symbol 1206" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "D_1206_0_1"
+        (polyline
+          (pts
+            (xy -0.762 -1.016)
+            (xy -0.762 1.016)
+          )
+          (stroke (width 0.254) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy -0.762 0)
+            (xy 0.762 0)
+          )
+          (stroke (width 0) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0.762 -1.016)
+            (xy -0.762 0)
+            (xy 0.762 1.016)
+            (xy 0.762 -1.016)
+          )
+          (stroke (width 0.254) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+      )
+      (symbol "D_1206_1_1"
+        (pin passive line (at -2.54 0 0) (length 1.778)
+          (name "K" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+        (pin passive line (at 2.54 0 180) (length 1.778)
+          (name "A" (effects (font (size 1.27 1.27))))
+          (number "2" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+    (symbol "My Library:R_0805" (pin_numbers hide) (pin_names (offset 0.254) hide) (in_bom yes) (on_board yes)
+      (property "Reference" "R" (id 0) (at 0.762 0.508 0)
+        (effects (font (size 1.27 1.27)) (justify left))
+      )
+      (property "Value" "R_0805" (id 1) (at 0.762 -1.016 0)
+        (effects (font (size 1.27 1.27)) (justify left))
+      )
+      (property "Footprint" "Resistor_SMD:R_0805_2012Metric" (id 2) (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
       (property "Datasheet" "~" (id 3) (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
-      (property "ki_keywords" "transistor PMOS P-MOS P-MOSFET" (id 4) (at 0 0 0)
+      (property "ki_keywords" "R resistor" (id 4) (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
-      (property "ki_description" "P-MOSFET transistor, drain/gate/source" (id 5) (at 0 0 0)
+      (property "ki_description" "Resistor, small symbol with 0805 Package" (id 5) (at 0 0 0)
         (effects (font (size 1.27 1.27)) hide)
       )
-      (symbol "Q_PMOS_DGS_0_1"
+      (property "ki_fp_filters" "R_*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "R_0805_0_1"
+        (rectangle (start -0.762 1.778) (end 0.762 -1.778)
+          (stroke (width 0.2032) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+      )
+      (symbol "R_0805_1_1"
+        (pin passive line (at 0 2.54 270) (length 0.762)
+          (name "~" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+        (pin passive line (at 0 -2.54 90) (length 0.762)
+          (name "~" (effects (font (size 1.27 1.27))))
+          (number "2" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+    (symbol "Transistor_FET:FDS9435A" (pin_names hide) (in_bom yes) (on_board yes)
+      (property "Reference" "Q" (id 0) (at 5.08 1.905 0)
+        (effects (font (size 1.27 1.27)) (justify left))
+      )
+      (property "Value" "FDS9435A" (id 1) (at 5.08 0 0)
+        (effects (font (size 1.27 1.27)) (justify left))
+      )
+      (property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" (id 2) (at 5.08 -1.905 0)
+        (effects (font (size 1.27 1.27) italic) (justify left) hide)
+      )
+      (property "Datasheet" "https://www.onsemi.com/pub/Collateral/FDS9435A-D.PDF" (id 3) (at 0 0 90)
+        (effects (font (size 1.27 1.27)) (justify left) hide)
+      )
+      (property "ki_keywords" "P-Channel MOSFET" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "-5.3A Id, -30V Vds, P-Channel MOSFET, 50mOhm Ron, SO-8" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_fp_filters" "SOIC*3.9x4.9mm*P1.27mm*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "FDS9435A_0_1"
         (polyline
           (pts
             (xy 0.254 0)
@@ -454,118 +557,38 @@
           (fill (type outline))
         )
       )
-      (symbol "Q_PMOS_DGS_1_1"
-        (pin passive line (at 2.54 5.08 270) (length 2.54)
-          (name "D" (effects (font (size 1.27 1.27))))
+      (symbol "FDS9435A_1_1"
+        (pin passive line (at 2.54 -5.08 90) (length 2.54)
+          (name "S" (effects (font (size 1.27 1.27))))
           (number "1" (effects (font (size 1.27 1.27))))
         )
-        (pin input line (at -5.08 0 0) (length 2.54)
-          (name "G" (effects (font (size 1.27 1.27))))
+        (pin passive line (at 2.54 -5.08 90) (length 2.54) hide
+          (name "S" (effects (font (size 1.27 1.27))))
           (number "2" (effects (font (size 1.27 1.27))))
         )
-        (pin passive line (at 2.54 -5.08 90) (length 2.54)
+        (pin passive line (at 2.54 -5.08 90) (length 2.54) hide
           (name "S" (effects (font (size 1.27 1.27))))
           (number "3" (effects (font (size 1.27 1.27))))
         )
-      )
-    )
-    (symbol "My Library:D_1206" (pin_numbers hide) (pin_names (offset 0.254) hide) (in_bom yes) (on_board yes)
-      (property "Reference" "D" (id 0) (at -1.27 2.032 0)
-        (effects (font (size 1.27 1.27)) (justify left))
-      )
-      (property "Value" "D_1206" (id 1) (at -3.81 -2.032 0)
-        (effects (font (size 1.27 1.27)) (justify left))
-      )
-      (property "Footprint" "LED_SMD:LED_1206_3216Metric" (id 2) (at 0 0 90)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "~" (id 3) (at 0 0 90)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_keywords" "diode" (id 4) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_description" "Diode, small symbol 1206" (id 5) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*" (id 6) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "D_1206_0_1"
-        (polyline
-          (pts
-            (xy -0.762 -1.016)
-            (xy -0.762 1.016)
-          )
-          (stroke (width 0.254) (type default) (color 0 0 0 0))
-          (fill (type none))
+        (pin passive line (at -5.08 0 0) (length 2.54)
+          (name "G" (effects (font (size 1.27 1.27))))
+          (number "4" (effects (font (size 1.27 1.27))))
         )
-        (polyline
-          (pts
-            (xy -0.762 0)
-            (xy 0.762 0)
-          )
-          (stroke (width 0) (type default) (color 0 0 0 0))
-          (fill (type none))
+        (pin passive line (at 2.54 5.08 270) (length 2.54) hide
+          (name "D" (effects (font (size 1.27 1.27))))
+          (number "5" (effects (font (size 1.27 1.27))))
         )
-        (polyline
-          (pts
-            (xy 0.762 -1.016)
-            (xy -0.762 0)
-            (xy 0.762 1.016)
-            (xy 0.762 -1.016)
-          )
-          (stroke (width 0.254) (type default) (color 0 0 0 0))
-          (fill (type none))
+        (pin passive line (at 2.54 5.08 270) (length 2.54) hide
+          (name "D" (effects (font (size 1.27 1.27))))
+          (number "6" (effects (font (size 1.27 1.27))))
         )
-      )
-      (symbol "D_1206_1_1"
-        (pin passive line (at -2.54 0 0) (length 1.778)
-          (name "K" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
+        (pin passive line (at 2.54 5.08 270) (length 2.54) hide
+          (name "D" (effects (font (size 1.27 1.27))))
+          (number "7" (effects (font (size 1.27 1.27))))
         )
-        (pin passive line (at 2.54 0 180) (length 1.778)
-          (name "A" (effects (font (size 1.27 1.27))))
-          (number "2" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
-    (symbol "My Library:R_0805" (pin_numbers hide) (pin_names (offset 0.254) hide) (in_bom yes) (on_board yes)
-      (property "Reference" "R" (id 0) (at 0.762 0.508 0)
-        (effects (font (size 1.27 1.27)) (justify left))
-      )
-      (property "Value" "R_0805" (id 1) (at 0.762 -1.016 0)
-        (effects (font (size 1.27 1.27)) (justify left))
-      )
-      (property "Footprint" "Resistor_SMD:R_0805_2012Metric" (id 2) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "~" (id 3) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_keywords" "R resistor" (id 4) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_description" "Resistor, small symbol with 0805 Package" (id 5) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_fp_filters" "R_*" (id 6) (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "R_0805_0_1"
-        (rectangle (start -0.762 1.778) (end 0.762 -1.778)
-          (stroke (width 0.2032) (type default) (color 0 0 0 0))
-          (fill (type none))
-        )
-      )
-      (symbol "R_0805_1_1"
-        (pin passive line (at 0 2.54 270) (length 0.762)
-          (name "~" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-        (pin passive line (at 0 -2.54 90) (length 0.762)
-          (name "~" (effects (font (size 1.27 1.27))))
-          (number "2" (effects (font (size 1.27 1.27))))
+        (pin passive line (at 2.54 5.08 270) (length 2.54)
+          (name "D" (effects (font (size 1.27 1.27))))
+          (number "8" (effects (font (size 1.27 1.27))))
         )
       )
     )
@@ -710,6 +733,10 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 77abc68e-ec8d-40e3-9d58-55f0f75ee94a)
   )
+  (wire (pts (xy 88.9 130.81) (xy 99.06 130.81))
+    (stroke (width 0) (type default) (color 0 0 0 0))
+    (uuid 784ba3d5-e1e8-4703-8891-92e902c418d9)
+  )
   (wire (pts (xy 143.51 135.89) (xy 162.56 135.89))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 794b164d-ec04-4d9a-8212-65af91117d47)
@@ -741,10 +768,6 @@
   (wire (pts (xy 30.48 129.54) (xy 27.94 129.54))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid acf6336e-b3f2-4da6-89ce-c8f80b628dde)
-  )
-  (wire (pts (xy 88.9 130.81) (xy 99.06 130.81))
-    (stroke (width 0) (type default) (color 0 0 0 0))
-    (uuid b5bd158f-89c1-4fe7-bae0-c81f79e8f633)
   )
   (wire (pts (xy 143.51 138.43) (xy 162.56 138.43))
     (stroke (width 0) (type default) (color 0 0 0 0))
@@ -793,6 +816,11 @@
   (wire (pts (xy 143.51 130.81) (xy 162.56 130.81))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid f951c8b7-11de-439c-8bae-cc2cbf09d8f4)
+  )
+
+  (text "+15V" (at 60.96 137.16 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid a445789c-601a-435a-a935-3acebb55a08d)
   )
 
   (label "15v_In" (at 99.06 130.81 180)
@@ -859,6 +887,27 @@
     (pin "1" (uuid c78e5db9-ef97-4d3f-bfde-5b3e8b568ac5))
   )
 
+  (symbol (lib_id "Transistor_FET:FDS9435A") (at 77.47 133.35 90) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 0ba72706-94b8-4349-bddc-9abc2cd4c4a7)
+    (property "Reference" "Q?" (id 0) (at 77.47 123.19 90))
+    (property "Value" "FDS9435A" (id 1) (at 77.47 125.73 90))
+    (property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" (id 2) (at 79.375 128.27 0)
+      (effects (font (size 1.27 1.27) italic) (justify left) hide)
+    )
+    (property "Datasheet" "https://www.onsemi.com/pub/Collateral/FDS9435A-D.PDF" (id 3) (at 77.47 133.35 90)
+      (effects (font (size 1.27 1.27)) (justify left) hide)
+    )
+    (pin "1" (uuid f25568ca-5843-43ca-a04e-8ae81d95bb07))
+    (pin "2" (uuid 407a18b0-52b5-4c26-8ee4-3198a056ae39))
+    (pin "3" (uuid ecd42fda-e226-43a8-a547-eca8fddad938))
+    (pin "4" (uuid 57051f13-4db7-4791-8479-c6d78322e648))
+    (pin "5" (uuid 585617bb-41f9-4c4c-a638-cdcc5f3ed75d))
+    (pin "6" (uuid 6596a1d4-be97-451a-b6fa-f826598c51b3))
+    (pin "7" (uuid 737c2e85-62e8-4e58-8cba-72b0bbb8474c))
+    (pin "8" (uuid 9bff07e6-e56e-42c4-b3d4-190d6dc64b92))
+  )
+
   (symbol (lib_id "Connector_Generic:Conn_01x02") (at 41.91 146.05 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 0c66fa0a-bf51-4896-9284-ab35ee4c65b7)
@@ -868,7 +917,7 @@
     (property "Value" "15V_IN" (id 1) (at 44.45 148.5899 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 41.91 146.05 0)
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" (id 2) (at 41.91 146.05 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 41.91 146.05 0)
@@ -951,25 +1000,6 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 0c60eda1-9624-4d24-bfe5-7d65a4217317))
-  )
-
-  (symbol (lib_id "Device:Q_PMOS_DGS") (at 77.47 133.35 90) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
-    (uuid 5e6908d8-82c9-44eb-8ef7-121452a39e9a)
-    (property "Reference" "Q?" (id 0) (at 77.47 123.19 90))
-    (property "Value" "Q_PMOS_DGS" (id 1) (at 77.47 125.73 90))
-    (property "Footprint" "" (id 2) (at 74.93 128.27 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "~" (id 3) (at 77.47 133.35 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "MFN" "ZVP2106A/ZTX" (id 4) (at 77.47 133.35 90)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 8e144e7c-a314-43f0-9cf8-05382cecaa36))
-    (pin "2" (uuid 5a7b2ef3-fa58-49f6-a9cf-658afc631a8e))
-    (pin "3" (uuid bda7e2cd-e3d7-4219-8aee-2961460f16e5))
   )
 
   (symbol (lib_id "power:GND") (at 243.84 146.05 0) (unit 1)
@@ -1202,15 +1232,15 @@
   )
 
   (symbol (lib_id "Device:D_Schottky_Small") (at 88.9 134.62 270) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom yes) (on_board yes)
     (uuid d0fb9e56-0b48-4311-8981-9cfec2633735)
-    (property "Reference" "D?" (id 0) (at 91.44 133.0959 90)
+    (property "Reference" "D?" (id 0) (at 85.09 134.62 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "1n4099" (id 1) (at 91.44 135.6359 90)
+    (property "Value" "BZT52C15" (id 1) (at 78.74 137.16 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (id 2) (at 88.9 134.62 90)
+    (property "Footprint" "Diode_SMD:D_SOD-123" (id 2) (at 88.9 134.62 90)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 88.9 134.62 90)
@@ -1301,9 +1331,22 @@
     )
   )
 
+  (sheet (at 168.91 45.72) (size 27.94 25.4) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid) (color 0 0 0 0))
+    (fill (color 0 0 0 0.0000))
+    (uuid fc065b92-de59-4c29-93b4-0f722018f063)
+    (property "Sheet name" "pos12" (id 0) (at 168.91 45.0084 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheet file" "pos12.kicad_sch" (id 1) (at 168.91 71.7046 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+  )
+
   (sheet_instances
     (path "/" (page "1"))
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3" (page "2"))
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063" (page "3"))
   )
 
   (symbol_instances
@@ -1322,10 +1365,25 @@
     (path "/1632606a-6476-41e8-a561-afea833e205a"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/32f0e1b2-82e3-4df0-9902-bfdf66f7dbaf"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/4cbf3cf0-a0a3-499f-a749-3121d813213f"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/4f02c4c4-1280-48ac-a2e7-7ff4bb9a8a21"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/65232668-461c-4dfd-9e5c-86b40e88fed7"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/68286ec5-7a2b-4a35-be15-ce218222620d"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/6e87d645-917d-4b92-b1de-8ba25009ed8e"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/6ee79847-e217-4ac4-a5c0-07158e72e534"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/74ab6e9f-a9f7-4239-a8b9-ab90ab612155"
@@ -1337,10 +1395,22 @@
     (path "/78cc46c1-0ece-4852-b254-7733461c8629"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/7f82ea7f-9518-4fdb-b74b-aac323c2bd90"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/93910d78-fb3f-4f68-b0bd-625e575cfff2"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/99c4d79e-2986-41be-ac1a-f8c198112029"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/a04c93e7-0196-4b2b-a573-1b8c43ea1073"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/c35a082e-733e-4427-b04c-9802e85913c2"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/d62faead-b677-43ce-b444-36246ff6fd13"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/9f1b5fa7-d3d0-4097-bc35-6243607c2a34"
@@ -1358,6 +1428,21 @@
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/5a50c58b-952c-433f-afa1-8aa100bf3414"
       (reference "C5") (unit 1) (value "22u/16v") (footprint "Capacitor_SMD:C_0805_2012Metric")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/205324e9-a141-48d9-8e51-43c839495abc"
+      (reference "C?") (unit 1) (value "120u") (footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.80mm")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/600dc3ec-1afd-4559-8cbb-5139e1b54ac0"
+      (reference "C?") (unit 1) (value "100u") (footprint "Capacitor_SMD:C_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/ada106c4-a0d6-43ec-a87b-98a0dce348e1"
+      (reference "C?") (unit 1) (value "470p") (footprint "Capacitor_SMD:C_0603_1608Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/c574b3be-f25a-4a58-9138-6a3766aa0952"
+      (reference "C?") (unit 1) (value "10u") (footprint "Capacitor_SMD:C_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/eec825d4-94e7-4162-8cc0-e67f079d8851"
+      (reference "C?") (unit 1) (value "120u") (footprint "Capacitor_THT:CP_Radial_D8.0mm_P3.80mm")
+    )
     (path "/90f07557-b756-4cab-a8c4-fbeebb60d8bf"
       (reference "D?") (unit 1) (value "5_STB") (footprint "LED_SMD:LED_1206_3216Metric")
     )
@@ -1367,8 +1452,11 @@
     (path "/c1b7e299-c94b-4bb7-bcf4-3719e1ea94aa"
       (reference "D?") (unit 1) (value "+12") (footprint "LED_SMD:LED_1206_3216Metric")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/c72ab287-f048-47bb-8250-f71638f00fe8"
+      (reference "D?") (unit 1) (value "SS14") (footprint "Diode_SMD:D_SMA")
+    )
     (path "/d0fb9e56-0b48-4311-8981-9cfec2633735"
-      (reference "D?") (unit 1) (value "1n4099") (footprint "")
+      (reference "D?") (unit 1) (value "BZT52C15") (footprint "Diode_SMD:D_SOD-123")
     )
     (path "/ee6fc864-956a-4d6b-b056-5108f28af6f9"
       (reference "D?") (unit 1) (value "Vin") (footprint "LED_SMD:LED_1206_3216Metric")
@@ -1377,7 +1465,7 @@
       (reference "D?") (unit 1) (value "-12") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/0c66fa0a-bf51-4896-9284-ab35ee4c65b7"
-      (reference "J?") (unit 1) (value "15V_IN") (footprint "")
+      (reference "J?") (unit 1) (value "15V_IN") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/329919dd-2332-45f3-b665-6585d0445930"
       (reference "J?") (unit 1) (value "Edge Connector") (footprint "")
@@ -1385,11 +1473,26 @@
     (path "/381ec3c9-e67f-421f-a889-e25a24188743"
       (reference "J?") (unit 1) (value "15V_IN") (footprint "Connector_BarrelJack:BarrelJack_Horizontal")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/b7aee67d-2578-4243-ab03-565746da1d57"
+      (reference "JP?") (unit 1) (value "15V_Jmp") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
+    )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/4a24b938-7269-4636-98d1-7878c5d5806e"
       (reference "L1") (unit 1) (value "68u") (footprint "Inductor_SMD:L_Taiyo-Yuden_NR-80xx")
     )
-    (path "/5e6908d8-82c9-44eb-8ef7-121452a39e9a"
-      (reference "Q?") (unit 1) (value "Q_PMOS_DGS") (footprint "")
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/b55ddf1d-e535-4f81-ae93-e36140093c40"
+      (reference "L?") (unit 1) (value "68u") (footprint "Inductor_SMD:L_Taiyo-Yuden_NR-80xx")
+    )
+    (path "/0ba72706-94b8-4349-bddc-9abc2cd4c4a7"
+      (reference "Q?") (unit 1) (value "FDS9435A") (footprint "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/762edba6-fd5d-45c3-9552-063a639704dc"
+      (reference "Q?") (unit 1) (value "BC817") (footprint "Package_TO_SOT_SMD:SOT-23")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/93cc15fb-0a2d-4c6d-a684-e656edb34822"
+      (reference "Q?") (unit 1) (value "MMBT3906") (footprint "Package_TO_SOT_SMD:SOT-23")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/afd834a1-a3ca-4b6f-b873-1db37388f46f"
+      (reference "Q?") (unit 1) (value "FDS9435A") (footprint "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm")
     )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/a902a587-b1c6-4ec1-ab6e-d046b860ddfe"
       (reference "R1") (unit 1) (value "R") (footprint "Resistor_SMD:R_0805_2012Metric")
@@ -1412,17 +1515,41 @@
     (path "/0189e5b8-19df-462d-8281-14ee0ce4c080"
       (reference "R?") (unit 1) (value "R_0805") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/0c3492de-bf43-4369-b185-3dc73c69e3cb"
+      (reference "R?") (unit 1) (value ".22") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/3a105fde-4534-40d0-818f-504a2302c2fd"
+      (reference "R?") (unit 1) (value "560") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/436380ef-eb67-41d2-b49c-775d7b30de6b"
+      (reference "R?") (unit 1) (value "0") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/45bb6dfb-3f1c-417a-8d9a-501a8937dad6"
+      (reference "R?") (unit 1) (value "50k") (footprint "")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/64a2d5a4-38ce-492e-ac2a-8c44da732b7f"
+      (reference "R?") (unit 1) (value "0") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/7c8cac4f-f042-4709-89e3-261cf4fa41e4"
+      (reference "R?") (unit 1) (value ".22") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
     (path "/9dc15885-352f-4aaf-a5a0-8a7b1e731186"
       (reference "R?") (unit 1) (value "R_0805") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/a6576728-d947-4869-b1ef-ea8be4e371ae"
       (reference "R?") (unit 1) (value "R_0805") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/bca15af3-0a53-4c92-950c-78ac1c7f67f4"
+      (reference "R?") (unit 1) (value "5.1k") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
     (path "/c224ea02-0ca2-4570-9327-1617bd73f11b"
       (reference "R?") (unit 1) (value "R_0805") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/c92524a7-c8a5-4c1e-a862-b184bdbc3f93"
       (reference "R?") (unit 1) (value "100") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/d7645921-da48-4c96-bf28-cbe7b866b08b"
+      (reference "R?") (unit 1) (value "30k") (footprint "")
     )
     (path "/f39ebe6b-d173-45d1-97f6-062f3b52fdac"
       (reference "R?") (unit 1) (value "R_0805") (footprint "Resistor_SMD:R_0805_2012Metric")
@@ -1454,8 +1581,44 @@
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/4174bae9-405e-4ccd-b0d5-bcd07e58bba4"
       (reference "TP9") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/0707396f-029d-4b28-b20e-006ae72e0a1b"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/0b72e161-cee5-41c7-9cc0-538f5820d7e6"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/1fbb2add-5483-4c74-9e17-1b4f7772c8ac"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/3e965d51-c950-44e4-aade-2d3ffcc7a1b7"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/43215ec4-6e4b-4ce3-be6b-8af0514dd093"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/5daeca0f-5322-4756-80e5-ee16d12c1e94"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/6acefc97-78e2-45f4-8b9a-3a7f0dd9c604"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/b6b0c77c-77da-4453-9de7-ae23aaa19149"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/d5f49afa-c16a-456a-8fc9-70b175c1fdc2"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/d62fc456-73b6-4f7b-98c7-9375bc18df94"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/fdd7c921-6762-400c-b95b-67325b144a1d"
+      (reference "TP?") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
+    )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/fd57f5af-205c-4fbb-8b0a-171acd1775b0"
       (reference "U1") (unit 1) (value "MAX17580") (footprint "Package_DFN_QFN:DFN-12-1EP_3x3mm_P0.5mm_EP2.05x2.86mm")
+    )
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/afb1188a-c2e2-4212-9c22-200bc6881071"
+      (reference "U?") (unit 1) (value "mc34063") (footprint "")
     )
   )
 )
