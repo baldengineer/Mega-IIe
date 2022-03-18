@@ -967,7 +967,7 @@
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid d77e887a-911f-4df1-b23a-2a2f7aaa6bbc)
   )
-  (wire (pts (xy 231.14 118.11) (xy 231.14 129.54))
+  (wire (pts (xy 231.14 118.11) (xy 231.14 130.81))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid dcb57660-9400-4cac-8ffd-d23a570fd31e)
   )
@@ -1060,7 +1060,7 @@
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 419db16a-b9e0-4aec-b5de-dadfed5e5b37)
   )
-  (label "15v_In" (at 99.06 130.81 180)
+  (label "Vin" (at 99.06 130.81 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 4379f1a6-f62a-4524-acfd-7045ec3c2766)
   )
@@ -1657,7 +1657,7 @@
       (effects (font (size 1.27 1.27)) (justify right))
       (uuid 8e58bbe3-2922-4f0e-9ed8-ce237da0c3d1)
     )
-    (pin "mega_en" input (at 77.47 58.42 180)
+    (pin "Mega_En" input (at 77.47 58.42 180)
       (effects (font (size 1.27 1.27)) (justify left))
       (uuid 2da86b79-47b0-47bf-b391-efc0629b2880)
     )
@@ -1837,9 +1837,6 @@
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/6ee79847-e217-4ac4-a5c0-07158e72e534"
       (reference "#PWR0118") (unit 1) (value "GND") (footprint "")
     )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/3aced845-83c1-4b5c-906f-7a1884062712"
-      (reference "#PWR0119") (unit 1) (value "GND") (footprint "")
-    )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/c35a082e-733e-4427-b04c-9802e85913c2"
       (reference "#PWR0120") (unit 1) (value "GND") (footprint "")
     )
@@ -1872,9 +1869,6 @@
     )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/ada106c4-a0d6-43ec-a87b-98a0dce348e1"
       (reference "C8") (unit 1) (value "470p") (footprint "Capacitor_SMD:C_0603_1608Metric")
-    )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/f1bdf1bc-4795-4c22-8f8f-6d8bee3b843c"
-      (reference "C9") (unit 1) (value "120u / 5v") (footprint "Capacitor_SMD:C_0805_2012Metric")
     )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/c574b3be-f25a-4a58-9138-6a3766aa0952"
       (reference "C10") (unit 1) (value "10u") (footprint "Capacitor_SMD:C_0805_2012Metric")
@@ -2142,9 +2136,6 @@
     )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/5daeca0f-5322-4756-80e5-ee16d12c1e94"
       (reference "TP15") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
-    )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/3e965d51-c950-44e4-aade-2d3ffcc7a1b7"
-      (reference "TP16") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/fdd7c921-6762-400c-b95b-67325b144a1d"
       (reference "TP17") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")

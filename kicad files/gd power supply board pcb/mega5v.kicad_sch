@@ -1,6 +1,6 @@
 (kicad_sch (version 20211123) (generator eeschema)
 
-  (uuid cd26c4b8-b97d-4825-b143-dfb22b636039)
+  (uuid b3fc9b09-0c12-4b35-aff2-2df9007431b8)
 
   (paper "A4")
 
@@ -301,6 +301,7 @@
     )
   )
 
+
   (junction (at 185.42 93.98) (diameter 0) (color 0 0 0 0)
     (uuid 0c62fc33-3086-4f58-b488-8c41b975b0ac)
   )
@@ -477,7 +478,7 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 49b6b563-e394-47d5-a80b-bda909a79e26)
   )
-  (label "mega_en" (at 118.11 99.06 0)
+  (label "Mega_En" (at 118.11 99.06 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid d73a3499-f248-4c73-86de-55c60b22beb3)
   )
@@ -486,7 +487,7 @@
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 0a4b1383-09fc-43d1-9939-f8cc18b95ce7)
   )
-  (hierarchical_label "mega_en" (shape input) (at 118.11 99.06 270)
+  (hierarchical_label "Mega_En" (shape input) (at 118.11 99.06 270)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 13b2d13f-6e57-4a66-89cb-393eb23542ce)
   )
