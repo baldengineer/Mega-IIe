@@ -340,6 +340,35 @@
         )
       )
     )
+    (symbol "Mechanical:MountingHole" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
+      (property "Reference" "H" (id 0) (at 0 5.08 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "MountingHole" (id 1) (at 0 3.175 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (id 2) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "~" (id 3) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "mounting hole" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Mounting Hole without connection" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_fp_filters" "MountingHole*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "MountingHole_0_1"
+        (circle (center 0 0) (radius 1.27)
+          (stroke (width 1.27) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+      )
+    )
     (symbol "My Library:D_1206" (pin_numbers hide) (pin_names (offset 0.254) hide) (in_bom yes) (on_board yes)
       (property "Reference" "D" (id 0) (at -1.27 2.032 0)
         (effects (font (size 1.27 1.27)) (justify left))
@@ -437,6 +466,41 @@
         (pin passive line (at 0 -2.54 90) (length 0.762)
           (name "~" (effects (font (size 1.27 1.27))))
           (number "2" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
+    (symbol "My Library:TestPoint_Harwin" (pin_numbers hide) (pin_names (offset 0.762) hide) (in_bom yes) (on_board yes)
+      (property "Reference" "TP" (id 0) (at 0 6.858 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "TestPoint_Harwin" (id 1) (at 0 5.08 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Footprint" "My Libraries:Harwin-S1751-46-Test-Point" (id 2) (at 5.08 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "~" (id 3) (at 5.08 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "test point tp" (id 4) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "test point" (id 5) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_fp_filters" "Pin* Test*" (id 6) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "TestPoint_Harwin_0_1"
+        (circle (center 0 3.302) (radius 0.762)
+          (stroke (width 0) (type default) (color 0 0 0 0))
+          (fill (type none))
+        )
+      )
+      (symbol "TestPoint_Harwin_1_1"
+        (pin passive line (at 0 0 90) (length 2.54)
+          (name "1" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
         )
       )
     )
@@ -685,7 +749,7 @@
   )
 
   (no_connect (at 161.29 140.97) (uuid d9e28dda-52bf-41a5-b711-0006c4a72def))
-  (no_connect (at 148.59 140.97) (uuid d9e28dda-52bf-41a5-b711-0006c4a72def))
+  (no_connect (at 148.59 140.97) (uuid d9e28dda-52bf-41a5-b711-0006c4a72df0))
 
   (wire (pts (xy 119.38 96.52) (xy 119.38 135.89))
     (stroke (width 0) (type default) (color 0 0 0 0))
@@ -1076,10 +1140,6 @@
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 9e5ca2b1-0f0d-490d-929b-5344e546a26a)
   )
-  (label "15v_In" (at 195.58 118.11 270)
-    (effects (font (size 1.27 1.27)) (justify right bottom))
-    (uuid ab13e624-57d1-4e5f-ac2d-f8bda24aa095)
-  )
   (label "15v_Raw" (at 58.42 130.81 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid b17671c2-99a1-4a4a-8257-3b46130edbb7)
@@ -1111,6 +1171,10 @@
   (label "15v_Raw" (at 26.67 146.05 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid f44ee1f3-75ff-4ac2-9af6-164813392a9e)
+  )
+  (label "15v_Raw" (at 195.58 118.11 270)
+    (effects (font (size 1.27 1.27)) (justify right bottom))
+    (uuid f5b1add7-59e1-4f0a-a90f-7cc92c959d72)
   )
 
   (symbol (lib_id "My Library:R_0805") (at 217.17 133.35 180) (unit 1)
@@ -1146,6 +1210,23 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid c78e5db9-ef97-4d3f-bfde-5b3e8b568ac5))
+  )
+
+  (symbol (lib_id "Mechanical:MountingHole") (at 99.06 181.61 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 0970c0c6-ef87-4c89-ac5d-4b35bf51f93b)
+    (property "Reference" "H2" (id 0) (at 101.6 180.3399 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "MountingHole" (id 1) (at 101.6 182.8799 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2" (id 2) (at 99.06 181.61 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 99.06 181.61 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
   )
 
   (symbol (lib_id "Transistor_FET:FDS9435A") (at 77.47 133.35 90) (unit 1)
@@ -1204,6 +1285,23 @@
     (pin "1" (uuid 7f3533e4-be33-49f3-b9bd-b12fbbb47324))
   )
 
+  (symbol (lib_id "Mechanical:MountingHole") (at 99.06 175.26 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 285cc15f-cf9c-424b-a5cd-4cbb5f4c72f8)
+    (property "Reference" "H1" (id 0) (at 101.6 173.9899 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "MountingHole" (id 1) (at 101.6 176.5299 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2" (id 2) (at 99.06 175.26 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 99.06 175.26 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
   (symbol (lib_id "My Library:D_1206") (at 63.5 143.51 270) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 2de67c57-f435-4be5-9eac-c6ac8e486ec6)
@@ -1246,6 +1344,23 @@
     (pin "7" (uuid 21c5e3c9-9a63-40e3-9a73-10df478b19e0))
     (pin "8" (uuid 161946f1-9567-4039-9887-2c0987ca725f))
     (pin "9" (uuid 8b8fe866-b27e-4808-8851-588900ae4583))
+  )
+
+  (symbol (lib_id "Mechanical:MountingHole") (at 107.95 181.61 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 357d4381-714a-4aae-aa1a-b6d69a3491ea)
+    (property "Reference" "H4" (id 0) (at 110.49 180.3399 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "MountingHole" (id 1) (at 110.49 182.8799 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2" (id 2) (at 107.95 181.61 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 107.95 181.61 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
   )
 
   (symbol (lib_id "Connector:Barrel_Jack_Switch") (at 38.1 127 0) (mirror y) (unit 1)
@@ -1386,6 +1501,23 @@
     (pin "2" (uuid fe613113-f761-4f6b-8df9-a6e35b2c0413))
   )
 
+  (symbol (lib_id "Mechanical:MountingHole") (at 107.95 175.26 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 981034d3-4ba9-410a-8568-6651f93125bb)
+    (property "Reference" "H3" (id 0) (at 110.49 173.9899 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "MountingHole" (id 1) (at 110.49 176.5299 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "MountingHole:MountingHole_2.2mm_M2" (id 2) (at 107.95 175.26 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 107.95 175.26 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+  )
+
   (symbol (lib_id "power:GND") (at 77.47 147.32 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 99c4d79e-2986-41be-ac1a-f8c198112029)
@@ -1435,6 +1567,24 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 19310892-8e4d-4eab-a02e-795f9b2a377f))
+  )
+
+  (symbol (lib_id "My Library:TestPoint_Harwin") (at 88.9 130.81 0) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid a4dae03d-0c29-490c-aab0-bcdda5d7deeb)
+    (property "Reference" "TP3" (id 0) (at 91.44 127.5079 0)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Value" "TestPoint_Harwin" (id 1) (at 88.9 125.73 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Footprint" "My Libraries:Harwin-S1751-46-Test-Point" (id 2) (at 93.98 130.81 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 93.98 130.81 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 13a4bf64-9fbb-4721-a6ca-98e88a7377c7))
   )
 
   (symbol (lib_id "My Library:R_0805") (at 255.27 133.35 180) (unit 1)
@@ -1933,53 +2083,17 @@
     (path "/2de67c57-f435-4be5-9eac-c6ac8e486ec6"
       (reference "D9") (unit 1) (value "Rev_LED") (footprint "LED_SMD:LED_1206_3216Metric")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/04e98119-a4c0-49e3-99b5-e1868729b021"
+    (path "/285cc15f-cf9c-424b-a5cd-4cbb5f4c72f8"
       (reference "H1") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/671a0fbd-386d-4717-97ea-a79816778d1b"
+    (path "/0970c0c6-ef87-4c89-ac5d-4b35bf51f93b"
       (reference "H2") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/d10ac24d-2358-478e-8a6c-1ddee3732a42"
+    (path "/981034d3-4ba9-410a-8568-6651f93125bb"
       (reference "H3") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/9a67b314-542c-4141-bf4e-677ee16eae7a"
+    (path "/357d4381-714a-4aae-aa1a-b6d69a3491ea"
       (reference "H4") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/6ec0f968-82bd-4a3a-bf56-0cfd68c3ad16"
-      (reference "H5") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/1ab5f143-cd2d-454a-b85a-745d6bcbefd9"
-      (reference "H6") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/597052a2-ccc6-450d-a467-b40f73c04c33"
-      (reference "H7") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/b79eb2df-c6d4-4428-b451-945a51eb4f71"
-      (reference "H8") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/0c7df807-3073-4929-bb80-e67459aef9d0/0e7162ec-2a3b-48b4-bfc6-544a081e3c69"
-      (reference "H9") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/0c7df807-3073-4929-bb80-e67459aef9d0/fc186107-614d-4fad-a412-e1ab324be828"
-      (reference "H10") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/0c7df807-3073-4929-bb80-e67459aef9d0/d89d2e45-e849-429a-a993-97c57a38406f"
-      (reference "H11") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/0c7df807-3073-4929-bb80-e67459aef9d0/e3ee739b-afee-4102-982c-9be831b76ee3"
-      (reference "H12") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/0874bc0c-ee51-4de4-a724-fc1889d8781d"
-      (reference "H13") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/dcd1d32e-6422-4d14-ba4a-4f91253a9c0f"
-      (reference "H14") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/4d17ca8d-c20c-4f75-a277-8539f4896e82"
-      (reference "H15") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
-    (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/f86ae4a3-0890-4a5c-950c-ec42859cbec0"
-      (reference "H16") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
     (path "/381ec3c9-e67f-421f-a889-e25a24188743"
       (reference "J1") (unit 1) (value "15V_IN") (footprint "Connector_BarrelJack:BarrelJack_Horizontal")
@@ -2098,7 +2212,7 @@
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/e312b235-fa9d-4146-a238-9cc6d5599ffa"
       (reference "TP2") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/9d6f9a7d-51f4-4762-ae81-339c5995a8ca"
+    (path "/a4dae03d-0c29-490c-aab0-bcdda5d7deeb"
       (reference "TP3") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/7761274e-b4ac-41b9-939c-99d416e203db"
@@ -2125,9 +2239,6 @@
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/0b72e161-cee5-41c7-9cc0-538f5820d7e6"
       (reference "TP11") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
-    (path "/fc065b92-de59-4c29-93b4-0f722018f063/0707396f-029d-4b28-b20e-006ae72e0a1b"
-      (reference "TP12") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
-    )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/43215ec4-6e4b-4ce3-be6b-8af0514dd093"
       (reference "TP13") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
@@ -2149,9 +2260,6 @@
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/6acefc97-78e2-45f4-8b9a-3a7f0dd9c604"
       (reference "TP20") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
-    (path "/0c7df807-3073-4929-bb80-e67459aef9d0/942dda87-e4ce-450a-8b1b-e525456b7d37"
-      (reference "TP21") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
-    )
     (path "/0c7df807-3073-4929-bb80-e67459aef9d0/334b2057-7353-428e-9a61-41332810360f"
       (reference "TP22") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
@@ -2163,9 +2271,6 @@
     )
     (path "/0c7df807-3073-4929-bb80-e67459aef9d0/2fdd385f-6500-4acc-b41f-b48d63730d6d"
       (reference "TP25") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
-    )
-    (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/f7e54589-ee92-4471-9d92-064a57749afe"
-      (reference "TP26") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
     (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/f9fc8b9f-a8d8-4e68-be4b-36a54206d91b"
       (reference "TP27") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
