@@ -81,8 +81,6 @@ C000:
     out pins,1          ;output keystrobe Gets reset when C side sends new values
     
 wait_phase:
-   
-
     irq clear 0
 set_245en:
     jmp PIN,read        ;If RW is High Read Cycle
