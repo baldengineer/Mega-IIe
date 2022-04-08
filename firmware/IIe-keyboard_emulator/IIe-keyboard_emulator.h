@@ -47,7 +47,7 @@ bool shift_lock_state=false;
 
 const uint DEBUG_PIN = 24;
 const uint8_t enable_245_pin = 11;
-const uint8_t shifter_enable = 25;
+const //uint8_t shifter_enable = 25;
 
 // PIO Globals
 PIO pio;
