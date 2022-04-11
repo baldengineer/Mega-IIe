@@ -1,0 +1,18 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${env:PICO_SDK_PATH}/**"
+      ],
+      "defines": [],
+      "compilerPath": "C:/VSARM/armcc/bin/",
+      "cStandard": "gnu17",
+      "cppStandard": "gnu++14",
+      "intelliSenseMode": "linux-gcc-arm",
+      "configurationProvider" : "ms-vscode.cmake-tools"
+    }
+  ],
+  "version": 4
+}
