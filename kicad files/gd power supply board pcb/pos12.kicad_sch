@@ -1247,6 +1247,16 @@
     (uuid fe421744-f19e-469b-9a6c-ca7137622a86)
   )
 
+  (text "DNP: C6\nWhoops. 100u >16V 0805?!\nWhat was I thinking!"
+    (at 107.95 121.92 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 4551c894-a1ba-4adc-a7d4-a826b569edd6)
+  )
+  (text "R13: Use 47K instead\nR14 use 33K instead" (at 27.94 72.39 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 96d0b3fc-fe6b-4165-8653-fb23e6f0ebc1)
+  )
+
   (label "Isense" (at 156.21 78.74 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 03505361-a4d0-4fb8-a6d5-937cd6b04ca0)
