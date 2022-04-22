@@ -137,8 +137,8 @@ void setup() {
     out_init(RESET_CTL, 0x0);
 
     // ************************************************************
-    printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
-    out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
+    // printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
+    // out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
 
     printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
     out_init(COLOR_MODE_PIN, color_mode_state);

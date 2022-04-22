@@ -27,7 +27,7 @@
 ; gpio 4-12 (d7-d0, en_245)
 
 ; input pins
-.define KSEL0 2
+.define KSEL0 25
 .define KSEL1 13
 .define KSEL2 14
 .define RW 15

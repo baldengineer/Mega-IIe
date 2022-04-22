@@ -24,7 +24,7 @@ static const uint16_t delay_time = 1000;
 
 // Pins
 // Corrected data bus on rev2
-#define KSEL0  2
+#define KSEL0  25
 #define   MD0  3
 #define   MD1  4
 #define   MD2  5
