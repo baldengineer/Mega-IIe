@@ -1,16 +1,10 @@
 {
-  "cmake.configureOnOpen": false,
-  "cmake.statusbar.advanced": {
-    "debug" : {
-      "visibility": "hidden"
-              },    "launch" : {
-      "visibility": "hidden"
-               },
-    "build" : {
-      "visibility": "hidden"
-               },
-    "buildTarget" : {
-      "visibility": "hidden"
-               },
-     },
+  "cmake.configureOnOpen": true,
+  "files.associations": {
+    "kbd.pio.h": "c",
+    "stdio.h": "c",
+    "iie-keyboard_emulator.h": "c",
+    "clocks.h": "c",
+    "iie_hid_app.h": "c"
+  },
 }
