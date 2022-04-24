@@ -1,8 +1,24 @@
 .program TEST_CAP
 
+.define M14 13
+
+.define RGB8 16
+.define RGB4 17
+.define RGB2 14
+.define RGB1 15
+
+.define SYNC 18
+.define WINDOW 19
+
+
 start:
     mov x, null
+    wait 1 gpio WINDOW  ; 
+    wait 0 gpio WINDOW  ; wait for valid WINDOW
 
 .wrap_target
-    mov y, null
+    wait 0 gpio M14
+    in PINS, 8
+    wait 1 gpio M14
+
 .wrap
