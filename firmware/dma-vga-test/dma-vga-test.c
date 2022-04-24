@@ -49,8 +49,8 @@ void TEST_CAP_pio_init() {
 
 void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
     pio_sm_set_enabled(pio, pio_sm, false);
-    pio_sm_clear_fifos(pio, pio_sm);  //pio reset also clears these buffers
-    pio_sm_restart(pio, pio_sm);
+    pio_sm_clear_fifos(pio, pio_sm);  
+    //pio_sm_restart(pio, pio_sm);
 
     dma_channel_config c = dma_channel_get_default_config(rgb_dma_chan);
     channel_config_set_read_increment(&c, false);
@@ -68,7 +68,7 @@ void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
 }
 
 void print_capture_buf(const uint32_t *buf, uint word_count) {
-    printf("Capture: lol\n");
+    printf("Captured: Hex, Binary, RGBx[4 Words, right to left]\n");
     for (int x=0; x < word_count; x++) {
         printf("%d: %#08X, b%b, ", x, buf[x], buf[x]); // lol, %b works
 
@@ -104,6 +104,7 @@ uint ctrl_status_led(uint state) {
 
 
 int main() {
+    // wait for USB CDC to be up
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
     ctrl_status_led(LED_ON);
@@ -116,6 +117,7 @@ int main() {
     printf("Hello World...\n");
     ctrl_status_led(LED_OFF);
 
+    // now do the things
     printf("\n[Init] TEST_CAP Pio...");
     TEST_CAP_pio_init();
     printf("done!");
@@ -123,13 +125,15 @@ int main() {
     puts("\n\n----\nDMA VGA Test.");
     for (int x; x<5; x++) {
         printf("Wait %d\n");
-        busy_wait_us(1000000);
+        sleep_ms(1000);
     }
 
+    // if Patt Gen only sends 1 line at a time, this words well without
+    // breakpoints
     while(1) {
         puts("Starting capture");
         // create buffer for a line
-        uint buf_size_words = 17;
+        uint buf_size_words = 18;
         uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t));
         hard_assert(capture_buf); // did we get buffer?
 
@@ -139,15 +143,14 @@ int main() {
         // not entirely sure when this is needed, but will leave here just in case.
         // bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_DMA_W_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS;
 
-        TEST_CAP_pio_arm(capture_buf, 17);
+        TEST_CAP_pio_arm(capture_buf, buf_size_words);
 
         dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
 
-        print_capture_buf(capture_buf, 17);
+        print_capture_buf(capture_buf, buf_size_words);
         puts("Breakpoint here...");
-        while(1);
+        // while(1);
+        sleep_ms(1000);
     }
-
-
     return 0;
 }

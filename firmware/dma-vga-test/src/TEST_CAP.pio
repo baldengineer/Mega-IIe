@@ -12,7 +12,7 @@
 
 
 start:
-    mov x, null
+    mov ISR, null       ; i think ISR is getting stuff with old stuff
     wait 1 gpio WINDOW  ; 
     wait 0 gpio WINDOW  ; wait for valid WINDOW
 
