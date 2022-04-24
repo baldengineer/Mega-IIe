@@ -1,0 +1,8 @@
+.program TEST_CAP
+
+start:
+    mov x, null
+
+.wrap_target
+    mov y, null
+.wrap

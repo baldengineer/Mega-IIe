@@ -27,6 +27,10 @@ pico_set_program_version(dma-vga-test "0.1")
 pico_enable_stdio_uart(dma-vga-test 1)
 pico_enable_stdio_usb(dma-vga-test 1)
 
+pico_generate_pio_header(dma-vga-test ${CMAKE_CURRENT_LIST_DIR}/src/TEST_CAP.pio)
+
+target_include_directories(dma-vga-test PRIVATE src)
+
 # Add the standard library to the build
 target_link_libraries(dma-vga-test pico_stdlib)
 
