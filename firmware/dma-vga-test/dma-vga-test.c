@@ -22,7 +22,7 @@ uint rgb_dma_chan = 0;
 #define LINE_COUNT 192
 #define WINDOW 19
 
-const uint LED_PIN = PICO_DEFAULT_LED_PIN; // 3 on VGA2040
+const uint LED_PIN = 3; // 3 on VGA2040
 bool led_pin_state = LED_ON;
 
 
@@ -73,12 +73,24 @@ void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
     pio_sm_set_enabled(pio, pio_sm, true);
 }
 
+void print_hex_buf(const uint32_t *buf, uint word_count, uint line_count) {
+    printf("---[START]---\n");
+    for (int x=0; x < (70*line_count); x++) {
+        if (x % 10 == 0)
+            printf("\n");
+        uint32_t current_word = buf[x];
+        printf("%08x", current_word);
+    }
+    printf("\n---[END]---\n");
+
+}
+
 void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
    // printf("Captured: Hex, Binary, RGBx[4 Words, right to left]\n");
     for (int x=0; x < word_count; x++) {
-       // printf("%d:%#8x, b%b\n", x, buf[x], buf[x]); // lol, %b works
+       // printf("%d:%08x, b%b\n", x, buf[x], buf[x]); // lol, %b works
        uint32_t current_buf = buf[x+(70*offset)];
-        printf("%d:%#8x, ", x+(70*offset), current_buf); // lol, %b works
+        printf("%d:%08x, ", x+(70*offset), current_buf); // lol, %b works
 
         // RGB4 RGB8 RGB1 RGB2
         // 1010 1000 0011 0001 0010 0000 1111 1101
@@ -129,12 +141,13 @@ int main() {
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
     ctrl_status_led(LED_ON);
-    stdio_init_all();
-    while(!tud_cdc_connected()) { 
-        sleep_ms(100);
-        ctrl_status_led(LED_TOG);
-    }
-    sleep_ms(100);
+    stdio_uart_init_full(uart1, 115200, 4, 5);
+    //stdio_init_all();
+    // while(!tud_cdc_connected()) { 
+    //     sleep_ms(100);
+    //     ctrl_status_led(LED_TOG);
+    // }
+    // sleep_ms(100);
     printf("Hello World...\n");
     ctrl_status_led(LED_OFF);
 
@@ -151,7 +164,7 @@ int main() {
     gpio_set_dir(WINDOW,GPIO_IN);
 
     while(1) {
-        puts("Starting capture");
+       // puts("Starting capture");
         uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
         uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * 192);
         hard_assert(capture_buf); // did we get buffer?
@@ -169,7 +182,7 @@ int main() {
         }
 
         // restart the state machines ... 
-        printf("Vblank\n");
+      //  printf("Vblank\n");
           
 
         for (uint line_counter=0; line_counter < LINE_COUNT; line_counter++) {
@@ -181,9 +194,18 @@ int main() {
         //  printf(".");
         }
 
-        print_capture_buf(capture_buf, buf_size_words, 191);
+        //print_capture_buf(capture_buf, buf_size_words, 191);
+
+        uint8_t incoming_char = getchar_timeout_us(0);
+        if ((incoming_char == '!'))
+            print_hex_buf(capture_buf, 70, LINE_COUNT);
+        if ((incoming_char == '@'))
+            print_capture_buf(capture_buf, buf_size_words, 0);
+        if ((incoming_char == '#'))
+            print_capture_buf(capture_buf, buf_size_words, 191);            
+
         free(capture_buf);
-        puts("Breakpoint here...");
+    //    puts("Breakpoint here...");
     }
     while(1);
         // while(1);
