@@ -19,9 +19,9 @@ public start:
     wait 0 gpio WINDOW  ; wait for valid WINDOW
 
 .wrap_target
-    wait 0 gpio WINDOW
+    ;wait 0 gpio WINDOW
     wait 0 gpio M14
     wait 1 gpio M14
-    in PINS, 8
+    in PINS, 4
 
 .wrap
