@@ -38,7 +38,7 @@ void TEST_CAP_pio_init() {
     sm_config_set_in_pins(&c, 14); // capture 7M too, because why not?
     pio_sm_set_consecutive_pindirs(pio, pio_sm, 12, 8, GPIO_IN);
 
-    //sm_config_set_clkdiv(&c, ???); // LA example reduces sample rate with this
+    sm_config_set_clkdiv(&c, 1); 
 
     // From C SDK PDF:
     // sm_config_set_in_shift sets the shift direction to rightward, enables autopush, and sets the autopush threshold to 32.
@@ -53,7 +53,7 @@ void TEST_CAP_pio_init() {
 void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
     pio_sm_set_enabled(pio, pio_sm, false);
     pio_sm_clear_fifos(pio, pio_sm);  
-    //pio_sm_restart(pio, pio_sm);
+    pio_sm_restart(pio, pio_sm);
 
     dma_channel_config c = dma_channel_get_default_config(rgb_dma_chan);
     channel_config_set_read_increment(&c, false);
@@ -68,7 +68,7 @@ void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
     );
 
    // puts("[PIO Arm] Starting CAP Pio.");
-    pio_sm_restart(pio, pio_sm);
+    //pio_sm_restart(pio, pio_sm);
     pio_sm_exec(pio, pio_sm, pio_encode_jmp(TEST_CAP_offset_start));
     pio_sm_set_enabled(pio, pio_sm, true);
 }
@@ -94,7 +94,6 @@ void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
 
         // RGB4 RGB8 RGB1 RGB2
         // 1010 1000 0011 0001 0010 0000 1111 1101
-
         for (int j=0; j<8; j++) {
             uint offset = 4 * j;
             printf((current_buf & (0x1<<2+(offset))) ? "1" : "0");
@@ -104,17 +103,6 @@ void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
             printf((j!=7) ? ", " : "");
         } 
         printf("\n");
-
-        // extact RGB8,4,2,1 for printing
-        // for (int j=0; j<4; j++) {
-        //     uint offset = 8 * j;
-        //     printf((buf[x] & (0x1<<4+(offset))) ? "1" : "0");
-        //     printf((buf[x] & (0x1<<5+(offset))) ? "1" : "0");
-        //     printf((buf[x] & (0x1<<2+(offset))) ? "1" : "0");
-        //     printf((buf[x] & (0x1<<3+(offset))) ? "1" : "0");
-        //     printf((j!=3) ? ", " : "");
-        // } 
-        // printf("\n");
     }
     printf("\n");
 }
@@ -163,12 +151,12 @@ int main() {
     gpio_init(WINDOW);
     gpio_set_dir(WINDOW,GPIO_IN);
 
-    while(1) {
-       // puts("Starting capture");
-        uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
-        uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * LINE_COUNT);
-        hard_assert(capture_buf); // did we get buffer?
+    // puts("Starting capture");
+    uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
+    uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * LINE_COUNT);
+    hard_assert(capture_buf); // did we get buffer?
 
+    while(1) {
         // detect window high for 1ms
         uint32_t previous_window_us = 0;
         bool vblank = false;
@@ -176,38 +164,39 @@ int main() {
         while (!gpio_get(WINDOW)); // wait for window to deassert 
         previous_window_us = time_us_32();
 
+        // wait until we're in VBLANK
         while(time_us_32() - previous_window_us <= 2500) {
             if (gpio_get(WINDOW) == 0x0)
                 previous_window_us = time_us_32();
         }
 
-        // restart the state machines ... 
-      //  printf("Vblank\n");
-          
-
-        for (uint line_counter=0; line_counter < LINE_COUNT; line_counter++) {
-            // capture_buf+(line_counter*(32*buf_size_words)
-            // &array[index]
-
-            TEST_CAP_pio_arm((capture_buf + (line_counter * buf_size_words)), buf_size_words);
-            dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
-        //  printf(".");
-        }
-
-        //print_capture_buf(capture_buf, buf_size_words, 191);
-
+        // do we need to dump a buffer?
         uint8_t incoming_char = getchar_timeout_us(0);
         if ((incoming_char == '!'))
             print_hex_buf(capture_buf, 70, LINE_COUNT);
         if ((incoming_char == '@'))
             print_capture_buf(capture_buf, buf_size_words, 0);
         if ((incoming_char == '#'))
-            print_capture_buf(capture_buf, buf_size_words, 191);            
+            print_capture_buf(capture_buf, buf_size_words, 191); 
 
-        free(capture_buf);
+        // restart the state machines ... 
+        TEST_CAP_pio_arm((capture_buf), (buf_size_words * LINE_COUNT));
+       // dma_channel_wait_for_finish_blocking(rgb_dma_chan);
+        //    dma_channel_wait_for_finish_blocking(rgb_dma_chan);
+
+
+        //  printf("Vblank\n");
+        // for (uint line_counter=0; line_counter < LINE_COUNT; line_counter++) {
+        //    TEST_CAP_pio_arm((capture_buf + (line_counter * buf_size_words)), buf_size_words);
+        //    dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
+        // }
+
+        //print_capture_buf(capture_buf, buf_size_words, 191);
+           
+      //  free(capture_buf);
     //    puts("Breakpoint here...");
     }
-    while(1);
+    while(1)
         // while(1);
        // sleep_ms(1000);
     return 0;
