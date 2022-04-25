@@ -20,6 +20,7 @@ uint rgb_dma_chan = 0;
 #define LED_TOG 2
 
 #define LINE_COUNT 192
+#define WINDOW 19
 
 const uint LED_PIN = PICO_DEFAULT_LED_PIN; // 3 on VGA2040
 bool led_pin_state = LED_ON;
@@ -146,23 +147,44 @@ int main() {
     // if Patt Gen only sends 1 line at a time, this words well without
     // breakpoints
 
-    puts("Starting capture");
-    uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
-    uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * 192);
-    hard_assert(capture_buf); // did we get buffer?
+    gpio_init(WINDOW);
+    gpio_set_dir(WINDOW,GPIO_IN);
 
-    for (uint line_counter=0; line_counter < LINE_COUNT; line_counter++) {
-        // capture_buf+(line_counter*(32*buf_size_words)
-        // &array[index]
+    while(1) {
+        puts("Starting capture");
+        uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
+        uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * 192);
+        hard_assert(capture_buf); // did we get buffer?
 
-        TEST_CAP_pio_arm((capture_buf + (line_counter * buf_size_words)), buf_size_words);
-        dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
-      //  printf(".");
+        // detect window high for 1ms
+        uint32_t previous_window_us = 0;
+        bool vblank = false;
+
+        while (!gpio_get(WINDOW)); // wait for window to deassert 
+        previous_window_us = time_us_32();
+
+        while(time_us_32() - previous_window_us <= 2500) {
+            if (gpio_get(WINDOW) == 0x0)
+                previous_window_us = time_us_32();
+        }
+
+        // restart the state machines ... 
+        printf("Vblank\n");
+          
+
+        for (uint line_counter=0; line_counter < LINE_COUNT; line_counter++) {
+            // capture_buf+(line_counter*(32*buf_size_words)
+            // &array[index]
+
+            TEST_CAP_pio_arm((capture_buf + (line_counter * buf_size_words)), buf_size_words);
+            dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
+        //  printf(".");
+        }
+
+        print_capture_buf(capture_buf, buf_size_words, 191);
+        free(capture_buf);
+        puts("Breakpoint here...");
     }
-
-    print_capture_buf(capture_buf, buf_size_words, 191);
-    free(capture_buf);
-    puts("Breakpoint here...");
     while(1);
         // while(1);
        // sleep_ms(1000);
