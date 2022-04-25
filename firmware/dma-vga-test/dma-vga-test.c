@@ -76,8 +76,8 @@ void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
    // printf("Captured: Hex, Binary, RGBx[4 Words, right to left]\n");
     for (int x=0; x < word_count; x++) {
        // printf("%d:%#8x, b%b\n", x, buf[x], buf[x]); // lol, %b works
-       uint32_t current_buf = buf[x*offset];
-        printf("%d:%#8x, ", x, current_buf); // lol, %b works
+       uint32_t current_buf = buf[x+(70*offset)];
+        printf("%d:%#8x, ", x+(70*offset), current_buf); // lol, %b works
 
         // RGB4 RGB8 RGB1 RGB2
         // 1010 1000 0011 0001 0010 0000 1111 1101
