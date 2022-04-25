@@ -7,13 +7,16 @@ from PIL import Image
 
 newImg1 = Image.new('RGB', (560,192))
 
-filename = "txt_dumps/14_reversed_SR_number_numbers_title.txt"
+basename = "34-are-this-what-think-this-are.txt"
+basename = basename.strip()
+if (basename.endswith('.txt')): basename = basename.replace(".txt","")
 
-
+txt_filename = f"txt_dumps/{basename}.txt"
+png_filname  = f"pngs/{basename}.png"
 
 # get rid of line breaks and white space
 super_long_string = ""
-with open(filename) as f:
+with open(txt_filename) as f:
     while True:
         c = f.read(1)
         if not c:
@@ -66,9 +69,10 @@ for i in range (0,192):
             # if ((c == '#') or (c == 'f')) : color = (255, 255, 255)
         except:
             color = 127
-            print (f"I don't know what {c} is ...")
+            print (f"I don't know what {c} is ... at #{character}")
+            exit()
 
         newImg1.putpixel((j,i),(color)) # color should be more like:  (0, 0, 0, 255)
 
-newImg1.save("pngs/14_reversed_SR_number_numbers_title.png")
+newImg1.save(png_filname)
 
