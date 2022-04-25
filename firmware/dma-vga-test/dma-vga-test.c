@@ -19,6 +19,8 @@ uint rgb_dma_chan = 0;
 #define LED_ON  1
 #define LED_TOG 2
 
+#define LINE_COUNT 192
+
 const uint LED_PIN = PICO_DEFAULT_LED_PIN; // 3 on VGA2040
 bool led_pin_state = LED_ON;
 
@@ -64,27 +66,28 @@ void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
         true                    // Start immediately
     );
 
-    puts("[PIO Arm] Starting CAP Pio.");
+   // puts("[PIO Arm] Starting CAP Pio.");
     pio_sm_restart(pio, pio_sm);
     pio_sm_exec(pio, pio_sm, pio_encode_jmp(TEST_CAP_offset_start));
     pio_sm_set_enabled(pio, pio_sm, true);
 }
 
-void print_capture_buf(const uint32_t *buf, uint word_count) {
+void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
    // printf("Captured: Hex, Binary, RGBx[4 Words, right to left]\n");
     for (int x=0; x < word_count; x++) {
        // printf("%d:%#8x, b%b\n", x, buf[x], buf[x]); // lol, %b works
-        printf("%d:%#8x, ", x, buf[x]); // lol, %b works
+       uint32_t current_buf = buf[x*offset];
+        printf("%d:%#8x, ", x, current_buf); // lol, %b works
 
         // RGB4 RGB8 RGB1 RGB2
         // 1010 1000 0011 0001 0010 0000 1111 1101
 
         for (int j=0; j<8; j++) {
             uint offset = 4 * j;
-            printf((buf[x] & (0x1<<2+(offset))) ? "1" : "0");
-            printf((buf[x] & (0x1<<3+(offset))) ? "1" : "0");
-            printf((buf[x] & (0x1<<0+(offset))) ? "1" : "0");
-            printf((buf[x] & (0x1<<1+(offset))) ? "1" : "0");
+            printf((current_buf & (0x1<<2+(offset))) ? "1" : "0");
+            printf((current_buf & (0x1<<3+(offset))) ? "1" : "0");
+            printf((current_buf & (0x1<<0+(offset))) ? "1" : "0");
+            printf((current_buf & (0x1<<1+(offset))) ? "1" : "0");
             printf((j!=7) ? ", " : "");
         } 
         printf("\n");
@@ -140,42 +143,28 @@ int main() {
     printf("done!");
 
     puts("\n\n----\nDMA VGA Test.");
-    for (int x; x<5; x++) {
-        printf("Wait %d\n");
-        sleep_ms(1000);
-    }
-
     // if Patt Gen only sends 1 line at a time, this words well without
     // breakpoints
-    uint line_counter = 0;
-    while(1) {
-        puts("Starting capture");
-        // create buffer for a line
-        // printf("[Init] TEST_CAP Pio...\n");
-        // TEST_CAP_pio_init();        
-        uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
-        uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * 192);
-        hard_assert(capture_buf); // did we get buffer?
 
-        // Grant high bus priority to the DMA, so it can shove the processors out
-        // of the way. This should only be needed if you are pushing things up to
-        // >16bits/clk here, i.e. if you need to saturate the bus completely.
-        // not entirely sure when this is needed, but will leave here just in case.
-        // bus_ctrl_hw->priority = BUSCTRL_BUS_PRIORITY_DMA_W_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS;
+    puts("Starting capture");
+    uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
+    uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * 192);
+    hard_assert(capture_buf); // did we get buffer?
 
-        TEST_CAP_pio_arm(capture_buf, buf_size_words);
+    for (uint line_counter=0; line_counter < LINE_COUNT; line_counter++) {
+        // capture_buf+(line_counter*(32*buf_size_words)
+        // &array[index]
 
+        TEST_CAP_pio_arm((capture_buf + (line_counter * buf_size_words)), buf_size_words);
         dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
-        line_counter++;
+      //  printf(".");
+    }
 
-        if (line_counter >= 192) {
-            
-        }
-        print_capture_buf(capture_buf, buf_size_words);
-        free(capture_buf);
-        puts("Breakpoint here...");
+    print_capture_buf(capture_buf, buf_size_words, 191);
+    free(capture_buf);
+    puts("Breakpoint here...");
+    while(1);
         // while(1);
        // sleep_ms(1000);
-    }
     return 0;
 }
