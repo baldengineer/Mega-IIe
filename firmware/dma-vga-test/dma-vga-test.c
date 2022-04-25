@@ -75,7 +75,7 @@ void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
 
 void print_hex_buf(const uint32_t *buf, uint word_count, uint line_count) {
     printf("---[START]---\n");
-    for (int x=0; x < (70*line_count); x++) {
+    for (int x=0; x < (word_count * line_count); x++) {   // 
         if (x % 10 == 0)
             printf("\n");
         uint32_t current_word = buf[x];
@@ -166,7 +166,7 @@ int main() {
     while(1) {
        // puts("Starting capture");
         uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
-        uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * 192);
+        uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * LINE_COUNT);
         hard_assert(capture_buf); // did we get buffer?
 
         // detect window high for 1ms
