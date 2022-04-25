@@ -22,7 +22,7 @@ uint rgb_dma_chan = 0;
 #define LINE_COUNT 192
 #define WINDOW 19
 
-const uint LED_PIN = 3; // 3 on VGA2040
+const uint LED_PIN = 3  ; // 3 on VGA2040
 bool led_pin_state = LED_ON;
 
 
@@ -45,7 +45,7 @@ void TEST_CAP_pio_init() {
     // The state machine keeps an eye on the total amount of data shifted into the ISR, and on the in which reaches or
     // breaches a total shift count of 32 (or whatever number you have configured), the ISR contents, along with the new data
     // from the in. goes straight to the RX FIFO. The ISR is cleared to zero in the same operation.
-    sm_config_set_in_shift(&c, true, true, 32); // i've setup 8 bits to make this boundry clean, i think
+    sm_config_set_in_shift(&c, false, true, 32); // i've setup 8 bits to make this boundry clean, i think
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX); // PIO_FIFO_JOIN_NONE, _RX, _TX
     pio_sm_init(pio, pio_sm, pio_offset, &c);
 }
