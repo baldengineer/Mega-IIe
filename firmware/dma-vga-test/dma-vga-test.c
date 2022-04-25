@@ -13,7 +13,7 @@
 PIO pio;
 uint pio_offset;
 uint pio_sm;
-uint rgb_dma_chan;
+uint rgb_dma_chan = 0;
 
 #define LED_OFF 0
 #define LED_ON  1
@@ -63,14 +63,18 @@ void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
         capture_size_words,     // Number of transfers
         true                    // Start immediately
     );
+
     puts("[PIO Arm] Starting CAP Pio.");
+    pio_sm_restart(pio, pio_sm);
+    pio_sm_exec(pio, pio_sm, pio_encode_jmp(TEST_CAP_offset_start));
     pio_sm_set_enabled(pio, pio_sm, true);
+
 }
 
 void print_capture_buf(const uint32_t *buf, uint word_count) {
     printf("Captured: Hex, Binary, RGBx[4 Words, right to left]\n");
     for (int x=0; x < word_count; x++) {
-        printf("%d: %#08X, b%b, ", x, buf[x], buf[x]); // lol, %b works
+        printf("%d: %#16x, b%b, ", x, buf[x], buf[x]); // lol, %b works
 
         // extact RGB8,4,2,1 for printing
         for (int j=0; j<4; j++) {
@@ -117,7 +121,7 @@ int main() {
     printf("Hello World...\n");
     ctrl_status_led(LED_OFF);
 
-    // now do the things
+    //now do the things
     printf("\n[Init] TEST_CAP Pio...");
     TEST_CAP_pio_init();
     printf("done!");
@@ -133,7 +137,9 @@ int main() {
     while(1) {
         puts("Starting capture");
         // create buffer for a line
-        uint buf_size_words = 18;
+        // printf("[Init] TEST_CAP Pio...\n");
+        // TEST_CAP_pio_init();        
+        uint buf_size_words = 17;
         uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t));
         hard_assert(capture_buf); // did we get buffer?
 
@@ -148,9 +154,10 @@ int main() {
         dma_channel_wait_for_finish_blocking(rgb_dma_chan); // not sure I did the maths right...
 
         print_capture_buf(capture_buf, buf_size_words);
+        free(capture_buf);
         puts("Breakpoint here...");
         // while(1);
-        sleep_ms(1000);
+       // sleep_ms(1000);
     }
     return 0;
 }

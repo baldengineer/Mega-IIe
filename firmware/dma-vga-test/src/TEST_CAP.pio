@@ -1,4 +1,6 @@
 .program TEST_CAP
+.origin 0
+
 
 .define M14 13
 
@@ -11,14 +13,15 @@
 .define WINDOW 19
 
 
-start:
+public start:
     mov ISR, null       ; i think ISR is getting stuff with old stuff
     wait 1 gpio WINDOW  ; 
     wait 0 gpio WINDOW  ; wait for valid WINDOW
 
 .wrap_target
+    wait 0 gpio WINDOW
     wait 0 gpio M14
-    in PINS, 8
     wait 1 gpio M14
+    in PINS, 8
 
 .wrap
