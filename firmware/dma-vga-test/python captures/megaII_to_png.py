@@ -11,56 +11,51 @@ import serial
 from datetime import datetime
 
 LINE_WIDTH = 584
-
 SER_PORT = "COM5"
 SER_SPEED = "115200"
 SER_TIMEOUT = 5
 
-now = datetime.now()
-basename = now.strftime("%Y-%m-%d_%H-%M_%S")
-print("date and time =", basename)  
+basename = ""
+if (len(sys.argv) == 1):
+    mode = "serial"
+    wuzzle = False
+else:
+    if (len(sys.argv) >= 2):
+        arg = sys.argv[1]
+        if (arg.lower() == "serial"):
+            mode = "serial"
+            now = datetime.now()
+            basename = now.strftime("%Y-%m-%d_%H-%M_%S")
+            print("date and time =", basename)  
+        else:
+            mode = "file"
+            basename = sys.argv[1]
+            wuzzle = False
+    if (len(sys.argv) == 3):
+        arg = sys.argv[2]
+        if ((arg.lower() == "true") or (arg == "1") or (arg.lower() == "yes")):
+            wuzzle = True
 
-filename = "txt_dumps/" + basename + ".txt"
+if (basename.endswith('.txt')): basename = basename.replace(".txt","")
+txt_filename = f"txt_dumps/{basename}.txt"
+png_filename  = f"pngs/{basename}.png"
 
-print(f"Go-Go Gadget Serial port...{SER_PORT} at {SER_SPEED}")
-with serial.Serial(SER_PORT, int(SER_SPEED), timeout=SER_TIMEOUT) as ser:
-    with open(filename, 'w') as f:
-        ser.write(b'!')
-        line = ser.readlines()
-        for value in line:
-            txt = value.decode().strip()
-            if (('START' in txt) or ('END' in txt)):
-                continue
-            #print(txt)
-            f.write(str(txt) + '\n')
-print("... Serial done")
-
-wuzzle = False
-
-# if (len(sys.argv) == 1):
-#     print("Need basename and optionally wuzzle, e.g.:")
-#     print("<script> 31-some-file false")
-#     exit()
-# else:
-#     if (len(sys.argv) >= 2):
-#         basename = sys.argv[1]
-#         wuzzle = False
-#     if (len(sys.argv) == 3):
-#         arg = sys.argv[2]
-#         if ((arg.lower() == "true") or (arg == "1") or (arg.lower() == "yes")):
-#             wuzzle = True
+if (mode == "serial"):
+    print(f"Go-Go Gadget Serial port...{SER_PORT} at {SER_SPEED}")
+    with serial.Serial(SER_PORT, int(SER_SPEED), timeout=SER_TIMEOUT) as ser:
+        with open(txt_filename, 'w') as f:
+            ser.write(b'!')
+            line = ser.readlines()
+            for value in line:
+                txt = value.decode().strip()
+                if (('START' in txt) or ('END' in txt)):
+                    continue
+                #print(txt)
+                f.write(str(txt) + '\n')
+    print("... Serial done")
 
 
 newImg1 = Image.new('RGB', (LINE_WIDTH,384))
-
-#wuzzle = False # probably should be false
-#basename = "31-changed-the-clks-still-4-pixels"
-
-#basename = basename.strip()
-#if (basename.endswith('.txt')): basename = basename.replace(".txt","")
-
-txt_filename = f"txt_dumps/{basename}.txt"
-png_filename  = f"pngs/{basename}.png"
 
 # get rid of line breaks and white space
 super_long_string = ""
