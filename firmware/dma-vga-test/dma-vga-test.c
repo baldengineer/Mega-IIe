@@ -163,7 +163,7 @@ int main() {
     gpio_set_dir(WINDOW,GPIO_IN);
 
     // puts("Starting capture");
-    uint buf_size_words = 74; // 70 32-bit words plus 8 more bits.
+    uint buf_size_words = 73; // 70 32-bit words plus 8 more bits.
     uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * LINE_COUNT);
     hard_assert(capture_buf); // did we get buffer?
 

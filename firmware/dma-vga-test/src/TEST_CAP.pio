@@ -33,7 +33,7 @@ public start:
 
 .wrap_target
 start:
-    set x 31  ; delay value
+    set x 23  ; delay value
 instead:
     wait 0 gpio WINDOW
     irq clear 1

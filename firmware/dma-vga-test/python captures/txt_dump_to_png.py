@@ -10,7 +10,7 @@ import os
 import serial
 from datetime import datetime
 
-LINE_WIDTH = 592
+LINE_WIDTH = 584
 
 SER_PORT = "COM5"
 SER_SPEED = "115200"
