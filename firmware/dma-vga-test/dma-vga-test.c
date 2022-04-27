@@ -12,7 +12,9 @@
 
 PIO pio;
 uint pio_offset;
+uint magic_pio_offset;
 uint pio_sm;
+uint magic_pio_sm;
 uint rgb_dma_chan = 0;
 
 #define LED_OFF 0
@@ -48,6 +50,15 @@ void TEST_CAP_pio_init() {
     sm_config_set_in_shift(&c, false, true, 32); // i've setup 8 bits to make this boundry clean, i think
     sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX); // PIO_FIFO_JOIN_NONE, _RX, _TX
     pio_sm_init(pio, pio_sm, pio_offset, &c);
+
+    magic_pio_offset = pio_add_program(pio, &TIM_MAGIC_program);
+    magic_pio_sm = pio_claim_unused_sm(pio, true);
+    pio_sm_config c2 = TIM_MAGIC_program_get_default_config(magic_pio_offset);
+    pio_sm_set_enabled(pio, magic_pio_sm, false);
+
+    sm_config_set_clkdiv(&c2,1);
+    pio_sm_init(pio, magic_pio_sm, magic_pio_offset, &c2);
+    pio_sm_set_enabled(pio, magic_pio_sm, true);
 }
 
 void TEST_CAP_pio_arm(uint32_t *capture_buf, size_t capture_size_words) {
@@ -89,8 +100,8 @@ void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
    // printf("Captured: Hex, Binary, RGBx[4 Words, right to left]\n");
     for (int x=0; x < word_count; x++) {
        // printf("%d:%08x, b%b\n", x, buf[x], buf[x]); // lol, %b works
-       uint32_t current_buf = buf[x+(70*offset)];
-        printf("%d:%08x, ", x+(70*offset), current_buf); // lol, %b works
+       uint32_t current_buf = buf[x+(word_count*offset)];
+        printf("%d:%08x, ", x+(word_count*offset), current_buf); // lol, %b works
 
         // RGB4 RGB8 RGB1 RGB2
         // 1010 1000 0011 0001 0010 0000 1111 1101
@@ -152,7 +163,7 @@ int main() {
     gpio_set_dir(WINDOW,GPIO_IN);
 
     // puts("Starting capture");
-    uint buf_size_words = 70; // 70 32-bit words plus 8 more bits.
+    uint buf_size_words = 74; // 70 32-bit words plus 8 more bits.
     uint32_t *capture_buf = malloc(buf_size_words * sizeof(uint32_t) * LINE_COUNT);
     hard_assert(capture_buf); // did we get buffer?
 
@@ -173,7 +184,7 @@ int main() {
         // do we need to dump a buffer?
         uint8_t incoming_char = getchar_timeout_us(0);
         if ((incoming_char == '!'))
-            print_hex_buf(capture_buf, 70, LINE_COUNT);
+            print_hex_buf(capture_buf, buf_size_words, LINE_COUNT);
         if ((incoming_char == '@'))
             print_capture_buf(capture_buf, buf_size_words, 0);
         if ((incoming_char == '#'))

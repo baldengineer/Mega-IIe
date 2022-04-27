@@ -2,31 +2,62 @@
 # created by James Lewis @baldengineer
 # converts a dump from VGA2040 to a PNG for the Mega IIe project
 
-from PIL import Image
+from tkinter import *  
+from PIL import Image, ImageTk
 import sys
 import os
 
-if (len(sys.argv) == 1):
-    print("Need basename and optionally wuzzle, e.g.:")
-    print("<script> 31-some-file false")
-    exit()
-else:
-    if (len(sys.argv) >= 2):
-        basename = sys.argv[1]
-        wuzzle = False
-    if (len(sys.argv) == 3):
-        arg = sys.argv[2]
-        if ((arg.lower() == "true") or (arg == "1") or (arg.lower() == "yes")):
-            wuzzle = True
+import serial
+from datetime import datetime
+
+LINE_WIDTH = 592
+
+SER_PORT = "COM5"
+SER_SPEED = "115200"
+SER_TIMEOUT = 5
+
+now = datetime.now()
+basename = now.strftime("%Y-%m-%d_%H-%M_%S")
+print("date and time =", basename)  
+
+filename = "txt_dumps/" + basename + ".txt"
+
+print(f"Go-Go Gadget Serial port...{SER_PORT} at {SER_SPEED}")
+with serial.Serial(SER_PORT, int(SER_SPEED), timeout=SER_TIMEOUT) as ser:
+    with open(filename, 'w') as f:
+        ser.write(b'!')
+        line = ser.readlines()
+        for value in line:
+            txt = value.decode().strip()
+            if (('START' in txt) or ('END' in txt)):
+                continue
+            #print(txt)
+            f.write(str(txt) + '\n')
+print("... Serial done")
+
+wuzzle = False
+
+# if (len(sys.argv) == 1):
+#     print("Need basename and optionally wuzzle, e.g.:")
+#     print("<script> 31-some-file false")
+#     exit()
+# else:
+#     if (len(sys.argv) >= 2):
+#         basename = sys.argv[1]
+#         wuzzle = False
+#     if (len(sys.argv) == 3):
+#         arg = sys.argv[2]
+#         if ((arg.lower() == "true") or (arg == "1") or (arg.lower() == "yes")):
+#             wuzzle = True
 
 
-newImg1 = Image.new('RGB', (560,384))
+newImg1 = Image.new('RGB', (LINE_WIDTH,384))
 
 #wuzzle = False # probably should be false
 #basename = "31-changed-the-clks-still-4-pixels"
 
-basename = basename.strip()
-if (basename.endswith('.txt')): basename = basename.replace(".txt","")
+#basename = basename.strip()
+#if (basename.endswith('.txt')): basename = basename.replace(".txt","")
 
 txt_filename = f"txt_dumps/{basename}.txt"
 png_filename  = f"pngs/{basename}.png"
@@ -45,7 +76,7 @@ with open(txt_filename) as f:
             continue
         current_line = current_line + c
         character_count = character_count + 1
-        if (character_count == 560):
+        if (character_count == LINE_WIDTH):
             super_long_string = super_long_string + current_line + current_line
             current_line = ""
             character_count = 0
@@ -82,7 +113,7 @@ color = 0
 character = 0
 offset = 0
 for i in range (0,384):
-    for j in range (0,560):
+    for j in range (0,LINE_WIDTH):
         try:
             c = wuzzled_string[character+offset]
             character = character + 1
@@ -97,18 +128,25 @@ for i in range (0,384):
             if ((c == '#') or (c == 'f')) : color = (255, 255, 255)
             if ((c == '.') or (c == '0')) : color = (0, 0, 0)
 
-        except:
+        except Exception as e:
             color = 127
             print (f"I don't know what {c} is ... at #{character}")
-            exit()
+            print(str(e))
+            #exit()
 
         newImg1.putpixel((j,i),(color)) # color should be more like:  (0, 0, 0, 255)
 
 print("Saving image...")
 newImg1.save(png_filename)
-print("Asking windows to please open the file.")
-os.startfile(os.path.realpath(png_filename))
-
+#print("Asking windows to please open the file.")
+#os.startfile(os.path.realpath(png_filename))
+print("Asking tkinter to make pretty pictures")
+root = Tk()
+canvas = Canvas(root, width=LINE_WIDTH, height=384)
+canvas.pack()
+img = ImageTk.PhotoImage(Image.open(png_filename))
+canvas.create_image(0, 0, anchor=NW, image=img)
+root.mainloop()
 print("Printing message to say exiting.")
 print("Exiting.")
 exit()

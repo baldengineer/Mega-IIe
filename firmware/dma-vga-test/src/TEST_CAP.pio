@@ -20,12 +20,28 @@ public start:
     wait 0 gpio WINDOW  ; wait for valid WINDOW
 
 .wrap_target
-    wait 0 gpio WINDOW 
+  ;  wait 0 gpio WINDOW 
+    wait 0 irq 1   
     wait 1 gpio M14 
     wait 0 gpio M14 [DLY]
     in PINS, 4 
-
 .wrap
 
 .program TIM_MAGIC
-    wait irq 1
+.define M14 13
+.define WINDOW 19
+
+.wrap_target
+start:
+    set x 31  ; delay value
+instead:
+    wait 0 gpio WINDOW
+    irq clear 1
+
+    wait 1 gpio WINDOW 
+loop:
+    wait 0 gpio M14
+    wait 1 gpio M14
+    jmp x-- loop
+    irq set 1
+.wrap
