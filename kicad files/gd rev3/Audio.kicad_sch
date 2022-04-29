@@ -686,6 +686,7 @@
     )
   )
 
+
   (junction (at 198.12 101.6) (diameter 0) (color 0 0 0 0)
     (uuid 1c0c9ae9-4ddd-444b-9127-a2bce6edf65f)
   )
@@ -1007,10 +1008,6 @@
     (uuid f710db74-8760-4243-a0e1-f601ac4713ae)
   )
 
-  (text "* DOUBLE DOUBLE CHECK THE EARPHONE PINOUT!!!" (at 67.31 52.07 0)
-    (effects (font (size 3.81 3.81)) (justify left bottom))
-    (uuid 6ce985e7-68e1-4d92-9c47-678c93bcbd4b)
-  )
   (text "RNP is for external drain\nresistor for 100uF cap." (at 170.18 113.03 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid b2230e12-82f5-449e-8f6d-fcfbcd5c682a)
@@ -1223,7 +1220,7 @@
     (property "Value" "Ears" (id 1) (at 218.44 81.28 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "Connector_Audio:Jack_3.5mm_PJ311_Horizontal" (id 2) (at 219.71 92.71 0)
+    (property "Footprint" "My Libraries:Jack_3.5mm_tensility_54-00177" (id 2) (at 219.71 92.71 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00178.pdf" (id 3) (at 219.71 92.71 0)
@@ -1405,7 +1402,7 @@
   (symbol (lib_id "My_Library:R_0805") (at 93.98 133.35 180) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 82dd96d4-16c6-4913-9cd2-3e8dfa0e54a5)
-    (property "Reference" "R48" (id 0) (at 97.79 134.62 0)
+    (property "Reference" "R48" (id 0) (at 99.06 134.62 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "220" (id 1) (at 99.06 132.08 0)
