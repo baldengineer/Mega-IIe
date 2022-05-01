@@ -911,7 +911,7 @@
 
   (sheet (at 49.53 46.99) (size 44.45 45.72) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 224 224 60 0.2500))
     (uuid 1d17904d-638f-48f3-894f-0144911f4a7c)
     (property "Sheet name" "mega-6502" (id 0) (at 49.53 46.2784 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1019,7 +1019,7 @@
 
   (sheet (at 175.26 48.26) (size 43.18 44.45) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 105 176 224 0.2510))
     (uuid 2042a325-d69f-458d-bba3-20db010e4abe)
     (property "Sheet name" "Slot" (id 0) (at 175.26 47.5484 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1111,7 +1111,7 @@
 
   (sheet (at 49.53 119.38) (size 44.45 37.465) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 105 176 224 0.2510))
     (uuid 61636626-f40d-4279-9065-37c0ad74df56)
     (property "Sheet name" "video" (id 0) (at 49.53 118.6684 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1155,7 +1155,7 @@
 
   (sheet (at 246.38 53.34) (size 19.05 34.29) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 105 176 224 0.2510))
     (uuid 6b0f0968-35e3-452b-88fe-38abd5bf213e)
     (property "Sheet name" "game_port" (id 0) (at 246.38 52.6284 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1203,7 +1203,7 @@
 
   (sheet (at 49.53 167.64) (size 38.1 16.51) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 105 176 224 0.2510))
     (uuid 7f413a4b-3e53-4fa0-9479-601cfc2d3c7d)
     (property "Sheet name" "Audio" (id 0) (at 49.53 166.9284 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1231,7 +1231,7 @@
 
   (sheet (at 106.68 46.99) (size 41.91 45.72) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 105 176 224 0.2500))
     (uuid a9c8f5ac-a28a-4770-a319-78cb5bb789be)
     (property "Sheet name" "IWM" (id 0) (at 106.68 46.2784 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1267,7 +1267,7 @@
 
   (sheet (at 163.83 115.57) (size 44.45 36.83) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 105 176 224 0.2510))
     (uuid adee9709-3834-4416-bb9d-b047d3f7f3b7)
     (property "Sheet name" "rp2040-keyboard" (id 0) (at 163.83 114.8584 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -1339,7 +1339,7 @@
 
   (sheet (at 242.57 127) (size 37.465 25.4) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
-    (fill (color 0 0 0 0.0000))
+    (fill (color 224 99 194 0.2510))
     (uuid c78c3992-30f5-49be-b188-a14fa5a1512a)
     (property "Sheet name" "power" (id 0) (at 242.57 126.2884 0)
       (effects (font (size 1.27 1.27)) (justify left bottom))
@@ -2545,13 +2545,13 @@
       (reference "D11") (unit 1) (value "D_1206") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/2b680b08-5c56-40e8-8b8d-472d8e630d35"
-      (reference "D12") (unit 1) (value "AN3") (footprint "LED_SMD:LED_1206_3216Metric")
+      (reference "D12") (unit 1) (value "AN0") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/9f342b1b-f722-4abf-9589-48e1c8bfe7d9"
-      (reference "D13") (unit 1) (value "AN3") (footprint "LED_SMD:LED_1206_3216Metric")
+      (reference "D13") (unit 1) (value "AN1") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/9362b948-5bf9-4a87-80a7-71a173b96d1d"
-      (reference "D14") (unit 1) (value "AN3") (footprint "LED_SMD:LED_1206_3216Metric")
+      (reference "D14") (unit 1) (value "AN2") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/1c0d1812-41b8-4492-9c26-06c7fcbd580c"
       (reference "D15") (unit 1) (value "AN3") (footprint "LED_SMD:LED_1206_3216Metric")
@@ -2656,13 +2656,13 @@
       (reference "Q7") (unit 1) (value "BC817") (footprint "Package_TO_SOT_SMD:SOT-23")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/f84f24b2-a802-47bb-8077-8930de01c41a"
-      (reference "R1") (unit 1) (value "4k7") (footprint "Resistor_SMD:R_0805_2012Metric")
+      (reference "R1") (unit 1) (value "4k7") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/917ef960-c29b-45aa-8bf0-ec19fc5f2def"
-      (reference "R2") (unit 1) (value "3k3") (footprint "Resistor_SMD:R_0805_2012Metric")
+      (reference "R2") (unit 1) (value "3k3") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/1debea7f-efb2-4646-864e-94f3e19a3798"
-      (reference "R3") (unit 1) (value "3k3") (footprint "Resistor_SMD:R_0805_2012Metric")
+      (reference "R3") (unit 1) (value "3k3") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/d0946f86-b9d5-4871-99c8-03c1af4df156"
       (reference "R4") (unit 1) (value "4k7") (footprint "Resistor_SMD:R_0805_2012Metric")
