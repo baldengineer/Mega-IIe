@@ -2426,7 +2426,7 @@
     (path "/aeae0bd8-91e2-461e-89fa-f66aa100089e/8d943df9-87c5-4da5-a757-44fd44343fd1"
       (reference "#PWR013") (unit 1) (value "GND") (footprint "")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/2b3eea30-4adb-444e-bfc2-314a6d1030e4"
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/67c33bc3-7989-42db-8a66-e00738287920"
       (reference "#PWR0101") (unit 1) (value "GND") (footprint "")
     )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/54de1443-6061-4045-b316-1a1b604f51db"
@@ -2738,8 +2738,8 @@
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/a902a587-b1c6-4ec1-ab6e-d046b860ddfe"
       (reference "R1") (unit 1) (value "dnp") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/da3d6292-ba43-40b5-921c-1d6babfe980d"
-      (reference "R2") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0805_2012Metric")
+    (path "/fc065b92-de59-4c29-93b4-0f722018f063/adfd25e4-2edc-4ba2-b915-c9ffb7b02be3"
+      (reference "R2") (unit 1) (value "10K") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/7331fd94-721f-4acd-8b67-4292a514395e"
       (reference "R3") (unit 1) (value "422k") (footprint "Resistor_SMD:R_0805_2012Metric")
@@ -2828,9 +2828,6 @@
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/ce42903e-1fd1-436b-8ae3-9c2a4886379e"
       (reference "TP5") (unit 1) (value "TestPoint_Harwin") (footprint "TestPoint:TestPoint_Pad_1.0x1.0mm")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/107fb3c5-9f1e-428d-b18d-cb090cb19861"
-      (reference "TP6") (unit 1) (value "TestPoint_Harwin") (footprint "TestPoint:TestPoint_Pad_1.0x1.0mm")
-    )
     (path "/2a737751-d85e-4f05-8aec-b659f83530c3/76c57c21-eeda-4bfc-91bf-cf08d7b5d793"
       (reference "TP7") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
@@ -2846,9 +2843,6 @@
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/0b72e161-cee5-41c7-9cc0-538f5820d7e6"
       (reference "TP11") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/c5c2da81-f5a8-41b8-ae01-7099098a5858"
-      (reference "TP12") (unit 1) (value "TestPoint_Harwin") (footprint "TestPoint:TestPoint_Pad_1.0x1.0mm")
-    )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/43215ec4-6e4b-4ce3-be6b-8af0514dd093"
       (reference "TP13") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
@@ -2857,9 +2851,6 @@
     )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/5daeca0f-5322-4756-80e5-ee16d12c1e94"
       (reference "TP15") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
-    )
-    (path "/2a737751-d85e-4f05-8aec-b659f83530c3/bf50eff8-bea2-4875-91ce-d9eaa4335db2"
-      (reference "TP16") (unit 1) (value "TestPoint_Harwin") (footprint "TestPoint:TestPoint_Pad_1.0x1.0mm")
     )
     (path "/fc065b92-de59-4c29-93b4-0f722018f063/fdd7c921-6762-400c-b95b-67325b144a1d"
       (reference "TP17") (unit 1) (value "TestPoint_Harwin") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
