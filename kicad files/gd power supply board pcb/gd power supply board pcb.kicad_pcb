@@ -10269,7 +10269,7 @@
 
   (footprint "kibuzzard-6238106E" (layer "B.Cu")
     (tedit 6238106E) (tstamp 17e44249-77f4-44da-bdc5-410e75d4e61a)
-    (at 76.74 74.31 -90)
+    (at 76.74 74.27 -90)
     (descr "Converted using: scripting")
     (tags "svg2mod")
     (attr board_only exclude_from_pos_files exclude_from_bom)
@@ -12433,7 +12433,7 @@
 
   (footprint "kibuzzard-6238106E" (layer "B.Cu")
     (tedit 6238106E) (tstamp 33293632-0c7d-4def-82f2-7f8b699627ae)
-    (at 150.19 73.25 -90)
+    (at 150.19 73.23 -90)
     (descr "Converted using: scripting")
     (tags "svg2mod")
     (attr board_only exclude_from_pos_files exclude_from_bom)
