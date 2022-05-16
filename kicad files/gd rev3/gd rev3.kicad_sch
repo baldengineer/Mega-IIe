@@ -209,6 +209,7 @@
     )
   )
 
+
   (junction (at 196.85 24.13) (diameter 0) (color 0 0 0 0)
     (uuid 0ee106bf-2f4f-48e5-99ab-229100f31cfa)
   )
@@ -1921,7 +1922,7 @@
     (path "/61636626-f40d-4279-9065-37c0ad74df56/f3e71b0d-9c92-4632-809d-4c6cb9961a1c"
       (reference "#PWR0277") (unit 1) (value "GND") (footprint "")
     )
-    (path "/61636626-f40d-4279-9065-37c0ad74df56/cdbfa739-bb51-4c3b-a849-ac11c6352859"
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/92b92f5c-c64a-4dc4-b6fa-986b8e31ef95"
       (reference "#PWR0278") (unit 1) (value "GND") (footprint "")
     )
     (path "/61636626-f40d-4279-9065-37c0ad74df56/06851451-bf9b-4a16-96d4-bb06c68a5bba"
@@ -2536,6 +2537,12 @@
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/ac9b007c-ba37-4f1b-966d-f1e470189cf5"
       (reference "C82") (unit 1) (value "1u") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
+    (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/f52a52a7-8b13-47cc-a7c7-8a74e7166629"
+      (reference "C83") (unit 1) (value "10u") (footprint "Capacitor_SMD:C_0805_2012Metric")
+    )
+    (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/e2cff783-88f0-42c9-adf7-4aa98b238857"
+      (reference "C84") (unit 1) (value "1u") (footprint "Capacitor_SMD:C_0805_2012Metric")
+    )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/f3fac7b1-e8c9-40bd-b6bb-e112f2db0537"
       (reference "D1") (unit 1) (value "~{ROMEN_L}") (footprint "LED_SMD:LED_1206_3216Metric")
     )
@@ -2782,7 +2789,7 @@
     (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/22a257a9-9fe1-49ad-9c1a-d5d49ac75a6f"
       (reference "R30") (unit 1) (value "1K") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
-    (path "/61636626-f40d-4279-9065-37c0ad74df56/96face8d-47f5-4582-bb8f-b116b4508b1a"
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/b98fa79b-f18c-4f6b-aabd-43be83d3bb8d"
       (reference "R31") (unit 1) (value "1K") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/e2882265-6620-4131-a487-f11cf6aef974"
@@ -2827,9 +2834,6 @@
     (path "/61636626-f40d-4279-9065-37c0ad74df56/0847b9f2-df1c-4708-b3dc-6d8558f9fe94"
       (reference "R45") (unit 1) (value "470") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
-    (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/be8e984a-937b-43d7-930c-5dca609a24c6"
-      (reference "R46") (unit 1) (value "10u") (footprint "Resistor_SMD:R_0805_2012Metric")
-    )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/7b770dd9-177c-4f54-913b-7ce795cc29f4"
       (reference "R47") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
@@ -2856,9 +2860,6 @@
     )
     (path "/61636626-f40d-4279-9065-37c0ad74df56/8d10eff3-9b31-43d9-8184-8d5f4756ad0b"
       (reference "R55") (unit 1) (value "100") (footprint "Resistor_SMD:R_0805_2012Metric")
-    )
-    (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/812181e2-9a97-4377-89d9-c5b6d76f7d70"
-      (reference "R56") (unit 1) (value "1u") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/f80221d5-25ea-4433-ae30-5096c8aee2bf"
       (reference "R57") (unit 1) (value "4k7") (footprint "Resistor_SMD:R_0805_2012Metric")
@@ -2908,6 +2909,9 @@
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/ca0e9f6b-59bf-4012-8858-8c5bc1145626"
       (reference "R72") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
+    (path "/61636626-f40d-4279-9065-37c0ad74df56/caa049f4-ce6f-4a24-93b2-13817f8fa4cb"
+      (reference "R73") (unit 1) (value "1K") (footprint "Resistor_SMD:R_0603_1608Metric")
+    )
     (path "/a9c8f5ac-a28a-4770-a319-78cb5bb789be/89eba32a-9590-40b5-9f00-44c8b9aa2de7"
       (reference "R75") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
@@ -2947,8 +2951,11 @@
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/56f0c650-d25e-4793-908d-bcb34fcd4d34"
       (reference "SW4") (unit 1) (value "KBD RESET") (footprint "Button_Switch_SMD:SW_SPST_PTS810")
     )
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/54d6fba5-1c78-47d0-bd93-1acca1ae5e28"
+      (reference "SW5") (unit 1) (value "KBD Boot Sel") (footprint "Button_Switch_SMD:SW_SPST_PTS810")
+    )
     (path "/61636626-f40d-4279-9065-37c0ad74df56/9d8b9a2e-edcb-4af8-a8d5-fe84b46f779f"
-      (reference "SW6") (unit 1) (value "Boot Sel") (footprint "Button_Switch_SMD:SW_SPST_PTS810")
+      (reference "SW6") (unit 1) (value "VGA Boot Sel") (footprint "Button_Switch_SMD:SW_SPST_PTS810")
     )
     (path "/61636626-f40d-4279-9065-37c0ad74df56/0203380e-b28a-4338-964a-4e3ad6eb6d38"
       (reference "SW7") (unit 1) (value "VGA RESET") (footprint "Button_Switch_SMD:SW_SPST_PTS810")
