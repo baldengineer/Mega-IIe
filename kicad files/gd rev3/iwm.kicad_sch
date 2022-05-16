@@ -1500,7 +1500,6 @@
     )
   )
 
-
   (junction (at 209.55 105.41) (diameter 0) (color 0 0 0 0)
     (uuid 2512e9d5-1953-4b41-ab63-6110d49a4945)
   )
@@ -2210,6 +2209,10 @@
     (at 200.66 39.37 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 29e3f014-16d8-4cec-a4f0-bd587e03b85b)
+  )
+  (text "TODO: Bigger caps?" (at 243.84 142.24 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 7d0c3df2-4d5e-4ef6-9ed2-e7ba6b27f0a5)
   )
   (text "Pin 4 = 3.5DISK\nPin16 = HD Select" (at 167.64 39.37 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))

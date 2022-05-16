@@ -5,7 +5,7 @@
   (paper "A4")
 
   (title_block
-    (title "Mini-Mega IIef Rev 3 PCB")
+    (title "Mega IIe Rev 3 PCB")
     (rev "3a")
     (company "twitch.tv/baldengineer")
   )
@@ -208,7 +208,6 @@
       )
     )
   )
-
 
   (junction (at 196.85 24.13) (diameter 0) (color 0 0 0 0)
     (uuid 0ee106bf-2f4f-48e5-99ab-229100f31cfa)
@@ -2291,6 +2290,9 @@
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/7f151a16-67d7-4472-8fe1-58c24dbd578d"
       (reference "#PWR0400") (unit 1) (value "+5V") (footprint "")
     )
+    (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/7d5997b0-415a-45f1-bd99-b7578c28b179"
+      (reference "#PWR0401") (unit 1) (value "GND") (footprint "")
+    )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/f536bd17-1d50-4660-b799-d2b41cca93b7"
       (reference "C1") (unit 1) (value "1uF") (footprint "Capacitor_SMD:C_0805_2012Metric")
     )
@@ -3068,8 +3070,8 @@
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/cb6dba93-56c3-4c77-861d-8aac7715d91e"
       (reference "U5") (unit 1) (value "74HCT245") (footprint "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm")
     )
-    (path "/1d17904d-638f-48f3-894f-0144911f4a7c/59dada77-60cb-4f3e-873f-7b8f2c8261ca"
-      (reference "U6") (unit 1) (value "28C256") (footprint "Package_LCC:PLCC-32_11.4x14.0mm_P1.27mm")
+    (path "/1d17904d-638f-48f3-894f-0144911f4a7c/572e0949-5ea1-454e-81ec-79aa0543c09a"
+      (reference "U6") (unit 1) (value "AT28C256-PLCC") (footprint "Package_LCC:PLCC-32_11.4x14.0mm_P1.27mm")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/422f3e5d-f127-4d6e-9b70-419516d90997"
       (reference "U7") (unit 1) (value "DRAM64KX4") (footprint "Package_DIP:DIP-18_W7.62mm_Socket_LongPads")

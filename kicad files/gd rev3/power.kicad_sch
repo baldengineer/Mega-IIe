@@ -464,7 +464,6 @@
   )
 
 
-
   (wire (pts (xy 116.84 120.65) (xy 129.54 120.65))
     (stroke (width 0) (type default) (color 0 0 0 0))
     (uuid 00a57f74-d180-462d-953d-ce8c4211541d)
@@ -645,6 +644,10 @@
   (text "Change to SMD Package (if you can buy it)" (at 130.81 15.24 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 041c2640-06b4-4b45-8f5d-ea4900ffadac)
+  )
+  (text "TODO: Add filtering and some lytics." (at 125.73 68.58 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid af19135f-239d-4c31-aa76-d7ab22f60dfc)
   )
   (text "Change PWR Control Signals to Match\nMega_EN\nAnalog_EN"
     (at 25.4 105.41 0)
