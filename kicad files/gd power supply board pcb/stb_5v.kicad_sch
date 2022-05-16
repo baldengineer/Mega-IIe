@@ -4,6 +4,13 @@
 
   (paper "A4")
 
+  (title_block
+    (title "GD Power Supply Prototype")
+    (date "2022-05-16")
+    (rev "Rev 2")
+    (company "twitch.tv/baldengineer")
+  )
+
   (lib_symbols
     (symbol "Connector_Generic:Conn_01x02" (pin_names (offset 1.016) hide) (in_bom yes) (on_board yes)
       (property "Reference" "J" (id 0) (at 0 2.54 0)

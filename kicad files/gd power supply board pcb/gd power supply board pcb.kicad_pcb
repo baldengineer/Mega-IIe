@@ -5,6 +5,13 @@
   )
 
   (paper "USLetter")
+  (title_block
+    (title "GD Power Supply Proto PCB")
+    (date "2022-05-16")
+    (rev "2")
+    (company "twitch.tv/baldengineer.com")
+  )
+
   (layers
     (0 "F.Cu" signal)
     (1 "In1.Cu" signal)
