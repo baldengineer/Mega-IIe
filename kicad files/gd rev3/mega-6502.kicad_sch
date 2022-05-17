@@ -2214,6 +2214,7 @@
     )
   )
 
+
   (junction (at 350.52 194.31) (diameter 0) (color 0 0 0 0)
     (uuid 3b46941f-a3e3-4beb-9e80-92cb254592d8)
   )
@@ -5680,6 +5681,8 @@
     )
     (pin "2" (uuid 893f51d6-6807-4c39-8c82-301f878aa06a))
     (pin "5" (uuid 5cec3715-6659-4f3d-ae44-00c9eb83b0b0))
+    (pin "1" (uuid fe40db2b-a2e8-4ae1-b041-494c5ac026e3))
+    (pin "6" (uuid 561b26cd-7c7f-4df5-b6eb-a2d8faab18d7))
     (pin "3" (uuid 6ea21330-9481-448c-9338-036c9038b16a))
     (pin "4" (uuid f2b06f14-3dac-4ed0-99f7-e9ee35454bcd))
   )
@@ -7370,6 +7373,8 @@
     (pin "5" (uuid e09d5a18-c59f-4b1f-aeb1-4b1d195e672d))
     (pin "1" (uuid 28ebaea4-43cb-4918-a771-fb4287153a2d))
     (pin "6" (uuid 77cffd4a-854c-46ca-8471-16518814bb04))
+    (pin "3" (uuid 8fe460ec-6a74-432c-a111-91cbe6357d16))
+    (pin "4" (uuid efbb4fc0-1af0-4da3-8e41-cc12f9463dd6))
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 331.47 278.13 0) (unit 1)
