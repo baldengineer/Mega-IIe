@@ -1,0 +1,1 @@
+Attempting to port PicoVGA library to a VSCode project for integration with RP2040 C/C++ SDK.
