@@ -1,4 +1,4 @@
-![3d render of rev2 power supply board](/images/gd-ps-board-render-rev2jpg)
+![3d render of rev2 power supply board](/images/gd-ps-board-render-rev2.jpg)
 
 Four-rail SMPS for the Mega IIe. 
 
