@@ -2768,6 +2768,11 @@
     (uuid feabe56f-127f-4093-b305-e05d17c02f5f)
   )
 
+  (text "Consider TE 5650719-1 instead for slot.\n\n(Top-load, board mount)"
+    (at 156.21 25.4 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 03043886-9083-44c1-9648-873a549c24da)
+  )
   (text "C038-C03F is for IIgs SCC (Sound)" (at 97.79 24.13 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 0840205e-7a69-4bd1-bb73-e08a9d8fbaba)

@@ -10927,6 +10927,11 @@
       (net 77 "/Slot/SDBUS0") (pintype "bidirectional") (tstamp 144229f1-6f9c-49d0-ad09-ebcb8dacab07))
     (pad "50" thru_hole circle locked (at 2.032 2.794 180) (size 1.7 1.7) (drill 1.1) (layers *.Cu *.Mask)
       (net 5 "+12V") (pintype "bidirectional") (tstamp 65914a10-f58d-4fa8-8d24-693947af164d))
+    (model "C:/Users/balde/Dropbox/KiCad/Component STEP Files/c-2358256-4-a-3d.stp"
+      (opacity 0.5000)      (offset (xyz -20 -33.25 20))
+      (scale (xyz 1 1 1))
+      (rotate (xyz -90 0 90))
+    )
   )
 
   (footprint "Package_LCC:PLCC-84_THT-Socket" (layer "F.Cu")
