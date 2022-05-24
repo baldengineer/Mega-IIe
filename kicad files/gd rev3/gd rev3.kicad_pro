@@ -453,6 +453,8 @@
           "/rp2040-keyboard/~{PH0}",
           "/rp2040-keyboard/~{RESETrp}",
           "/video/14M_RP",
+          "/video/D_N",
+          "/video/D_P",
           "/video/RGB1_RP",
           "/video/RGB2_RP",
           "/video/RGB4_RP",
