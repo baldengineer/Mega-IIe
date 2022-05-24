@@ -2617,7 +2617,7 @@
       (reference "J9") (unit 1) (value "IO-Xtra") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     )
     (path "/2042a325-d69f-458d-bba3-20db010e4abe/df7cf14c-6717-4794-b475-5de97a7d9c52"
-      (reference "J10") (unit 1) (value "Apple_II_Slot") (footprint "My Libraries:Amp_2358256-4_50pos_right_angle_card")
+      (reference "J10") (unit 1) (value "Apple_II_Slot") (footprint "My Libraries:Sullins-EBC25DCWN-Edge Socket 50 pos (25x2) 0.100")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/7e5ed30f-cb29-41e5-827f-6c2bb60f2643"
       (reference "J11") (unit 1) (value "Game Port") (footprint "Package_DIP:DIP-16_W7.62mm_Socket")
