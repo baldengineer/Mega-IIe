@@ -421,7 +421,6 @@
           "/rp2040-keyboard/D_P",
           "/rp2040-keyboard/GPIO17",
           "/rp2040-keyboard/GPIO19",
-          "/rp2040-keyboard/GPIO2",
           "/rp2040-keyboard/GPIO20",
           "/rp2040-keyboard/GPIO21",
           "/rp2040-keyboard/GPIO22",
@@ -522,7 +521,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "gd rev3.dsn",
-      "step": "",
+      "step": "gd rev3.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
