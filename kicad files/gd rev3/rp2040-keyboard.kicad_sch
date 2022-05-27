@@ -4026,7 +4026,7 @@
     (uuid 184e26b4-b69e-46e2-ab31-c21060cfe553)
     (property "Reference" "U16" (id 0) (at 356.87 133.35 0))
     (property "Value" "74HC245" (id 1) (at 359.41 135.89 0))
-    (property "Footprint" "Package_SO:SOIC-20W_7.5x12.8mm_P1.27mm" (id 2) (at 353.06 153.67 0)
+    (property "Footprint" "Package_SO:SO-20_5.3x12.6mm_P1.27mm" (id 2) (at 353.06 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "http://www.ti.com/lit/gpn/sn74HC245" (id 3) (at 353.06 153.67 0)

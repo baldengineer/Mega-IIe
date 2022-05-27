@@ -601,6 +601,10 @@
     [
       "6b0f0968-35e3-452b-88fe-38abd5bf213e",
       "game_port"
+    ],
+    [
+      "1c80a2ff-bb77-49be-8f4f-a38d0eafcdbf",
+      "decoder"
     ]
   ],
   "text_variables": {}
