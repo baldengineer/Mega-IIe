@@ -2699,13 +2699,13 @@
       (reference "D6") (unit 1) (value "Mega") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/7d3cdf8e-ec2f-45f7-819f-abc976261104"
-      (reference "D7") (unit 1) (value "5V_PWR") (footprint "LED_SMD:LED_1206_3216Metric")
+      (reference "D7") (unit 1) (value "5V_2040_PWR") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/661cae79-1b08-445e-bb1a-9697ad0336a3"
       (reference "D8") (unit 1) (value "3V3_PWR") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/7cc5399f-5f00-4337-adec-5327cd05655d"
-      (reference "D9") (unit 1) (value "3V3_PWR") (footprint "LED_SMD:LED_1206_3216Metric")
+      (reference "D9") (unit 1) (value "KBD_L") (footprint "LED_SMD:LED_1206_3216Metric")
     )
     (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/661213b1-99ea-4a2b-9f07-5d17c7f0122f"
       (reference "D10") (unit 1) (value "Stby") (footprint "LED_SMD:LED_1206_3216Metric")
