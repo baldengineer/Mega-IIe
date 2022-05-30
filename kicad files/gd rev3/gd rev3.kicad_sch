@@ -255,11 +255,11 @@
   )
   (bus_entry (at 269.24 66.04) (size 2.54 -2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
-    (uuid 32fc5f57-e4d4-4434-a5a9-97c16a237729)
+    (uuid 32fc5f57-e4d4-4434-a5a9-97c16a23772a)
   )
   (bus_entry (at 269.24 68.58) (size 2.54 -2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
-    (uuid 32fc5f57-e4d4-4434-a5a9-97c16a237729)
+    (uuid 32fc5f57-e4d4-4434-a5a9-97c16a23772b)
   )
   (bus_entry (at 196.85 104.14) (size 2.54 -2.54)
     (stroke (width 0) (type default) (color 0 0 0 0))
@@ -3294,6 +3294,9 @@
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/4d9fa578-31a0-45ae-8602-e74fe0dc8682"
       (reference "TP31") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+    )
+    (path "/1d17904d-638f-48f3-894f-0144911f4a7c/11162f78-a7ce-47ce-a9e9-7fa10830871d"
+      (reference "TP32") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/79fe1503-44f9-4229-a1e9-b00356d9513c"
       (reference "U1") (unit 1) (value "Apple_MEGA_II") (footprint "Package_LCC:PLCC-84_THT-Socket")

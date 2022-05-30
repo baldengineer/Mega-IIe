@@ -4380,8 +4380,6 @@
     (pin "5" (uuid 45877f06-4628-43a1-b200-c8380d0706e9))
     (pin "1" (uuid b1fe538e-3c8c-48c6-8626-78f950c59e02))
     (pin "6" (uuid e3dc2d8d-9e1d-4320-beb2-d1cf229756e8))
-    (pin "3" (uuid 1db6d639-aaab-4f03-b157-e086e5f723f0))
-    (pin "4" (uuid 5d7dbd22-4927-4e51-8420-a0fd9559a58d))
   )
 
   (symbol (lib_id "Device:R") (at 373.38 106.68 270) (unit 1)
@@ -5210,8 +5208,6 @@
     )
     (pin "2" (uuid 9c246593-bdf7-4fa4-903a-4561c8573c0a))
     (pin "5" (uuid 248ca378-d549-4a92-8fc8-67a234a9f4db))
-    (pin "1" (uuid 960e55bc-8c90-414a-9ab3-be788174bdfd))
-    (pin "6" (uuid 4ad33b17-c747-4680-b54c-541a6409f212))
     (pin "3" (uuid 8ab0c197-8710-4415-bbb3-63de8fdef140))
     (pin "4" (uuid c640077d-25e3-47db-a0ab-e85ba0501499))
   )
