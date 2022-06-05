@@ -10,3 +10,5 @@ Sorry if this is confusing. Reach out to me if you need help. I'll do what I can
 ## Notes
 * Debugger doesn't work because it halts one of the cores. 
 * Programming from within VSCode does not upload new code. Have to use J-Flash Lite to upload the `HEX` or `BIN` file.
+
+A minor change is needed to the PicoVGA library to change how SYNC works. As-is, only some VGA monitors work correctly. Well, most. But to use with capture devices, a small patch for V-Sync is needed. [This thread](https://forums.raspberrypi.com/viewtopic.php?t=313634&start=25) discusses the change.
