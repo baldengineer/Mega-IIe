@@ -1,11 +1,11 @@
-![demo of Mega IIe running AppleSoft](2022-06_05_mega_iie_rev2_with_vga_monitor.jpg)
+![demo of Mega IIe running AppleSoft](images/2022-06_05_mega_iie_rev2_with_vga_monitor.jpg)
 # Golden Delicious
 
 This project started as a portable Apple ][ by using the MEGA II chip from an IIgs. (This chip was also known as the Gemini in the Mac LC compatibility card.) However, it evolved into making a miniture Apple IIe compatible computer.
 
 This project is why I started [Bit Preserve](https://github.com/baldengineer/bit-preserve), a project to archive vintage computer schematics.
 
-![Mega IIe Rev2 Hardware](2022-06_05_mega_iie_rev2.jpg)
+![Mega IIe Rev2 Hardware](images/2022-06_05_mega_iie_rev2.jpg)
 
 
 ## (Off-)Stream Notes 2021-10-02
