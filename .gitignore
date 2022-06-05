@@ -1,2 +1,21 @@
 .gitignore
 firmware/mega2_picovga/*.bat
+firmware/mega2_picovga/_boot2/
+firmware/mega2_picovga/_exe/src/elf2uf2_src_VS2019.rar
+firmware/mega2_picovga/_gcc/
+firmware/mega2_picovga/_picovga/
+firmware/mega2_picovga/_exe/
+firmware/mega2_picovga/_sdk/
+firmware/mega2_picovga/_tinyusb/
+firmware/mega2_picovga/vga_mega2/*.bat
+firmware/mega2_picovga/vga_mega2/program.*
+firmware/mega2_picovga/vga_mega2/.vscode/
+firmware/mega2_picovga/vga_mega2/build/
+firmware/mega2_picovga/vga_mega2/src/*.bat
+kicad files/gd power supply board pcb/gd ps rev1/calc-worksheet.xlsx
+kicad files/gd power supply board pcb/gd ps rev1/gd power supply board pcb.xlsx
+kicad files/gd rev3/.gd rev3.kicad_pcb$
+firmware/mega2_picovga/memmap_blocked_ram.ld
+firmware/mega2_picovga/memmap_copy_to_ram.ld
+firmware/mega2_picovga/memmap_default.ld
+firmware/mega2_picovga/memmap_no_flash.ld
