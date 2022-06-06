@@ -3364,7 +3364,7 @@
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 53879915-10ce-424e-8835-181702adc144)
   )
-  (label "vid_LED_L" (at 232.41 87.63 180)
+  (label "vid_LED_L" (at 232.41 80.01 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 5baf9e3f-022e-493f-875e-57b11f81464d)
   )
