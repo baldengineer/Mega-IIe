@@ -127,7 +127,7 @@
       )
       (symbol "+5V_2040_1_1"
         (pin power_in line (at 0 0 90) (length 0) hide
-          (name "+5V" (effects (font (size 1.27 1.27))))
+          (name "+5V_2040" (effects (font (size 1.27 1.27))))
           (number "1" (effects (font (size 1.27 1.27))))
         )
       )
@@ -2589,6 +2589,9 @@
     (path "/61636626-f40d-4279-9065-37c0ad74df56/7d9f06d0-a699-47da-8aae-80de5416cfac"
       (reference "#PWR0388") (unit 1) (value "GND") (footprint "")
     )
+    (path "/61636626-f40d-4279-9065-37c0ad74df56/dbe72037-74fa-489d-959c-7c7417c39f56"
+      (reference "#PWR0389") (unit 1) (value "+5V_2040") (footprint "")
+    )
     (path "/2042a325-d69f-458d-bba3-20db010e4abe/f3055741-d222-4cb7-b01e-698932fc88ae"
       (reference "#PWR0393") (unit 1) (value "-5V") (footprint "")
     )
@@ -3032,6 +3035,9 @@
     )
     (path "/f1740d90-a1e8-475c-9f8b-799d406d4de8"
       (reference "JP2") (unit 1) (value "Int-Ser2") (footprint "Jumper:SolderJumper-3_P2.0mm_Open_TrianglePad1.0x1.5mm_NumberLabels")
+    )
+    (path "/61636626-f40d-4279-9065-37c0ad74df56/b8fae82f-5a90-43fb-86b1-cbb74201b067"
+      (reference "JP3") (unit 1) (value "Vbus_2040") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/c88f9821-e2d3-431d-82c3-4e507f7bfa96"
       (reference "Q1") (unit 1) (value "BC817") (footprint "Package_TO_SOT_SMD:SOT-23")
