@@ -1,0 +1,9 @@
+
+build/*
+.vscode/launch.json
+.vscode/.cortex*
+
+build-bak/*
+
+pngs/*
+text_dumps/*
