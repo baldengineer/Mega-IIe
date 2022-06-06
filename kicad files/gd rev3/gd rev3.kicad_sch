@@ -2500,7 +2500,7 @@
       (reference "C25") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/a90d772a-0288-4a67-86d4-81afb595d203"
-      (reference "C26") (unit 1) (value "1u") (footprint "Capacitor_SMD:C_0603_1608Metric")
+      (reference "C26") (unit 1) (value "10u") (footprint "Capacitor_SMD:C_0805_2012Metric")
     )
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/784d19fd-fb03-4f4f-93fe-b9ad2287672d"
       (reference "C27") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric")

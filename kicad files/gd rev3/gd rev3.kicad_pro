@@ -409,6 +409,8 @@
         "microvia_drill": 0.1,
         "name": "Smol Logic",
         "nets": [
+          "/power/Analog_Pwr",
+          "/power/Mega_Pwr",
           "/rp2040-keyboard/D0",
           "/rp2040-keyboard/D1",
           "/rp2040-keyboard/D2",
