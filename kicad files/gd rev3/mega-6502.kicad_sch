@@ -7101,7 +7101,7 @@
     (property "Value" "TestPoint" (id 1) (at 159.4358 103.0732 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
-    (property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm" (id 2) (at 158.75 106.68 0)
+    (property "Footprint" "My Libraries:Harwin-S1751-46-Test-Point" (id 2) (at 158.75 106.68 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 158.75 106.68 0)

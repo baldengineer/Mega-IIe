@@ -3454,7 +3454,7 @@
       (reference "TP17") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/926df401-f903-4501-8aa9-53877ee3daf3"
-      (reference "TP18") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
+      (reference "TP18") (unit 1) (value "TestPoint") (footprint "My Libraries:Harwin-S1751-46-Test-Point")
     )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/e8b323c2-6538-4b79-96fe-1b2eb79071b9"
       (reference "TP19") (unit 1) (value "TestPoint") (footprint "TestPoint:TestPoint_Pad_D1.0mm")
