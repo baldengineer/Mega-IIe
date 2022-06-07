@@ -37,11 +37,11 @@
           "height": 1.524,
           "width": 1.524
         },
-        "silk_line_width": 0.15,
+        "silk_line_width": 0.19999999999999998,
         "silk_text_italic": false,
         "silk_text_size_h": 1.0,
         "silk_text_size_v": 1.0,
-        "silk_text_thickness": 0.15,
+        "silk_text_thickness": 0.19999999999999998,
         "silk_text_upright": false,
         "zones": {
           "45_degree_only": false,
@@ -55,7 +55,14 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "silk_over_copper|226650000|110230000|10f03c9c-b905-4301-b598-067c1388286e|a8ce2a19-9dd0-4cd1-afcf-b038b4acbb8b",
+        "silk_over_copper|226650000|117850000|10f03c9c-b905-4301-b598-067c1388286e|eff2965b-7848-43ee-92b1-ea5c894d8150",
+        "silk_over_copper|63630000|112500000|10f03c9c-b905-4301-b598-067c1388286e|1e77d05a-47c6-4779-a271-263f4100b67f",
+        "silk_over_copper|63630000|118700000|10f03c9c-b905-4301-b598-067c1388286e|57baca21-7774-42c1-b564-f10162daa785",
+        "silk_over_copper|63630000|125920000|10f03c9c-b905-4301-b598-067c1388286e|da04dedc-81b6-46a7-8e62-059a9f65ac48",
+        "silk_over_copper|63630000|140640000|10f03c9c-b905-4301-b598-067c1388286e|52ffc372-accb-4afd-8190-37bbe8734e30"
+      ],
       "meta": {
         "version": 2
       },
@@ -430,10 +437,15 @@
         "microvia_drill": 0.1,
         "name": "Smol Logic",
         "nets": [
+          "/Audio/AUD_SCL",
+          "/Audio/AUD_SDA",
+          "/Audio/HP_Sense",
           "/KBD_TX_SCL",
           "/KBD_TX_SDA",
           "/VID_RX",
           "/VID_TX",
+          "/game_port/SW0_OAPL",
+          "/game_port/SW1_CAPL",
           "/power/Analog_Pwr",
           "/power/Mega_Pwr",
           "/rp2040-keyboard/D0",
@@ -446,12 +458,6 @@
           "/rp2040-keyboard/D7",
           "/rp2040-keyboard/D_N",
           "/rp2040-keyboard/D_P",
-          "/rp2040-keyboard/GPIO17",
-          "/rp2040-keyboard/GPIO19",
-          "/rp2040-keyboard/GPIO20",
-          "/rp2040-keyboard/GPIO21",
-          "/rp2040-keyboard/GPIO22",
-          "/rp2040-keyboard/GPIO23",
           "/rp2040-keyboard/KBD_QSPI_SCLK",
           "/rp2040-keyboard/KBD_QSPI_SD0",
           "/rp2040-keyboard/KBD_QSPI_SD1",
