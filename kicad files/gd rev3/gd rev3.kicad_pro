@@ -470,6 +470,8 @@
           "/rp2040-keyboard/PH0rp",
           "/rp2040-keyboard/RESET_CTL",
           "/rp2040-keyboard/RWrp",
+          "/rp2040-keyboard/SW0_OAPL_3v3",
+          "/rp2040-keyboard/SW1_CAPL_3v3",
           "/rp2040-keyboard/SWCLK",
           "/rp2040-keyboard/SWD",
           "/rp2040-keyboard/USB_D+",
