@@ -5692,6 +5692,8 @@
     )
     (pin "2" (uuid 893f51d6-6807-4c39-8c82-301f878aa06a))
     (pin "5" (uuid 5cec3715-6659-4f3d-ae44-00c9eb83b0b0))
+    (pin "1" (uuid 8b8c5c00-5988-4f70-b955-8cbbcb346688))
+    (pin "6" (uuid 67e6ed40-006b-4abc-aacd-25f763f740cc))
     (pin "3" (uuid 6ea21330-9481-448c-9338-036c9038b16a))
     (pin "4" (uuid f2b06f14-3dac-4ed0-99f7-e9ee35454bcd))
   )
@@ -7434,6 +7436,8 @@
     (pin "5" (uuid e09d5a18-c59f-4b1f-aeb1-4b1d195e672d))
     (pin "1" (uuid 28ebaea4-43cb-4918-a771-fb4287153a2d))
     (pin "6" (uuid 77cffd4a-854c-46ca-8471-16518814bb04))
+    (pin "3" (uuid a7a922c3-ea92-4826-83cc-97fd2f6e93d8))
+    (pin "4" (uuid 2b171d4e-6212-48d0-8ebd-5f9a075ab491))
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 331.47 261.62 0) (unit 1)
