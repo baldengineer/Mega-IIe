@@ -2622,6 +2622,9 @@
     (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/ebfa129b-66da-4ee0-b3ed-f9f72a711ae8"
       (reference "#PWR0402") (unit 1) (value "-12V") (footprint "")
     )
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/7125ce04-e5f3-47b3-9fb3-1d6c0277ff00"
+      (reference "#PWR?") (unit 1) (value "+5V_2040") (footprint "")
+    )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/f536bd17-1d50-4660-b799-d2b41cca93b7"
       (reference "C1") (unit 1) (value "1uF") (footprint "Capacitor_SMD:C_0805_2012Metric")
     )
