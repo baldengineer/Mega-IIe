@@ -1062,7 +1062,7 @@
     (uuid fff2546d-fd20-4e24-9bb4-ebda9189b30c)
   )
 
-  (label "KBD_TX_SCL" (at 142.875 130.175 180)
+  (label "KBD_RX_SCL" (at 142.875 130.175 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 1b267769-cf92-440d-bfb5-5d01ee043314)
   )
@@ -3048,11 +3048,11 @@
     (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/5bbc1d91-966e-464f-b4c0-ebcf079848da"
       (reference "J14") (unit 1) (value "USB_A") (footprint "My Libraries:USB_A_GCT_USB1125")
     )
-    (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/12ad299c-33dd-4d51-8691-46650735aba8"
-      (reference "J15") (unit 1) (value "Rev2 Header") (footprint "Connector_PinSocket_2.54mm:PinSocket_2x05_P2.54mm_Vertical")
+    (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/318a64e2-680c-4446-b1ae-fcfcf212bc18"
+      (reference "J15") (unit 1) (value "PS Aux") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical")
     )
-    (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/67d1ccfc-290e-4331-b0a9-3e8d262f2db3"
-      (reference "J16") (unit 1) (value "RP2040 Header") (footprint "Connector_PinSocket_2.54mm:PinSocket_2x03_P2.54mm_Vertical")
+    (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/cd02ded1-fe3c-4356-ae52-e0da6333f1bf"
+      (reference "J16") (unit 1) (value "PS Control") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     )
     (path "/61636626-f40d-4279-9065-37c0ad74df56/2e7a1403-2513-4579-b436-f6934aaa9ce0"
       (reference "J17") (unit 1) (value "VGA_Micro") (footprint "Connector_USB:USB_Micro-B_GCT_USB3076-30-A")
