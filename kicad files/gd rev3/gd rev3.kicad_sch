@@ -2946,6 +2946,15 @@
     (path "/c78c3992-30f5-49be-b188-a14fa5a1512a/d11a2369-5734-4e9e-b42f-c8fe0f1a741b"
       (reference "#PWR0425") (unit 1) (value "GND") (footprint "")
     )
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/891a9b27-6c07-4881-ac26-031a07e5d11e"
+      (reference "#PWR0426") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/2042a325-d69f-458d-bba3-20db010e4abe/3cc0d74a-4fbc-4aa6-a9bd-574f421d639e"
+      (reference "#PWR0427") (unit 1) (value "-5V") (footprint "")
+    )
+    (path "/2042a325-d69f-458d-bba3-20db010e4abe/ffd786fc-c0a1-40f4-b342-e7a105da5baa"
+      (reference "#PWR0428") (unit 1) (value "GND") (footprint "")
+    )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/f536bd17-1d50-4660-b799-d2b41cca93b7"
       (reference "C1") (unit 1) (value "1uF") (footprint "Capacitor_SMD:C_0805_2012Metric")
     )
@@ -3288,6 +3297,9 @@
     (path "/1c80a2ff-bb77-49be-8f4f-a38d0eafcdbf/7ab0d0e1-3da3-488d-a13d-2ebb92c31641"
       (reference "D24") (unit 1) (value "BA8") (footprint "LED_SMD:LED_1206_3216Metric")
     )
+    (path "/2042a325-d69f-458d-bba3-20db010e4abe/7f1834b4-c50f-4af4-9311-e814b32fb0a6"
+      (reference "D25") (unit 1) (value "-5V") (footprint "LED_SMD:LED_1206_3216Metric")
+    )
     (path "/1d17904d-638f-48f3-894f-0144911f4a7c/7f1ecbe6-aad1-4ae5-8960-a89339d12748"
       (reference "H1") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.5mm")
     )
@@ -3377,6 +3389,9 @@
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/2002bd62-b74a-4f08-adf6-3db454fef0c4"
       (reference "J23") (unit 1) (value "Game-DB VERIFY FOOTPRINT") (footprint "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm")
+    )
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/4c19db76-7f05-46a0-909e-bef3c7feff9a"
+      (reference "J24") (unit 1) (value "KBD_L_HDR") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical")
     )
     (path "/eec372a5-2e4f-4fc5-8c20-974b7fb2ce8a"
       (reference "JP1") (unit 1) (value "Int-Ser1") (footprint "Jumper:SolderJumper-3_P2.0mm_Open_TrianglePad1.0x1.5mm_NumberLabels")
@@ -3651,11 +3666,17 @@
     (path "/a7d443ce-4d95-48db-84ca-3804a6f8be65"
       (reference "R79") (unit 1) (value "4k7") (footprint "Resistor_SMD:R_0603_1608Metric")
     )
+    (path "/adee9709-3834-4416-bb9d-b047d3f7f3b7/8d832795-93fb-44b4-91c8-9db98bd1f7ea"
+      (reference "R80") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
     (path "/1c80a2ff-bb77-49be-8f4f-a38d0eafcdbf/faaa7a44-44dc-481f-8d63-52cee4fb0549"
       (reference "R81") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/1c80a2ff-bb77-49be-8f4f-a38d0eafcdbf/de2a7b41-7349-43f6-89f0-2d154db41b57"
       (reference "R82") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
+    )
+    (path "/2042a325-d69f-458d-bba3-20db010e4abe/aa5fec5e-4fbb-4bf1-8f38-e2c47c622a5b"
+      (reference "R83") (unit 1) (value "1K") (footprint "Resistor_SMD:R_0805_2012Metric")
     )
     (path "/1c80a2ff-bb77-49be-8f4f-a38d0eafcdbf/01c2ebea-f899-4a19-90a2-5eca898a7e1c"
       (reference "R85") (unit 1) (value "470") (footprint "Resistor_SMD:R_0805_2012Metric")
