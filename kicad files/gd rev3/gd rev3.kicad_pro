@@ -718,7 +718,7 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "gd rev3.dsn",
-      "step": "gd rev3.step",
+      "step": "gd rev3-fab submit.step",
       "vrml": ""
     },
     "page_layout_descr_file": ""
