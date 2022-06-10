@@ -1,0 +1,47 @@
+.program TEST_CAP
+.origin 0
+
+
+.define M14 13
+
+.define RGB8 16
+.define RGB4 17
+.define RGB2 14
+.define RGB1 15
+
+.define SYNC 18
+.define WINDOW 19
+
+.define DLY 1
+
+public start:
+ ;   mov ISR, null       ; i think ISR is getting stuff with old stuff
+    wait 1 gpio WINDOW  ; 
+    wait 0 gpio WINDOW  ; wait for valid WINDOW
+
+.wrap_target
+  ;  wait 0 gpio WINDOW 
+    wait 0 irq 1   
+    wait 1 gpio M14 
+    wait 0 gpio M14 [DLY]
+    in PINS, 4 
+.wrap
+
+.program TIM_MAGIC
+.define M14 13
+.define WINDOW 19
+
+.wrap_target
+start:
+    set x 23  ; delay value
+instead:
+    wait 0 gpio WINDOW
+    irq clear 1
+
+    wait 1 gpio WINDOW 
+loop:
+    wait 0 gpio M14
+    wait 1 gpio M14
+    jmp x-- loop
+    irq set 1
+.wrap

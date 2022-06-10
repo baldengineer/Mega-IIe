@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "vga_mega2"
+		},
+		{
+			"path": "vga_pi"
+		},
+		{
+			"path": "vga_lines"
+		},
+		{
+			"path": "vga_twister"
+		},
+		{
+			"path": "vga_pixels"
+		}
+	],
+	"settings": {}
+}

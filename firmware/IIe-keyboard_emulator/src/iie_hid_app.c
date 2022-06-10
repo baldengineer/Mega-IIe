@@ -156,8 +156,7 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
 
 static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_t modifiers) {
         // looking for special key sequences
-    OAPL_state = false;
-    CAPL_state = false;
+
     if (modifiers > 0) {
         // left-windows key (open-apple)
         if ((modifiers & 0x08))
@@ -200,6 +199,8 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
   
     modifiers = report->modifier;
 
+    OAPL_state = false;
+    CAPL_state = false;
     if (modifiers > 0) {
         handle_special_sequences(report, modifiers);
     }
