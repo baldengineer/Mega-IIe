@@ -3385,7 +3385,7 @@
       (reference "J21") (unit 1) (value "KBD Serial") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     )
     (path "/61636626-f40d-4279-9065-37c0ad74df56/0e05b7b2-3d89-4d8b-8da0-946389c81673"
-      (reference "J22") (unit 1) (value "L77HDE15SD1CH4F") (footprint "Connector_Dsub:DSUB-15-HD_Female_Horizontal_P2.29x1.98mm_EdgePinOffset8.35mm_Housed_MountingHolesOffset10.89mm")
+      (reference "J22") (unit 1) (value "L77HDE15SD1CH4F") (footprint "My Libraries:AMPHENOL_L77HDE15SD1CH4F")
     )
     (path "/6b0f0968-35e3-452b-88fe-38abd5bf213e/2002bd62-b74a-4f08-adf6-3db454fef0c4"
       (reference "J23") (unit 1) (value "Game-DB VERIFY FOOTPRINT") (footprint "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm")
