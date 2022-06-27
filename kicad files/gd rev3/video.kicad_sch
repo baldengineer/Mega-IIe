@@ -3850,7 +3850,7 @@
     (uuid 0e05b7b2-3d89-4d8b-8da0-946389c81673)
     (property "Reference" "J22" (id 0) (at 369.57 151.9682 0))
     (property "Value" "L77HDE15SD1CH4F" (id 1) (at 369.57 154.2796 0))
-    (property "Footprint" "Connector_Dsub:DSUB-15-HD_Female_Horizontal_P2.29x1.98mm_EdgePinOffset8.35mm_Housed_MountingHolesOffset10.89mm" (id 2) (at 345.44 163.83 0)
+    (property "Footprint" "My Libraries:AMPHENOL_L77HDE15SD1CH4F" (id 2) (at 345.44 163.83 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" " ~" (id 3) (at 345.44 163.83 0)
