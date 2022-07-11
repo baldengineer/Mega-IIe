@@ -39,8 +39,13 @@ bool repeating_timer_callback(struct repeating_timer *t) {
     return true;
 }
 
+//TODO Need to remove all references now that VGA works
 void set_color_mode(bool state) {
-    gpio_put(COLOR_MODE_PIN, state);
+    #if Mega_IIe_Rev2
+        gpio_put(COLOR_MODE_PIN, state);
+    #elif Mega_IIe_Rev3
+        return;
+    #endif
 }
 
 void queue_key(uint8_t key) {
@@ -109,7 +114,7 @@ inline static uint8_t handle_serial_keyboard() {
 }
 
 // shortcut for setting up output pins (there isn't a SDK call for this?)
-static void out_init(uint8_t pin, bool state) {
+void out_init(uint8_t pin, bool state) {
     gpio_init(pin);
     gpio_set_dir(pin, GPIO_OUT);
     gpio_put(pin, state);
@@ -117,7 +122,13 @@ static void out_init(uint8_t pin, bool state) {
 
 // put your setup code here, to run once:
 void setup() {
+   
     stdio_init_all();  // UART accepts input and displays debug infos
+    busy_wait_ms(10);
+
+    // yay usb!
+    printf("\nEnabling tinyUSB Host");
+    tusb_init();
 
     printf("\nInit Suppy Pins");
     setup_power_sequence();
@@ -126,22 +137,26 @@ void setup() {
     mega_power_state = PWR_OFF;
     handle_power_sequence(mega_power_state);
 
-    // yay usb!
-    printf("\nEnabling tinyUSB Host");
-    tusb_init();
+    #if Mega_IIe_Rev2
+        printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
+        out_init(DEBUG_PIN, 0x0);
+    #elif Mega_IIe_Rev3
+        printf("\nConfiguring Case LED Pin(%d)", KBD_LED_PIN);
+        out_init(KBD_LED_PIN, 0x0);
+    #endif
     
-    printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
-    out_init(DEBUG_PIN, 0x0);
-
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
-    out_init(RESET_CTL, 0x0);
+    out_init(RESET_CTL, 0x1);
 
     // ************************************************************
     // printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
     // out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
+    #if Mega_IIe_Rev2
+        printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
+        out_init(COLOR_MODE_PIN, color_mode_state);
+    #endif
 
-    printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
-    out_init(COLOR_MODE_PIN, color_mode_state);
+
 
 
 
@@ -170,6 +185,17 @@ void setup() {
             tuh_task();
         }
     }
+
+    while(!kbd_connected) {
+        tuh_task();
+        static uint32_t prev_micros;
+        if (time_us_32() - prev_micros >= 2500000) {
+            prev_micros = time_us_32();
+            printf("Keyboard not detected...(resetting)\n");
+            hcd_port_reset(0);
+        }
+    }
+    printf("Keyboard Detected, yay");
 
     printf("\nTurning ON Supply Pins\n");
     mega_power_state = PWR_ON;
@@ -276,7 +302,7 @@ int main() {
         handle_runstop_button();
         handle_apple_keys();
         handle_three_finger_reset();
-        handle_mega_power_button();
+        //handle_mega_power_button();
         handle_serial_buffer();
         handle_pio_keycode_queue();
         handle_nkey_repeats();

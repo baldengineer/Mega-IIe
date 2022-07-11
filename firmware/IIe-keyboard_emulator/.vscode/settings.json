@@ -5,6 +5,7 @@
     "stdio.h": "c",
     "iie-keyboard_emulator.h": "c",
     "clocks.h": "c",
-    "iie_hid_app.h": "c"
+    "iie_hid_app.h": "c",
+    "pins_rev2.h": "c"
   },
 }
