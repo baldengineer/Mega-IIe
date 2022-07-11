@@ -6,7 +6,8 @@
 
   (title_block
     (title "Audio")
-    (rev "3a")
+    (date "2022-06-27")
+    (rev "3b")
     (company "twitch.tv/baldengineer")
   )
 

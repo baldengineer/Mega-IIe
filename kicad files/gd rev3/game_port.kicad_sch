@@ -4,6 +4,12 @@
 
   (paper "A4")
 
+  (title_block
+    (date "2022-06-27")
+    (rev "3b")
+    (company "twitch.tv/baldengineer")
+  )
+
   (lib_symbols
     (symbol "Apple_IIgs_Symbols:HCT251" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
       (property "Reference" "U" (id 0) (at -1.27 20.32 0)
@@ -3049,10 +3055,10 @@
     (property "Reference" "J23" (id 0) (at 140.97 176.5299 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "Game-DB VERIFY FOOTPRINT" (id 1) (at 140.97 179.0699 0)
+    (property "Value" "Game-DB" (id 1) (at 140.97 179.0699 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset4.94mm_Housed_MountingHolesOffset7.48mm" (id 2) (at 146.05 177.8 0)
+    (property "Footprint" "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm" (id 2) (at 146.05 177.8 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" " ~" (id 3) (at 146.05 177.8 0)
