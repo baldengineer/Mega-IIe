@@ -5,7 +5,8 @@
   (paper "A4")
 
   (title_block
-    (rev "3a")
+    (date "2022-06-27")
+    (rev "3b")
     (company "twitch.tv/baldengineer")
   )
 

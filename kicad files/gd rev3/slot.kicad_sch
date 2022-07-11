@@ -6,7 +6,8 @@
 
   (title_block
     (title "Slotmaker and Game DIP")
-    (rev "3a")
+    (date "2022-06-27")
+    (rev "3b")
     (company "twitch.tv/baldengineer")
   )
 
