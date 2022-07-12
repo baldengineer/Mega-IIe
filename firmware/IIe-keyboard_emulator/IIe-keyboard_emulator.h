@@ -63,6 +63,9 @@ uint8_t power_cycle_key_counter;
 void set_color_mode(bool state);
 bool color_mode_state = true;
 
+bool headphone_status = false;
+bool reset_state = false;
+
 // From the outside scary world
 extern void imma_led(uint8_t state);
 extern void hid_app_task(void);

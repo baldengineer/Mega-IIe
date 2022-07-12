@@ -120,6 +120,40 @@ void out_init(uint8_t pin, bool state) {
     gpio_put(pin, state);
 }
 
+// For the blinky led
+bool case_led_blink(struct repeating_timer *t) {
+    return true;
+}
+
+#define BLINK_OFF  0
+#define BLINK_SLOW 1
+#define BLINK_MED  2
+#define BLINK_FAST 3
+#define BLINK_ON   9
+
+void blink_case_led(int speed) {
+    switch (speed) {
+        case BLINK_OFF:
+        break;
+
+        case BLINK_SLOW:
+        break;
+
+        case BLINK_MED:
+        break;
+
+        case BLINK_FAST:
+        break;
+
+        case BLINK_ON:
+        break;
+
+        default:
+            printf("Got speed (%d) and no understand...\n", speed);
+    }
+
+}
+
 // put your setup code here, to run once:
 void setup() {
    
@@ -143,6 +177,13 @@ void setup() {
     #elif Mega_IIe_Rev3
         printf("\nConfiguring Case LED Pin(%d)", KBD_LED_PIN);
         out_init(KBD_LED_PIN, 0x0);
+
+        // struct repeating_timer case_led_timer;
+        // add_repeating_timer_ms(500, repeating_timer_callback, NULL, &timer);
+        // sleep_ms(3000);
+        // bool cancelled = cancel_repeating_timer(&timer);
+        // printf("cancelled... %d\n", cancelled);
+        // sleep_ms(2000);
     #endif
     
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
@@ -156,9 +197,22 @@ void setup() {
         out_init(COLOR_MODE_PIN, color_mode_state);
     #endif
 
+    // Get VGA2040 Ready To Go
+    #if Mega_IIe_Rev3
+        printf("\nConfiguring VID_ENABLE Pin (%d)", VID_ENABLE);
+        out_init(VID_ENABLE, 0x1);
+    #endif
+    
+    // BEEP BEEP BEEP
+    #if Mega_IIe_Rev3
+        headphone_status = gpio_get(HP_SENSE);
+        // i2c setup stuff for AUD_SDA and AUD_SCL here
+    #endif
 
-
-
+    // Preload Reset state (is this needed?)
+    #if Mega_IIe_Rev3
+        reset_state = gpio_get(RESET_STATUS);
+    #endif
 
     // helps with throtting usb (may get fixed in future TinyUSB, I hope)
  /*   printf("\nEnabling tuh_task");
@@ -191,8 +245,9 @@ void setup() {
         static uint32_t prev_micros;
         if (time_us_32() - prev_micros >= 2500000) {
             prev_micros = time_us_32();
-            printf("Keyboard not detected...(resetting)\n");
-            hcd_port_reset(0);
+            //printf("Keyboard not detected...(resetting)\n");
+            printf("Keyboard not detected...\n");
+            //hcd_port_reset(0);
         }
     }
     printf("Keyboard Detected, yay");
