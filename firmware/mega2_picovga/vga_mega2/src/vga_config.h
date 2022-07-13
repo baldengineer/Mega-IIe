@@ -73,6 +73,14 @@
 // #define VGA_GPIO_LAST	(VGA_GPIO_FIRST+VGA_GPIO_NUM-1)	// last VGA GPIO
 // #define VGA_GPIO_SYNC	8	// VGA SYNC GPIO
 
+// Rev 2 Pins
+// #define VGA_GPIO_FIRST	22	// first VGA GPIO
+// #define VGA_GPIO_NUM	8	// number of VGA GPIOs, including HSYNC and VSYNC
+// #define VGA_GPIO_OUTNUM	8	// number of VGA color GPIOs, without HSYNC and VSYNC
+// #define VGA_GPIO_LAST	(VGA_GPIO_FIRST+VGA_GPIO_NUM-1)	// last VGA GPIO
+// #define VGA_GPIO_SYNC	21	// VGA SYNC GPIO
+
+// Rev 3 Pins
 #define VGA_GPIO_FIRST	22	// first VGA GPIO
 #define VGA_GPIO_NUM	8	// number of VGA GPIOs, including HSYNC and VSYNC
 #define VGA_GPIO_OUTNUM	8	// number of VGA color GPIOs, without HSYNC and VSYNC

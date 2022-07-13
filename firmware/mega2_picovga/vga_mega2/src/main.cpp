@@ -79,9 +79,18 @@ uint rgb_dma_chan;
 #define LED_TOG 2
 
 #define LINE_COUNT 192
-#define WINDOW 19
 
-const uint BLINKY_PIN=3  ; // 3 on VGA2040
+// Rev 2
+//#define WINDOW 19
+// Rev 3
+#define WINDOW 13
+
+// Rev 2
+//const uint BLINKY_PIN=3  ; // 3 on VGA2040
+
+// Rev 3
+const uint BLINKY_PIN=0  ;
+
 bool led_pin_state = LED_ON;
 
 void VideoInit()
@@ -112,6 +121,15 @@ void VideoInit()
 	VgaInitReq(&Vmode);
 }
 
+// Rev 2
+//#define FIRST_RGBx 14
+//#define FIRST_INPUT 12
+//#define INPUT_COUNT 8
+// Rev 3
+#define FIRST_RGBx 8
+#define FIRST_INPUT 6
+#define INPUT_COUNT 8
+
 void TEST_CAP_pio_init() {
     // do the setup things
     pio = pio1;
@@ -121,8 +139,8 @@ void TEST_CAP_pio_init() {
     pio_sm_config c = TEST_CAP_program_get_default_config(pio_offset);
     pio_sm_set_enabled(pio, pio_sm, false);
 
-    sm_config_set_in_pins(&c, 14); // capture 7M too, because why not?
-    pio_sm_set_consecutive_pindirs(pio, pio_sm, 12, 8, GPIO_IN);
+    sm_config_set_in_pins(&c, FIRST_RGBx); 
+    pio_sm_set_consecutive_pindirs(pio, pio_sm, FIRST_INPUT, INPUT_COUNT, GPIO_IN);
 
     sm_config_set_clkdiv(&c, 1); 
 
@@ -220,10 +238,12 @@ uint ctrl_status_led(uint state) {
     return led_pin_state;
 }
 
+#define VSYNC 20
+
 int main() {
 	// vsync
-	gpio_init(20);
-	gpio_set_dir(20, GPIO_OUT);
+	gpio_init(VSYNC);
+	gpio_set_dir(VSYNC, GPIO_OUT);
 	// initialize videomode
 	// run VGA core
 	multicore_launch_core1(VgaCore);
@@ -231,11 +251,12 @@ int main() {
 	// initialize videomode
 	VideoInit();
 	
-	// for(int i = 0;i<56064;i++){
-	// 	Box[i]= RandU8();
-	// }
+	for(int i = 0;i<56064;i++){
+		//Box[i]= RandU8();
+        Box[i] = 0x55;
+    }
 
-//	while(true);
+	while(true);
 
 	
 	// wait for USB CDC to be up

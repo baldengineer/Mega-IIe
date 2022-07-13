@@ -16,12 +16,12 @@
 #define TEST_CAP_offset_start 0u
 
 static const uint16_t TEST_CAP_program_instructions[] = {
-    0x2093, //  0: wait   1 gpio, 19                 
-    0x2013, //  1: wait   0 gpio, 19                 
+    0x208d, //  0: wait   1 gpio, 13                 
+    0x200d, //  1: wait   0 gpio, 13                 
             //     .wrap_target
     0x2041, //  2: wait   0 irq, 1                   
-    0x208d, //  3: wait   1 gpio, 13                 
-    0x210d, //  4: wait   0 gpio, 13             [1] 
+    0x2086, //  3: wait   1 gpio, 6                  
+    0x2106, //  4: wait   0 gpio, 6              [1] 
     0x4004, //  5: in     pins, 4                    
             //     .wrap
 };
