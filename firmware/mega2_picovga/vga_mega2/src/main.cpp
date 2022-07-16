@@ -5,8 +5,13 @@
 //
 // ****************************************************************************
 
+#include <stdio.h>
+
 #include "include.h"
 #include "hardware/gpio.h"
+#include "hardware/uart.h"
+#include "pico/stdlib.h"
+
 extern unsigned char rawData[56064];
 // Draw box
 ALIGNED u8 Box[(WIDTHBYTE)*HEIGHT];
@@ -222,7 +227,7 @@ void print_capture_buf(const uint32_t *buf, uint word_count, uint offset) {
     printf("\n");
 }
 
-uint ctrl_status_led(uint state) {
+inline uint ctrl_status_led(uint state) {
     switch (state) {
         case LED_OFF:
             led_pin_state = LED_OFF;
@@ -240,36 +245,78 @@ uint ctrl_status_led(uint state) {
 
 #define VSYNC 20
 
+void init_blinky_pin() {
+    gpio_init(BLINKY_PIN);
+    gpio_set_dir(BLINKY_PIN, GPIO_OUT);
+    ctrl_status_led(LED_ON);
+    ctrl_status_led(LED_OFF);
+}
+
+#define KBD_UART uart1
+#define KBD_BAUD 115200
+#define KBD_TX 4
+#define KBD_RX 5
+
+void check_uart() {
+    if (stdio_usb_connected()) {
+        while(uart_is_readable(KBD_UART)) {
+            char incoming_char = uart_getc(KBD_UART);
+                putchar(incoming_char);
+        }
+    }
+}
+
 int main() {
+    init_blinky_pin();
+    stdio_usb_init();
+
+    // uart_init(KBD_UART, KBD_BAUD);
+    // gpio_set_function(KBD_TX, GPIO_FUNC_UART);
+    // gpio_set_function(KBD_RX, GPIO_FUNC_UART);
+
+
+    // give me a chance to open the serial terminal
+    for (int waits=0; waits < 50; waits++) {
+        ctrl_status_led(LED_TOG);
+        busy_wait_us(100000);
+        if (stdio_usb_connected())
+            break;
+    }
+    ctrl_status_led(LED_OFF);
+
+    if (stdio_usb_connected())
+        printf("\n\nVGA2040 Pixelizer 1.0\n");
+
 	// vsync
+
+    if (stdio_usb_connected())
+        printf("\nInit VSYNC");
 	gpio_init(VSYNC);
 	gpio_set_dir(VSYNC, GPIO_OUT);
 	// initialize videomode
 	// run VGA core
+    if (stdio_usb_connected())
+        printf("\nConfiguring Core1 for VGA");
 	multicore_launch_core1(VgaCore);
 
 	// initialize videomode
+    if (stdio_usb_connected())
+        printf("\nInit VGA");
 	VideoInit();
 	
+    if (stdio_usb_connected())
+        printf("\nDrawing Solid Color");
 	for(int i = 0;i<56064;i++){
 		//Box[i]= RandU8();
-        Box[i] = 0x55;
+        Box[i] = 0x22;
     }
 
-	while(true);
+	//while(true);
 
-	
-	// wait for USB CDC to be up
-    gpio_init(BLINKY_PIN);
-    gpio_set_dir(BLINKY_PIN, GPIO_OUT);
-    ctrl_status_led(LED_ON);
-    //stdio_uart_init_full(uart1, 115200, 4, 5);
 
-	//printf("Hello World...\n");
-    ctrl_status_led(LED_OFF);
 
-    //now do the things
-    //printf("\n[Init] TEST_CAP Pio...");
+    if (stdio_usb_connected())
+        printf("\nInit PIO for Mega Bitstream");
     TEST_CAP_pio_init();
    // printf("done!");	
 
@@ -277,14 +324,17 @@ int main() {
     gpio_set_dir(WINDOW,GPIO_IN);
 
 
+    if (stdio_usb_connected())
+        printf("\nTime for MEGA Fun\n");
 
 	while(true) {
-
 		// detect window high for 1ms
         uint32_t previous_window_us = 0;
         bool vblank = false;
 
+        ctrl_status_led(LED_ON);
 		while (!gpio_get(WINDOW)); // wait for window to deassert 
+        ctrl_status_led(LED_OFF);
         previous_window_us = time_us_32();
 
         // wait until we're in VBLANK
@@ -293,14 +343,16 @@ int main() {
                 previous_window_us = time_us_32();
         }
 
-        // do we need to dump a buffer?
-        uint8_t incoming_char = getchar_timeout_us(0);
-        if ((incoming_char == '!'))
-            print_hex_buf((uint32_t*)Box, WIDTHWORDS, LINE_COUNT);
-        if ((incoming_char == '@'))
-            print_capture_buf((uint32_t*)Box, WIDTHWORDS, 0);
-        if ((incoming_char == '#'))
-            print_capture_buf((uint32_t*)Box, WIDTHWORDS, (HEIGHT-1)); 
+        if (stdio_usb_connected()) {
+            // do we need to dump a buffer?
+            uint8_t incoming_char = getchar_timeout_us(0);
+            if ((incoming_char == '!'))
+                print_hex_buf((uint32_t*)Box, WIDTHWORDS, LINE_COUNT);
+            if ((incoming_char == '@'))
+                print_capture_buf((uint32_t*)Box, WIDTHWORDS, 0);
+            if ((incoming_char == '#'))
+                print_capture_buf((uint32_t*)Box, WIDTHWORDS, (HEIGHT-1)); 
+        }
 
         // restart the state machines ... 
         TEST_CAP_pio_arm((uint32_t*)Box, ((WIDTHWORDS) * LINE_COUNT));
