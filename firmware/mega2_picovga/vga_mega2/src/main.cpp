@@ -276,12 +276,12 @@ int main() {
 
 
     // give me a chance to open the serial terminal
-    for (int waits=0; waits < 50; waits++) {
-        ctrl_status_led(LED_TOG);
-        busy_wait_us(100000);
-        if (stdio_usb_connected())
-            break;
-    }
+    // for (int waits=0; waits < 50; waits++) {
+    //     ctrl_status_led(LED_TOG);
+    //     busy_wait_us(100000);
+    //     if (stdio_usb_connected())
+    //         break;
+    // }
     ctrl_status_led(LED_OFF);
 
     if (stdio_usb_connected())
@@ -304,24 +304,23 @@ int main() {
         printf("\nInit VGA");
 	VideoInit();
 	
-    if (stdio_usb_connected())
-        printf("\nDrawing Solid Color");
-	for(int i = 0;i<56064;i++){
-		//Box[i]= RandU8();
-        Box[i] = 0x22;
-    }
+    // if (stdio_usb_connected())
+    //     printf("\nDrawing Solid Color");
+	// for(int i = 0;i<56064;i++){
+	// 	//Box[i]= RandU8();
+    //     Box[i] = 0x22;
+    // }
 
 	//while(true);
 
-
+	gpio_init(WINDOW);
+    gpio_set_dir(WINDOW,GPIO_IN);
 
     if (stdio_usb_connected())
         printf("\nInit PIO for Mega Bitstream");
     TEST_CAP_pio_init();
    // printf("done!");	
 
-	gpio_init(WINDOW);
-    gpio_set_dir(WINDOW,GPIO_IN);
 
 
     if (stdio_usb_connected())
@@ -332,9 +331,9 @@ int main() {
         uint32_t previous_window_us = 0;
         bool vblank = false;
 
-        ctrl_status_led(LED_ON);
+     //   ctrl_status_led(LED_ON);
 		while (!gpio_get(WINDOW)); // wait for window to deassert 
-        ctrl_status_led(LED_OFF);
+  //      ctrl_status_led(LED_OFF);
         previous_window_us = time_us_32();
 
         // wait until we're in VBLANK
@@ -352,6 +351,8 @@ int main() {
                 print_capture_buf((uint32_t*)Box, WIDTHWORDS, 0);
             if ((incoming_char == '#'))
                 print_capture_buf((uint32_t*)Box, WIDTHWORDS, (HEIGHT-1)); 
+            if ((incoming_char == '?'))
+                printf("\nHi\n");
         }
 
         // restart the state machines ... 
