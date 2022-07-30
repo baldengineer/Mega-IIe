@@ -43,7 +43,7 @@ DEFINE += -DNDEBUG
 # stdio output (select one option)
 #DEFINE += -DPICO_STDIO_UART=1
 #DEFINE += -DPICO_STDIO_SEMIHOSTING=1
-#DEFINE += -DPICO_STDIO_USB=1
+DEFINE += -DPICO_STDIO_USB=1
 
 # How to connect UART to Pico:
 #                  +---USB---+

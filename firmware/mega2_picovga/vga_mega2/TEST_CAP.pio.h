@@ -16,12 +16,12 @@
 #define TEST_CAP_offset_start 0u
 
 static const uint16_t TEST_CAP_program_instructions[] = {
-    0x2093, //  0: wait   1 gpio, 19                 
-    0x2013, //  1: wait   0 gpio, 19                 
+    0x208d, //  0: wait   1 gpio, 13                 
+    0x200d, //  1: wait   0 gpio, 13                 
             //     .wrap_target
     0x2041, //  2: wait   0 irq, 1                   
-    0x208d, //  3: wait   1 gpio, 13                 
-    0x210d, //  4: wait   0 gpio, 13             [1] 
+    0x2086, //  3: wait   1 gpio, 6                  
+    0x2106, //  4: wait   0 gpio, 6              [1] 
     0x4004, //  5: in     pins, 4                    
             //     .wrap
 };
@@ -50,11 +50,11 @@ static inline pio_sm_config TEST_CAP_program_get_default_config(uint offset) {
 static const uint16_t TIM_MAGIC_program_instructions[] = {
             //     .wrap_target
     0xe037, //  0: set    x, 23                      
-    0x2013, //  1: wait   0 gpio, 19                 
+    0x200d, //  1: wait   0 gpio, 13                 
     0xc041, //  2: irq    clear 1                    
-    0x2093, //  3: wait   1 gpio, 19                 
-    0x200d, //  4: wait   0 gpio, 13                 
-    0x208d, //  5: wait   1 gpio, 13                 
+    0x208d, //  3: wait   1 gpio, 13                 
+    0x2006, //  4: wait   0 gpio, 6                  
+    0x2086, //  5: wait   1 gpio, 6                  
     0x0044, //  6: jmp    x--, 4                     
     0xc001, //  7: irq    nowait 1                   
             //     .wrap

@@ -1,16 +1,21 @@
 .program TEST_CAP
 .origin 0
 
+; Ignore these, they are as useless as instructions
+; included with a new device.
+; .define RGB8 16
+; .define RGB4 17
+; .define RGB2 14
+; .define RGB1 15
+; .define SYNC 18
 
-.define M14 13
+; Rev 2
+; .define M14    13
+; .define WINDOW 19
 
-.define RGB8 16
-.define RGB4 17
-.define RGB2 14
-.define RGB1 15
-
-.define SYNC 18
-.define WINDOW 19
+; Rev 3 -- change in other program!
+.define M14     6
+.define WINDOW 13
 
 .define DLY 1
 
@@ -28,8 +33,13 @@ public start:
 .wrap
 
 .program TIM_MAGIC
-.define M14 13
-.define WINDOW 19
+; Rev 2
+; .define M14    13
+; .define WINDOW 19
+
+; Rev 3
+.define M14    6
+.define WINDOW 13
 
 .wrap_target
 start:

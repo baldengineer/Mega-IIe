@@ -41,13 +41,8 @@ bool state_245 = DISABLED;
 bool OAPL_state=false;
 bool CAPL_state=false;
 bool do_a_reset=false;
-const uint8_t OAPL_pin = 20;
-const uint8_t CAPL_pin = 23;
 bool shift_lock_state=false;
 
-const uint DEBUG_PIN = 24;
-const uint8_t enable_245_pin = 11;
-const //uint8_t shifter_enable = 25;
 
 // PIO Globals
 PIO pio;
@@ -68,6 +63,9 @@ uint8_t power_cycle_key_counter;
 void set_color_mode(bool state);
 bool color_mode_state = true;
 
+bool headphone_status = false;
+bool reset_state = false;
+
 // From the outside scary world
 extern void imma_led(uint8_t state);
 extern void hid_app_task(void);
@@ -79,7 +77,7 @@ extern void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys); 
 
 extern void toggle_pwr_pins();
-extern void handle_mega_power_button();
+//extern void handle_mega_power_button();
 extern void handle_power_sequence(uint8_t state);
 extern void setup_power_sequence();
 
