@@ -21,7 +21,7 @@
 // IO Pins
 //#define   DEBUG_PIN 24
 #define   KBD_LED_PIN 25
-#define   enable_245_pin 15
+#define   enable_245_pin 12
 #define   OAPL_pin 19
 #define   CAPL_pin 18
 #define VID_ENABLE 20

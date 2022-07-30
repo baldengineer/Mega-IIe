@@ -53,23 +53,62 @@ u16 trans[256];
 // 255 //white   1111
 // };
 
+// u8 palwedongongoofedthebits[16] = {
+// 0,    // black
+// 1,   // red
+// 80,  // dark blue
+// 109, // purple 
+// 196,  // dark green
+// 227,  // grey
+// 240, // mid blue
+// 201, // light blue
+// 52,  // dark brown
+// 39, // light brown
+// 24, // bright grey
+// 185, // salmon
+// 146,  // lime green
+// 175, // yellow
+// 248, // light green
+// 255 // white
+// };
+
+//rev 3
+// u8 palwedongongoofedthebits[16] = {
+// 0,
+// 163, // brown
+// 86, // dark green 
+// 215, // green
+// 136, // drk purple (drk blue)
+// 73, // light purple
+// 220, // cyan
+// 235, // light blue
+// 54, // red
+// 183, // orange
+// 73,
+// 79,
+// 188,
+// 91,
+// 126,
+// 255
+// };
+
 u8 palwedongongoofedthebits[16] = {
-0,    // black
-1,   // red
-80,  // dark blue
-109, // purple 
-196,  // dark green
-227,  // grey
-240, // mid blue
-201, // light blue
-52,  // dark brown
-39, // light brown
-24, // bright grey
-185, // salmon
-146,  // lime green
-175, // yellow
-248, // light green
-255 // white
+0,
+54,
+136,
+188,
+86,
+73,
+220,
+126,
+163,
+183,
+73,
+91,
+215,
+79,
+235,
+255
 };
 
 PIO pio;
@@ -266,6 +305,16 @@ void check_uart() {
     }
 }
 
+void fillBox(int color) {
+    if (stdio_usb_connected())
+       printf("\nDrawing Solid Color");
+
+    for(int i = 0;i<((WIDTHBYTE)*HEIGHT);i++){
+        //Box[i]= RandU8();
+        Box[i] = color;
+    }
+}
+
 int main() {
     init_blinky_pin();
     stdio_usb_init();
@@ -304,12 +353,7 @@ int main() {
         printf("\nInit VGA");
 	VideoInit();
 	
-    // if (stdio_usb_connected())
-    //     printf("\nDrawing Solid Color");
-	// for(int i = 0;i<56064;i++){
-	// 	//Box[i]= RandU8();
-    //     Box[i] = 0x22;
-    // }
+    fillBox(0x22);
 
 	//while(true);
 
@@ -326,13 +370,23 @@ int main() {
     if (stdio_usb_connected())
         printf("\nTime for MEGA Fun\n");
 
+    
+    uint64_t last_window = time_us_64();
+
 	while(true) {
 		// detect window high for 1ms
         uint32_t previous_window_us = 0;
         bool vblank = false;
 
      //   ctrl_status_led(LED_ON);
-		while (!gpio_get(WINDOW)); // wait for window to deassert 
+        uint64_t last_window = time_us_64();
+        bool got_sync = true;
+		while (!gpio_get(WINDOW)) {
+            if (got_sync && (time_us_64() - last_window) >= 1000000) {
+                fillBox(0x22);
+                got_sync = false;
+            }          
+        } // wait for window to deassert 
   //      ctrl_status_led(LED_OFF);
         previous_window_us = time_us_32();
 

@@ -158,7 +158,7 @@ void blink_case_led(int speed) {
 void setup() {
    
     stdio_init_all();  // UART accepts input and displays debug infos
-    busy_wait_ms(10);
+   // busy_wait_ms(10);
 
     // yay usb!
     printf("\nEnabling tinyUSB Host");
@@ -166,6 +166,9 @@ void setup() {
 
     printf("\nInit Suppy Pins");
     setup_power_sequence();
+
+    printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
+    out_init(RESET_CTL, 0x0);
 
     printf("\nTurning OFF Supply Pins\n");
     mega_power_state = PWR_OFF;
@@ -186,9 +189,6 @@ void setup() {
         // sleep_ms(2000);
     #endif
     
-    printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
-    out_init(RESET_CTL, 0x1);
-
     // ************************************************************
     // printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
     // out_init(shifter_enable, 0x1); // the TXB0108 is active HI!

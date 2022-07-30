@@ -8,9 +8,10 @@ extern uint pio_offset;
 extern uint pio_sm;
 extern uint pio_sm_1;
 
+#define PIO_FOR_KBD pio0
 
 void KBD_pio_setup() {
-    pio = pio0;
+    pio = PIO_FOR_KBD;
     pio_offset = pio_add_program(pio, &KBD_program);
     pio_sm = pio_claim_unused_sm(pio, true);
 

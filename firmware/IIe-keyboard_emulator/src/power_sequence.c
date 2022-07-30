@@ -48,13 +48,13 @@ void handle_power_sequence(uint8_t state) {
     // state 1: turn on everything
     // state 2: power cycle
     switch(state) {
-        case 0:
+        case PWR_OFF:
             printf("Turning off supplies...\n");
             out_init(RESET_CTL, 0x1);
             gpio_put_masked(PWR_SEQ_MASK, 0x0);
         break;
 
-        case 1:
+        case PWR_ON:
             printf("Turning on Supplies...\n");
             out_init(RESET_CTL, 0x1);
             gpio_put_masked(PWR_SEQ_MASK, PWR_SEQ_MASK); // mask has the bits we want
