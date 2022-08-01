@@ -154,6 +154,16 @@ void blink_case_led(int speed) {
 
 }
 
+static inline void handle_volume_control() {
+    static int previous_audio_volume = 0;
+
+    if (audio_volume != previous_audio_volume) {
+        write_mcp4541_wiper(audio_volume, true);
+    }
+
+    previous_audio_volume = audio_volume;
+}
+
 // put your setup code here, to run once:
 void setup() {
    
@@ -197,8 +207,12 @@ void setup() {
         out_init(COLOR_MODE_PIN, color_mode_state);
     #endif
 
+    //audio_volume = (MCP4541_MAX_STEPS/2);
+    printf("\nSetting up Audio I2C...");
     setup_i2c_audio();
-
+    audio_volume = read_mcp4541_eeprom();
+    printf("with [%d] step(s)", audio_volume);
+    
     // Get VGA2040 Ready To Go
     #if Mega_IIe_Rev3
         printf("\nConfiguring VID_ENABLE Pin (%d)", VID_ENABLE);
@@ -245,8 +259,9 @@ void setup() {
     printf("Keyboard Detected, yay");
 
     tuh_task();
-    printf("\nPausing for 2 seconds ...");
-    for (int x=2; x>=0; x--) {
+    int boot_wait_time = 2;
+    printf("\nPausing for %d seconds ...", boot_wait_time);
+    for (int x=boot_wait_time; x>=0; x--) {
         printf("%d...",x);
         for (int y=0; y<100; y++) {
             busy_wait_ms(10);
@@ -254,7 +269,6 @@ void setup() {
         }
     }
 
-    printf("\nTurning ON Supply Pins\n");
     mega_power_state = PWR_ON;
     handle_power_sequence(mega_power_state);
 
@@ -363,6 +377,7 @@ int main() {
         handle_serial_buffer();
         handle_pio_keycode_queue();
         handle_nkey_repeats();
+        handle_volume_control();
     } // while (true)
     return 0;  // but you never will hah!
 } // it's da main thing

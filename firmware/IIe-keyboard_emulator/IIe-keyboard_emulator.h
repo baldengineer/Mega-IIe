@@ -68,6 +68,7 @@ bool color_mode_state = true;
 
 bool headphone_status = false;
 bool reset_state = false;
+int audio_volume = (MCP4541_MAX_STEPS/2);
 
 // From the outside scary world
 extern void imma_led(uint8_t state);

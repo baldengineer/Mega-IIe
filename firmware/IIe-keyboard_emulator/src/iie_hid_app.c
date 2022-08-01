@@ -33,8 +33,11 @@
 #include "tusb.h"
 #include <iie_hid_app.h>
 #include <keyboard_mapping.h>
+#include "constants.h"
 
 #define MAX_REPORT 4
+
+extern int audio_volume;
 
 void hid_app_task(void) {
     // nothing to do
@@ -229,6 +232,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
     if (special_function) {
         for (uint8_t i = 0; i < report_count; i++) {
             switch (report->keycode[i]) {
+
                 case 57: // caps lock
                     D(printf("Caps Lock\n");)
                     shift_lock_state = !shift_lock_state;
@@ -239,15 +243,29 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                     D(printf("Shift Lock: %d\n", shift_lock_state);)
                 break;
 
-                case 70: // restore
-                    D(printf("Restore\n");)
+                case 70: // now volume down, was restore
+                    #ifdef Mega_IIe_Rev2
+                        D(printf("Restore\n");)
+                    #elif Mega_IIe_Rev3      
+                        audio_volume++;
+                        if (audio_volume > MCP4541_MAX_STEPS)
+                            audio_volume = MCP4541_MAX_STEPS;
+                        printf("Volume Down...[%d]", audio_volume);
+                    #endif
                 break;
 
-                case 71: // 40/80
-                    D(printf("40/80\n");)
-                    color_mode_state = !color_mode_state;
-                    D(printf("Color Mode State: %d\n", color_mode_state);)
-                    set_color_mode(color_mode_state);
+                case 71: // now volume up, was 40/80
+                    #ifdef Mega_IIe_Rev2
+                        D(printf("40/80\n");)
+                        color_mode_state = !color_mode_state;
+                        D(printf("Color Mode State: %d\n", color_mode_state);)
+                        set_color_mode(color_mode_state);
+                    #elif Mega_IIe_Rev3
+                        audio_volume--;
+                        if (audio_volume <= MCP4541_MIN_STEPS)
+                            audio_volume = MCP4541_MIN_STEPS;
+                        printf("Volume Up...[%d]", audio_volume);
+                    #endif
                 break;
 
                 case 72: // Run/Stop
