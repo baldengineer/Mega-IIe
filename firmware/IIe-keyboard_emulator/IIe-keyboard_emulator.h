@@ -16,6 +16,9 @@
 #include "src/constants.h"
 #include "src/enums.h"
 
+// I2C Stuff for Digital Pot
+#include "src/mcp4541.h"
+
 //#define DEBUG_MAIN
 
 bool mega_power_state = 0x0;
@@ -75,6 +78,9 @@ extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
 extern void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys); 
+
+
+// I2C external 
 
 extern void toggle_pwr_pins();
 //extern void handle_mega_power_button();

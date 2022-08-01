@@ -197,6 +197,8 @@ void setup() {
         out_init(COLOR_MODE_PIN, color_mode_state);
     #endif
 
+    setup_i2c_audio();
+
     // Get VGA2040 Ready To Go
     #if Mega_IIe_Rev3
         printf("\nConfiguring VID_ENABLE Pin (%d)", VID_ENABLE);
@@ -230,16 +232,6 @@ void setup() {
     printf("\nConfiguring key code queue");
     queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
  
-    tuh_task();
-    printf("\nPausing for 5 seconds ...");
-    for (int x=5; x>=0; x--) {
-        printf("%d...",x);
-        for (int y=0; y<100; y++) {
-            busy_wait_ms(10);
-            tuh_task();
-        }
-    }
-
     while(!kbd_connected) {
         tuh_task();
         static uint32_t prev_micros;
@@ -251,6 +243,16 @@ void setup() {
         }
     }
     printf("Keyboard Detected, yay");
+
+    tuh_task();
+    printf("\nPausing for 2 seconds ...");
+    for (int x=2; x>=0; x--) {
+        printf("%d...",x);
+        for (int y=0; y<100; y++) {
+            busy_wait_ms(10);
+            tuh_task();
+        }
+    }
 
     printf("\nTurning ON Supply Pins\n");
     mega_power_state = PWR_ON;

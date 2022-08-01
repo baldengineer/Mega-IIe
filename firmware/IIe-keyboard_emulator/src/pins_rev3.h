@@ -31,8 +31,9 @@
 
 // Audio
 #define HP_SENSE 21
-#define AUD_SDA 26
-#define AUD_SCL 27
+#define I2C_AUDIO_INSTANCE i2c1 // i2c0  or i2c1
+#define I2C_AUDIO_SDA_PIN 26 
+#define I2C_AUDIO_SCL_PIN 27
 
 // Power Sequencing
 #define   MEGA_POWER 29   // output! (was an input, that changed.) 

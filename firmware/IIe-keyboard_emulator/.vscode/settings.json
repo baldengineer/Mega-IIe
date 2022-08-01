@@ -6,7 +6,8 @@
     "iie-keyboard_emulator.h": "c",
     "clocks.h": "c",
     "iie_hid_app.h": "c",
-    "pins_rev2.h": "c"
+    "pins_rev2.h": "c",
+    "mcp4541.h": "c"
   },
   "cortex-debug.enableTelemetry": false,
 }
