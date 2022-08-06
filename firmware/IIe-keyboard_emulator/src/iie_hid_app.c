@@ -34,11 +34,13 @@
 #include <iie_hid_app.h>
 #include <keyboard_mapping.h>
 #include "constants.h"
+#include "enums.h"
 
 #define MAX_REPORT 4
 
 extern int audio_volume;
 extern bool audio_mute;
+extern struct Macro_list function_key_macros;
 
 void hid_app_task(void) {
     // nothing to do
@@ -144,7 +146,7 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     // this mirrors how IIe works (but not IIgs, I think)
     if (shift_lock_state && (keyboard_code >= 4) && (keyboard_code <= 29))  //a=4, z=29
         is_shift = true;
-
+    
     uint8_t ch = 0x0;
     if (is_shift && is_ctrl)
         ch = both_kbd_map[keyboard_code];
@@ -155,6 +157,8 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     else
         ch = normal_kbd_map[keyboard_code];
 
+    printf("[%c], ascii[%d]\n", ch, ch);
+
     return ch;
 }
 
@@ -162,12 +166,14 @@ static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_
         // looking for special key sequences
 
     if (modifiers > 0) {
+        // menu key is 0x10
+        printf("Modifier: [%x]\n", modifiers);
         // left-windows key (open-apple)
-        if ((modifiers & 0x08))
+        if ((modifiers & 0x04)) //0x08 is normal windows key
             OAPL_state = true;
 
         // right-windows key (closed-apple)
-        if ((modifiers & 0x80))
+        if ((modifiers & 0x40)) //0x80 is normal windows key
             CAPL_state = true;
 
         // ctrl-alt-delete (same as IIe ctrl-reset)
@@ -245,26 +251,37 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                 break;
 
                 case F1:
+                    function_key_macros.Print = true;
                 break;
                 case F2:
+                    function_key_macros.Input = true;
                 break;
                 case F3:
+                    function_key_macros.Poke = true;
                 break;
                 case F4:
+                    function_key_macros.Peek = true;
                 break;
                 case F5:
+                    function_key_macros.Call = true;
                 break;
                 case F6:
+                    function_key_macros.PR = true;
                 break;
                 case F7:
+                    function_key_macros.Text = true;
                 break;
                 case F8:
+                    function_key_macros.Home = true;
                 break;
                 case F9:
+                    function_key_macros.n151 = true;
                 break;
                 case F10:
+                    function_key_macros.x3F4 = true;
                 break;
                 case F11:
+                    function_key_macros.p1012 = true;
                 break;
 
                 case F12:

@@ -51,9 +51,12 @@ void set_color_mode(bool state) {
 void queue_key(uint8_t key) {
     // if the PIO is ready, let's send in the character now
   //  if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
+    if (key == '\0') // happens when function keys get pressed...
+        return;
       if (queue_is_empty(&keycode_queue)) {
         write_key(key);
         D(printf("Im[%c]", key);)
+        //printf("Im[%c]", key);
     }  else if (!queue_try_add(&keycode_queue, &key))
         printf("Failed to add [%c]\n", key);
 }
@@ -359,6 +362,111 @@ inline static void handle_pio_keycode_queue() {
     }
 }
 
+#define MACRO_WAIT 10
+
+void queue_macro_string(char *msg, bool before_cr, bool after_cr, bool after_sp) {
+    int x = 0;
+    if (before_cr)
+        queue_key(13);
+    busy_wait_ms(MACRO_WAIT*5);
+    while (msg[x] != '\0') {
+        queue_key(msg[x]);
+        busy_wait_ms(MACRO_WAIT);
+        x++;
+        if (x >= 10)
+            tuh_task();
+    }
+    busy_wait_ms(MACRO_WAIT*5);
+    if (after_cr)
+        queue_key(13);
+    if (after_sp)
+        queue_key(' ');
+    printf("Queued %d chars\n", x);
+}
+
+inline static void handle_macros() {
+    char macro_string[32];
+    if (function_key_macros.Print) {
+        function_key_macros.Print = false;
+        //printf("Print Macro\n");
+        sprintf(macro_string, "PRINT");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Input) {
+        function_key_macros.Input = false;
+        //printf("Input Macro\n");
+        sprintf(macro_string, "INPUT");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Poke) {
+        function_key_macros.Poke = false;
+        //printf("Poke Macro\n");
+        sprintf(macro_string, "POKE");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Peek) {
+        function_key_macros.Peek = false;
+        //printf("Peek Macro\n");
+        sprintf(macro_string, "PEEK");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Call) {
+        function_key_macros.Call = false;
+        //printf("Call Macro\n");
+        sprintf(macro_string, "CALL");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.PR) {
+        function_key_macros.PR = false;
+        //printf("PR Macro\n");
+        sprintf(macro_string, "PR #6");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+    if (function_key_macros.Text) {
+        function_key_macros.Text = false;
+        //printf("Text Macro\n");
+        sprintf(macro_string, "TEXT");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+    if (function_key_macros.Home) {
+        function_key_macros.Home = false;
+        //printf("Home Macro\n");
+        sprintf(macro_string, "HOME");
+        queue_macro_string(macro_string, true, true, false);
+    }
+
+    if (function_key_macros.n151) {
+        function_key_macros.n151 = false;
+        //printf("-151 Macro\n");
+        sprintf(macro_string, "-151");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+    if (function_key_macros.x3F4) {
+        function_key_macros.x3F4 = false;
+        //printf("3F4 Macro\n");
+        sprintf(macro_string, "3F4");
+        queue_macro_string(macro_string, true, true, false);
+    }
+
+    if (function_key_macros.p1012) {
+        function_key_macros.p1012 = false;
+        //printf("1012 Macro\n");
+        sprintf(macro_string, "1012,1");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+
+    
+}
+
 inline static void handle_nkey_repeats() {
     switch (nkey) {               
         case NKEY_NEW:
@@ -401,6 +509,7 @@ int main() {
         handle_pio_keycode_queue();
         handle_nkey_repeats();
         handle_volume_control();
+        handle_macros();
     } // while (true)
     return 0;  // but you never will hah!
 } // it's da main thing

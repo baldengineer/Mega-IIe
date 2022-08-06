@@ -60,5 +60,4 @@ extern bool shift_lock_state;
 #define VOL_MUTE 71
 #define VOL_UP 72
 
-
 #endif

@@ -9,4 +9,18 @@ enum nkey_states {
     NKEY_REPEATING, // Just doing the same ol' thing.
 };
 
+struct Macro_list {
+    bool Print;
+    bool Input;
+    bool Poke;
+    bool Peek;
+    bool Call;
+    bool PR;
+    bool Text;
+    bool Home;
+    bool n151;
+    bool x3F4;
+    bool p1012;
+};
+
 #endif

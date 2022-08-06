@@ -70,6 +70,7 @@ bool headphone_status = false;
 bool reset_state = false;
 int audio_volume = (MCP4541_MAX_STEPS/2);
 bool audio_mute = false;
+struct Macro_list function_key_macros;
 
 // From the outside scary world
 extern void imma_led(uint8_t state);
