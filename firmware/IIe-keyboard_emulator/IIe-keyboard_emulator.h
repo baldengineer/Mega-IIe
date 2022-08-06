@@ -58,6 +58,7 @@ void raise_key();
 void write_key(uint8_t key);
 void queue_key(uint8_t key);
 void reset_mega(uint8_t reset_type);
+static inline void handle_volume_control();
 
 uint32_t power_cycle_timer;
 uint8_t power_cycle_key_counter;

@@ -1,7 +1,7 @@
 /* 
  * The MIT License (MIT)
  *
- * Copyright (c) 2020-2021 James Lewis
+ * Copyright (c) 2020-2022 James Lewis
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
 queue_t keycode_queue;
 
 // old habits die hard
-uint32_t millis() {
+static inline uint32_t millis() {
     return ((time_us_32() / 1000));
 }
 
@@ -53,19 +53,25 @@ void queue_key(uint8_t key) {
   //  if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
     if (key == '\0') // happens when function keys get pressed...
         return;
-      if (queue_is_empty(&keycode_queue)) {
-        write_key(key);
-        D(printf("Im[%c]", key);)
-        //printf("Im[%c]", key);
+    D(printf("Im[%c]", key);)
+    if (queue_is_empty(&keycode_queue)) {
+        write_key(key);  
     }  else if (!queue_try_add(&keycode_queue, &key))
         printf("Failed to add [%c]\n", key);
 }
 
+static inline void empty_keyboard_queue() { 
+    while (!queue_is_empty(&keycode_queue)) {
+        uint8_t throwaway = '\0';
+        queue_try_remove(&keycode_queue, &throwaway);
+        printf("%c",throwaway);
+    }
+}
 // TODO  pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
     //reset_type = cold or warm
 
-    printf("Disabling Mega-II...");
+    printf("\nDisabling Mega-II...");
     gpio_put(RESET_CTL, 0x1);
     printf("\nReseting PIO...");
     pio_sm_set_enabled(pio, pio_sm, false);
@@ -80,11 +86,7 @@ void reset_mega(uint8_t reset_type) {
     tuh_task();
     printf("...[DONE]");
     printf("\nClearing Keyboard Queue..."); // queue_free() keeps causing hardfault
-    while (!queue_is_empty(&keycode_queue)) {
-        uint8_t throwaway = '\0';
-        queue_try_remove(&keycode_queue, &throwaway);
-        printf("%c",throwaway);
-    }
+    empty_keyboard_queue();
     printf(" [Done].");
     printf("\nRenabling PIO...");
     pio_sm_set_enabled(pio, pio_sm, true);
@@ -93,13 +95,13 @@ void reset_mega(uint8_t reset_type) {
     gpio_put(RESET_CTL, 0x0);
 }
 
-inline void write_key(uint8_t key) {
+void write_key(uint8_t key) {
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
     pio_interrupt_clear(pio, 1);
 }
 
-inline void raise_key() { // I don't remember why this is an if-statement, oh well, lolz.
+void raise_key() { // I don't remember why this is an if-statement, oh well, lolz.
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
     } else {
@@ -176,6 +178,13 @@ static inline void handle_volume_control() {
     }
     if (audio_mute)
         return;
+
+    // force audio to limits. (saw one case where they were out of scale)
+    if (audio_volume > MCP4541_MAX_STEPS)
+        audio_volume = MCP4541_MAX_STEPS;
+    if (audio_volume < MCP4541_MIN_STEPS)
+        audio_volume = MCP4541_MIN_STEPS;
+
     if (audio_volume != previous_audio_volume) {
         write_mcp4541_wiper(audio_volume, false);
         previous_audio_write = time_us_32();
@@ -224,14 +233,6 @@ void setup() {
         // sleep_ms(2000);
     #endif
     
-    // ************************************************************
-    // printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
-    // out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
-    #if Mega_IIe_Rev2
-        printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
-        out_init(COLOR_MODE_PIN, color_mode_state);
-    #endif
-
     //audio_volume = (MCP4541_MAX_STEPS/2);
     printf("\nSetting up Audio I2C Interface...");
     setup_i2c_audio();
@@ -271,7 +272,6 @@ void setup() {
  
 // line 164 assertion error:
 // https://github.com/raspberrypi/pico-sdk/issues/649
-
     while(!kbd_connected) {
         tuh_task();
         static uint32_t prev_micros;
@@ -314,7 +314,6 @@ inline static void handle_serial_buffer() {
     if (key_value > 0) {
         if (key_value == 0x12) { // should be CTRL-R
             reset_mega(1); // 0 = cold, 1 = warm
-            //handle_power_sequence(mega_power_state);
         } else {
             //prepare_key_value(key_value);
             printf("%c",key_value);
@@ -366,9 +365,11 @@ inline static void handle_pio_keycode_queue() {
 
 void queue_macro_string(char *msg, bool before_cr, bool after_cr, bool after_sp) {
     int x = 0;
-    if (before_cr)
+    if (before_cr) {
         queue_key(13);
-    busy_wait_ms(MACRO_WAIT*5);
+        busy_wait_ms(MACRO_WAIT*5);
+    }
+
     while (msg[x] != '\0') {
         queue_key(msg[x]);
         busy_wait_ms(MACRO_WAIT);
@@ -424,14 +425,20 @@ inline static void handle_macros() {
     if (function_key_macros.PR) {
         function_key_macros.PR = false;
         //printf("PR Macro\n");
-        sprintf(macro_string, "PR #6");
+        if (function_key_macros.shift)
+            sprintf(macro_string, "PR #3");
+        else
+            sprintf(macro_string, "PR #6");
         queue_macro_string(macro_string, false, true, false);
     }
 
     if (function_key_macros.Text) {
         function_key_macros.Text = false;
         //printf("Text Macro\n");
-        sprintf(macro_string, "TEXT");
+        if (function_key_macros.shift)
+            sprintf(macro_string, "GR");
+        else
+            sprintf(macro_string, "TEXT");
         queue_macro_string(macro_string, false, true, false);
     }
 
@@ -445,6 +452,9 @@ inline static void handle_macros() {
     if (function_key_macros.n151) {
         function_key_macros.n151 = false;
         //printf("-151 Macro\n");
+        sprintf(macro_string,"CALL");
+        queue_macro_string(macro_string, true, false, true);
+        tuh_task();
         sprintf(macro_string, "-151");
         queue_macro_string(macro_string, false, true, false);
     }
@@ -454,13 +464,25 @@ inline static void handle_macros() {
         //printf("3F4 Macro\n");
         sprintf(macro_string, "3F4");
         queue_macro_string(macro_string, true, true, false);
+        tuh_task();
+        busy_wait_ms(100);
+        sprintf(macro_string, ":00");
+        tuh_task();
+        queue_macro_string(macro_string, false, true, false);
+        if (function_key_macros.shift)
+            do_a_reset = true;
     }
 
     if (function_key_macros.p1012) {
         function_key_macros.p1012 = false;
         //printf("1012 Macro\n");
+        sprintf(macro_string, "POKE");
+        queue_macro_string(macro_string, true, false, true);
+        tuh_task();
         sprintf(macro_string, "1012,1");
         queue_macro_string(macro_string, false, true, false);
+        if (function_key_macros.shift)
+            do_a_reset = true;
     }
 
 

@@ -21,6 +21,7 @@ struct Macro_list {
     bool n151;
     bool x3F4;
     bool p1012;
+    bool shift;
 };
 
 #endif

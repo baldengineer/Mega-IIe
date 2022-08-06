@@ -2,7 +2,7 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2021, Ha Thach (tinyusb.org)
- * Copyright (c) 2021 James Lewis
+ * Copyright (c) 2022 James Lewis
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -184,11 +184,22 @@ static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_
             CAPL_state = true;
 
         // ctrl-alt-delete (same as IIe ctrl-reset)
-        if ((modifiers == 5))
+        // if ((modifiers == 5))
+        //     for (uint8_t i = 0; i < 6; i++) {
+        //         if (report->keycode[i]==76)
+        //             do_a_reset = true;
+        //     }
+        if ((modifiers & 0x04)) {
+            uint8_t key_count = 0;
             for (uint8_t i = 0; i < 6; i++) {
                 if (report->keycode[i]==76)
-                    do_a_reset = true;
+                    key_count++;
+                if (report->keycode[i]==57)
+                    key_count++;
             }
+            if (key_count == 2)
+                do_a_reset = true;
+        }
     }
 }
 
@@ -255,6 +266,8 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
     // Condition #0: does this current report contain caps, Fx, restore, 40/80 or Run/stop?
     if (special_function) {
+        bool is_shift = modifiers & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+        function_key_macros.shift = is_shift;
         for (uint8_t i = 0; i < report_count; i++) {
             switch (report->keycode[i]) {
 
@@ -304,14 +317,13 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                 break;
 
                 case VOL_DOWN: // now volume down, was restore
-                    #if Mega_IIe_Rev2
-                        D(printf("Restore\n");)
-                    #elif Mega_IIe_Rev3      
+                    if (is_shift)
                         audio_volume++;
-                        if (audio_volume > MCP4541_MAX_STEPS)
-                            audio_volume = MCP4541_MAX_STEPS;
-                        printf("Volume Down...[%d]\n", audio_volume);
-                    #endif
+                    else     
+                        audio_volume += 10;
+                    if (audio_volume > MCP4541_MAX_STEPS)
+                        audio_volume = MCP4541_MAX_STEPS;
+                    printf("Volume Down...[%d]\n", audio_volume);
                 break;
 
                 case VOL_MUTE:
@@ -319,17 +331,13 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                 break;
 
                 case VOL_UP: // now volume up, was 40/80
-                    #if Mega_IIe_Rev2
-                        D(printf("40/80\n");)
-                        color_mode_state = !color_mode_state;
-                        D(printf("Color Mode State: %d\n", color_mode_state);)
-                        set_color_mode(color_mode_state);
-                    #elif Mega_IIe_Rev3
+                    if (is_shift)
                         audio_volume--;
-                        if (audio_volume <= MCP4541_MIN_STEPS)
-                            audio_volume = MCP4541_MIN_STEPS;
-                        printf("Volume Up...[%d]\n", audio_volume);
-                    #endif
+                    else
+                        audio_volume -= 10;
+                    if (audio_volume <= MCP4541_MIN_STEPS)
+                        audio_volume = MCP4541_MIN_STEPS;
+                    printf("Volume Up...[%d]\n", audio_volume);
                 break;
 
                 default:
