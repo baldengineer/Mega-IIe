@@ -41,6 +41,8 @@
 extern int audio_volume;
 extern bool audio_mute;
 extern struct Macro_list function_key_macros;
+bool control_key = false;
+
 
 void hid_app_task(void) {
     // nothing to do
@@ -141,7 +143,8 @@ void imma_led(uint8_t state) {
 
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     bool is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
-    bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
+    //bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
+    bool is_ctrl = control_key;
 
     // this mirrors how IIe works (but not IIgs, I think)
     if (shift_lock_state && (keyboard_code >= 4) && (keyboard_code <= 29))  //a=4, z=29
@@ -157,7 +160,7 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     else
         ch = normal_kbd_map[keyboard_code];
 
-    printf("[%c], ascii[%d]\n", ch, ch);
+    printf("[%d], ascii[%d]\n", keyboard_code, ch);
 
     return ch;
 }
@@ -168,6 +171,10 @@ static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_
     if (modifiers > 0) {
         // menu key is 0x10
         printf("Modifier: [%x]\n", modifiers);
+
+        if ((modifiers & 0x01))
+            caps_lock_toggle();
+
         // left-windows key (open-apple)
         if ((modifiers & 0x04)) //0x08 is normal windows key
             OAPL_state = true;
@@ -202,6 +209,16 @@ static void find_new_keys(hid_keyboard_report_t const* report,hid_keyboard_repor
     }
 }
 
+static void caps_lock_toggle() {
+    D(printf("Caps Lock\n");)
+    shift_lock_state = !shift_lock_state;
+    if (shift_lock_state)
+        imma_led(0x2);
+    else
+        imma_led(0x0);
+    D(printf("Shift Lock: %d\n", shift_lock_state);)
+}
+
 static void process_kbd_report(hid_keyboard_report_t const* report) {
     static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
     static uint8_t prev_report_count = 0;
@@ -217,10 +234,11 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
     // count the current reports
     bool special_function = false;
+    control_key = false;
     uint8_t report_count = 0;
     for (uint8_t i = 0; i < 6; i++) {
         if (report->keycode[i] > 0) {
-            if ((report->keycode[i] >= 57) && (report->keycode[i] <= 72))
+            if (((report->keycode[i] >= 57) && (report->keycode[i] <= 72)))
                 special_function = true;
             report_count++;
         }
@@ -240,14 +258,8 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         for (uint8_t i = 0; i < report_count; i++) {
             switch (report->keycode[i]) {
 
-                case CAPS_LOCK: // caps lock
-                    D(printf("Caps Lock\n");)
-                    shift_lock_state = !shift_lock_state;
-                    if (shift_lock_state)
-                        imma_led(0x2);
-                    else
-                        imma_led(0x0);
-                    D(printf("Shift Lock: %d\n", shift_lock_state);)
+                case CTRL_KEY: // ctrl key on mega keyboard (caps on others)
+                    control_key = true;
                 break;
 
                 case F1:

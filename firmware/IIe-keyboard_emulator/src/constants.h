@@ -43,7 +43,7 @@ extern bool do_a_reset;
 extern bool shift_lock_state;
 
 // Special Key Mapping
-#define CAPS_LOCK 57
+#define CTRL_KEY 57
 #define  F1  58
 #define  F2  59
 #define  F3  60
