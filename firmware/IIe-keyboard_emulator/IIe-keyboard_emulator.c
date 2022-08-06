@@ -155,12 +155,35 @@ void blink_case_led(int speed) {
 }
 
 static inline void handle_volume_control() {
-    static int previous_audio_volume = 0;
+    static uint16_t previous_audio_volume = 0;
+    static uint32_t previous_audio_write = 0;
+    static bool previous_audio_mute = false;
+    static bool eeprom_write_flag = false;
 
+    if (previous_audio_mute != audio_mute) {
+        if (audio_mute) {
+            // enter mute state
+            write_mcp4541_wiper(MCP4541_MAX_STEPS, false);
+        } else {
+            // exit mute state
+            previous_audio_volume = MCP4541_MAX_STEPS;
+            audio_volume = read_mcp4541_eeprom();
+        }
+        previous_audio_mute = audio_mute;
+    }
+    if (audio_mute)
+        return;
     if (audio_volume != previous_audio_volume) {
-        write_mcp4541_wiper(audio_volume, true);
+        write_mcp4541_wiper(audio_volume, false);
+        previous_audio_write = time_us_32();
+        eeprom_write_flag = true;
     }
 
+    // only update the EEPROM after user stops mashing the button.
+    if (eeprom_write_flag && time_us_32() - previous_audio_write >= MCP4541_EEPROM_WAIT){
+        write_mcp4541_eeprom(audio_volume);
+        eeprom_write_flag = false;
+    }
     previous_audio_volume = audio_volume;
 }
 
@@ -180,7 +203,6 @@ void setup() {
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
     out_init(RESET_CTL, 0x0);
 
-    printf("\nTurning OFF Supply Pins\n");
     mega_power_state = PWR_OFF;
     handle_power_sequence(mega_power_state);
 
@@ -208,11 +230,9 @@ void setup() {
     #endif
 
     //audio_volume = (MCP4541_MAX_STEPS/2);
-    printf("\nSetting up Audio I2C...");
+    printf("\nSetting up Audio I2C Interface...");
     setup_i2c_audio();
-    audio_volume = read_mcp4541_eeprom();
-    printf("with [%d] step(s)", audio_volume);
-    
+
     // Get VGA2040 Ready To Go
     #if Mega_IIe_Rev3
         printf("\nConfiguring VID_ENABLE Pin (%d)", VID_ENABLE);
@@ -246,6 +266,9 @@ void setup() {
     printf("\nConfiguring key code queue");
     queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
  
+// line 164 assertion error:
+// https://github.com/raspberrypi/pico-sdk/issues/649
+
     while(!kbd_connected) {
         tuh_task();
         static uint32_t prev_micros;

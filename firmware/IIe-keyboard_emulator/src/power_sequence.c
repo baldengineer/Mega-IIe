@@ -15,6 +15,7 @@ void handle_power_sequence(uint8_t state);
 void setup_power_sequence();
 
 extern bool mega_power_state;
+extern int audio_volume;
 
 void setup_power_sequence() {
     // Init Outputs and turn it all off
@@ -59,6 +60,8 @@ void handle_power_sequence(uint8_t state) {
             out_init(RESET_CTL, 0x1);
             gpio_put_masked(PWR_SEQ_MASK, PWR_SEQ_MASK); // mask has the bits we want
             busy_wait_ms(50);
+            audio_volume = read_mcp4541_eeprom();
+            printf("Setting audio to [%d] step(s)", audio_volume);
             out_init(RESET_CTL, 0x0);
         break;
 

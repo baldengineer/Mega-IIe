@@ -38,6 +38,7 @@
 #define MAX_REPORT 4
 
 extern int audio_volume;
+extern bool audio_mute;
 
 void hid_app_task(void) {
     // nothing to do
@@ -233,7 +234,7 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
         for (uint8_t i = 0; i < report_count; i++) {
             switch (report->keycode[i]) {
 
-                case 57: // caps lock
+                case CAPS_LOCK: // caps lock
                     D(printf("Caps Lock\n");)
                     shift_lock_state = !shift_lock_state;
                     if (shift_lock_state)
@@ -243,19 +244,53 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                     D(printf("Shift Lock: %d\n", shift_lock_state);)
                 break;
 
-                case 70: // now volume down, was restore
-                    #ifdef Mega_IIe_Rev2
+                case F1:
+                break;
+                case F2:
+                break;
+                case F3:
+                break;
+                case F4:
+                break;
+                case F5:
+                break;
+                case F6:
+                break;
+                case F7:
+                break;
+                case F8:
+                break;
+                case F9:
+                break;
+                case F10:
+                break;
+                case F11:
+                break;
+
+                case F12:
+                    D(printf("[%d] F12\n",report->keycode[i]);)
+                    power_cycle_timer = time_us_32();
+                    power_cycle_key_counter++;
+                    D(printf("PWR Cycle Count: (%d)\n", power_cycle_key_counter);)
+                break;
+
+                case VOL_DOWN: // now volume down, was restore
+                    #if Mega_IIe_Rev2
                         D(printf("Restore\n");)
                     #elif Mega_IIe_Rev3      
                         audio_volume++;
                         if (audio_volume > MCP4541_MAX_STEPS)
                             audio_volume = MCP4541_MAX_STEPS;
-                        printf("Volume Down...[%d]", audio_volume);
+                        printf("Volume Down...[%d]\n", audio_volume);
                     #endif
                 break;
 
-                case 71: // now volume up, was 40/80
-                    #ifdef Mega_IIe_Rev2
+                case VOL_MUTE:
+                    audio_mute = !audio_mute;
+                break;
+
+                case VOL_UP: // now volume up, was 40/80
+                    #if Mega_IIe_Rev2
                         D(printf("40/80\n");)
                         color_mode_state = !color_mode_state;
                         D(printf("Color Mode State: %d\n", color_mode_state);)
@@ -264,16 +299,12 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                         audio_volume--;
                         if (audio_volume <= MCP4541_MIN_STEPS)
                             audio_volume = MCP4541_MIN_STEPS;
-                        printf("Volume Up...[%d]", audio_volume);
+                        printf("Volume Up...[%d]\n", audio_volume);
                     #endif
                 break;
 
-                case 72: // Run/Stop
-                    D(printf("Run/Stop\n");)
-                    power_cycle_timer = time_us_32();
-                    power_cycle_key_counter++;
-                    D(printf("PWR Cycle Count: (%d)\n", power_cycle_key_counter);)
-                break;
+                default:
+                    printf("Got Special Function: [%d]\n",report->keycode[i]);
             }
         }
     }

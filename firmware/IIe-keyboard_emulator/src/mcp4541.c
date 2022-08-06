@@ -41,7 +41,7 @@ int read_mcp4541_eeprom() {
         return ret;
 
     ret = i2c_read_blocking(I2C_AUDIO_INSTANCE, MCP4541_ADDRESS, rxdata, 2, false);
-//    printf("ret=%d, rxdata[1]=%d, rxdata[0]=%d\n", ret, rxdata[1],rxdata[0]); 
+    //printf("ret=%d, rxdata[1]=%d, rxdata[0]=%d\n", ret, rxdata[1],rxdata[0]); 
     if (ret >= 0)
             return ((rxdata[0]<<8) | rxdata[1]);
         else
@@ -52,10 +52,12 @@ int write_mcp4541_eeprom(uint16_t volume_level) {
     int ret=-1;
     uint8_t write_buffer[2];
     int previous_eeprom = read_mcp4541_eeprom();
+    
     if (previous_eeprom < 0)
         return previous_eeprom; // error occured
 
     if (previous_eeprom != volume_level) {
+        printf("Writing [%d] to MCP4541 EEPROM\n", volume_level);
         write_buffer[0] = ((volume_level >> 8 & 0x01) | 0x20);
         write_buffer[1] = (volume_level &  0xFF);
         ret = i2c_write_blocking(I2C_AUDIO_INSTANCE, MCP4541_ADDRESS, write_buffer, 2, false);
@@ -69,6 +71,7 @@ int write_mcp4541_wiper(uint16_t volume_level, bool update_eeprom) {
     int ret=-1;
     // if the read fails, the mcp isn't responding
     if (read_mcp4541_wiper() > 0) {
+        printf("Updating Wiper to [%d]\n", volume_level);
         uint8_t write_buffer[2];
         write_buffer[0] = ((volume_level >> 8 & 0x01) | MCP4541_CMD_WRITE); // get MSB of data and set CMD
         write_buffer[1] = (volume_level &  0xFF); // get rest of data

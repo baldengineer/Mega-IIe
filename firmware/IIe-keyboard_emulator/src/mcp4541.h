@@ -16,6 +16,7 @@
 #define MCP4541_ADDRESS 0x2E
 #define MCP4541_MIN_STEPS 0
 #define MCP4541_MAX_STEPS 128
+#define MCP4541_EEPROM_WAIT 5000000
 
 // RP2040 I2C Settings
 #define I2C_AUDIO_SPEED   100e3      // 100 kilohertz
