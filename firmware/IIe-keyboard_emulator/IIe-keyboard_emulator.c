@@ -159,9 +159,12 @@ void blink_case_led(int speed) {
 
 }
 
+bool audio_variable_debug;
+
 static inline void handle_volume_control() {
     static uint16_t previous_audio_volume = 0;
     static uint32_t previous_audio_write = 0;
+    static uint32_t previous_wiper_check = 0;
     static bool previous_audio_mute = false;
     static bool eeprom_write_flag = false;
 
@@ -178,23 +181,38 @@ static inline void handle_volume_control() {
     }
     if (audio_mute)
         return;
-
-    // force audio to limits. (saw one case where they were out of scale)
-    if (audio_volume > MCP4541_MAX_STEPS)
-        audio_volume = MCP4541_MAX_STEPS;
-    if (audio_volume < MCP4541_MIN_STEPS)
-        audio_volume = MCP4541_MIN_STEPS;
-
+    
     if (audio_volume != previous_audio_volume) {
         write_mcp4541_wiper(audio_volume, false);
         previous_audio_write = time_us_32();
         eeprom_write_flag = true;
     }
 
+    if (time_us_32() - previous_wiper_check >= WIPER_CHECK_INTERVAL) {
+        int current_wiper_value = read_mcp4541_wiper();
+        if (current_wiper_value < 0) {
+            printf("Wiper Check Error: [%d]\n", current_wiper_value);
+        }
+        
+        // for some reason, we're out of sync, force them different for next iteration
+        if (audio_volume != current_wiper_value) {
+            printf("ERROR: Audio level wrong. wiper:[%d], eeprom:[%d], variable[%d]\n", read_mcp4541_wiper(), read_mcp4541_eeprom(), audio_volume);
+            previous_audio_volume = audio_mute-1;
+        }
+
+        previous_wiper_check = time_us_32();
+    }
+
     // only update the EEPROM after user stops mashing the button.
     if (eeprom_write_flag && time_us_32() - previous_audio_write >= MCP4541_EEPROM_WAIT){
         write_mcp4541_eeprom(audio_volume);
         eeprom_write_flag = false;
+    }
+
+    if (audio_variable_debug) {
+        audio_variable_debug = false;
+        printf("[DEBUG] Audio levels. wiper:[%d], eeprom:[%d], variable[%d]\n", read_mcp4541_wiper(), read_mcp4541_eeprom(), audio_volume);
+
     }
     previous_audio_volume = audio_volume;
 }

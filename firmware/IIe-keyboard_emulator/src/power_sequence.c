@@ -61,7 +61,10 @@ void handle_power_sequence(uint8_t state) {
             gpio_put_masked(PWR_SEQ_MASK, PWR_SEQ_MASK); // mask has the bits we want
             busy_wait_ms(50);
             audio_volume = read_mcp4541_eeprom();
-            printf("Setting audio to [%d] step(s)", audio_volume);
+            if (audio_volume >= 0)
+                printf("Audio set to [%d] step(s)\n", audio_volume);
+            else
+                printf("ERROR: Audio Pot did not respond!\n");
             out_init(RESET_CTL, 0x0);
         break;
 

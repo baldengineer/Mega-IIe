@@ -27,9 +27,19 @@ int read_mcp4541_wiper() {
     ret = i2c_read_blocking(I2C_AUDIO_INSTANCE, MCP4541_ADDRESS, rxdata, 2, false);
 //    printf("ret=%d, rxdata[1]=%d, rxdata[0]=%d\n", ret, rxdata[1],rxdata[0]); 
     if (ret >= 0)
-            return ((rxdata[0]<<8) | rxdata[1]);
+            return bound_mcp4541_value((rxdata[0]<<8) | rxdata[1]);
         else
             return ret;
+}
+
+inline int bound_mcp4541_value(int incoming) {
+    int outgoing = incoming;
+    if (incoming > MCP4541_MAX_STEPS)
+        outgoing = MCP4541_MAX_STEPS;
+    if (incoming < MCP4541_MIN_STEPS)
+        outgoing = MCP4541_MIN_STEPS;
+   // printf("MAX_STEPS:[%d], MIN_STEPS:[%d], incoming:[%d], outgoing:[%d]\n", MCP4541_MAX_STEPS, MCP4541_MIN_STEPS, incoming, outgoing);
+    return outgoing;
 }
 
 int read_mcp4541_eeprom() {
@@ -41,9 +51,9 @@ int read_mcp4541_eeprom() {
         return ret;
 
     ret = i2c_read_blocking(I2C_AUDIO_INSTANCE, MCP4541_ADDRESS, rxdata, 2, false);
-    //printf("ret=%d, rxdata[1]=%d, rxdata[0]=%d\n", ret, rxdata[1],rxdata[0]); 
+    printf("ret=%d, rxdata[1]=%d, rxdata[0]=%d\n", ret, rxdata[1],rxdata[0]); 
     if (ret >= 0)
-            return ((rxdata[0]<<8) | rxdata[1]);
+            return bound_mcp4541_value((rxdata[0]<<8) | rxdata[1]);
         else
             return ret;   
 }
@@ -52,6 +62,8 @@ int write_mcp4541_eeprom(uint16_t volume_level) {
     int ret=-1;
     uint8_t write_buffer[2];
     int previous_eeprom = read_mcp4541_eeprom();
+
+    volume_level = bound_mcp4541_value(volume_level);
     
     if (previous_eeprom < 0)
         return previous_eeprom; // error occured
@@ -70,6 +82,9 @@ int write_mcp4541_eeprom(uint16_t volume_level) {
 int write_mcp4541_wiper(uint16_t volume_level, bool update_eeprom) {
     int ret=-1;
     // if the read fails, the mcp isn't responding
+
+    volume_level = bound_mcp4541_value(volume_level);
+
     if (read_mcp4541_wiper() > 0) {
         printf("Updating Wiper to [%d]\n", volume_level);
         uint8_t write_buffer[2];

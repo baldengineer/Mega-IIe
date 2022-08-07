@@ -14,8 +14,8 @@
 #define MCP4541_CMD_EE_READ  0x2C
 
 #define MCP4541_ADDRESS 0x2E
-#define MCP4541_MIN_STEPS 0
-#define MCP4541_MAX_STEPS 128
+#define MCP4541_MIN_STEPS 1   // 0 causes MCP4541 to stop responding
+#define MCP4541_MAX_STEPS 128 // is this 128?
 #define MCP4541_EEPROM_WAIT 2500000
 
 // RP2040 I2C Settings
@@ -24,6 +24,7 @@
 
 
 uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
+inline int bound_mcp4541_value(int incoming);
 int write_mcp4541_wiper(uint16_t volume_level, bool update_eeprom);
 int write_mcp4541_eeprom(uint16_t volume_level);
 int read_mcp4541_eeprom();

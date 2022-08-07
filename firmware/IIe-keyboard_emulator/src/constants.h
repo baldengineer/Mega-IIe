@@ -34,6 +34,7 @@
 static const uint16_t led_interval = 500;
 static const uint16_t key_delay = 100;
 static const uint16_t delay_time = 1000;
+#define WIPER_CHECK_INTERVAL 1e6
 
 // Apple Keys and RESET
 #define THREE_FINGER_WAIT 500  //milliseconds

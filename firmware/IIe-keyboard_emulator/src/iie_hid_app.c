@@ -40,6 +40,7 @@
 
 extern int audio_volume;
 extern bool audio_mute;
+extern bool audio_variable_debug;
 extern struct Macro_list function_key_macros;
 bool control_key = false;
 
@@ -327,7 +328,11 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
                 break;
 
                 case VOL_MUTE:
-                    audio_mute = !audio_mute;
+                    if (is_shift) {
+                        audio_variable_debug = true;
+                    } else  {
+                        audio_mute = !audio_mute;
+                    }
                 break;
 
                 case VOL_UP: // now volume up, was 40/80
