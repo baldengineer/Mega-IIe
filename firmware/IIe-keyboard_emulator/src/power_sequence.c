@@ -15,6 +15,7 @@ void handle_power_sequence(uint8_t state);
 void setup_power_sequence();
 
 extern bool mega_power_state;
+extern int audio_volume;
 
 void setup_power_sequence() {
     // Init Outputs and turn it all off
@@ -49,21 +50,26 @@ void handle_power_sequence(uint8_t state) {
     // state 2: power cycle
     switch(state) {
         case PWR_OFF:
-            printf("Turning off supplies...\n");
+            printf("\nTurning off supplies...\n");
             out_init(RESET_CTL, 0x1);
             gpio_put_masked(PWR_SEQ_MASK, 0x0);
         break;
 
         case PWR_ON:
-            printf("Turning on Supplies...\n");
+            printf("\nTurning on Supplies...\n");
             out_init(RESET_CTL, 0x1);
             gpio_put_masked(PWR_SEQ_MASK, PWR_SEQ_MASK); // mask has the bits we want
             busy_wait_ms(50);
+            audio_volume = read_mcp4541_eeprom();
+            if (audio_volume >= 0)
+                printf("Audio set to [%d] step(s)\n", audio_volume);
+            else
+                printf("ERROR: Audio Pot did not respond!\n");
             out_init(RESET_CTL, 0x0);
         break;
 
         case 2:
-            printf("Cycling Power\n");
+            printf("\nCycling Power\n");
             printf("Off...");
             out_init(RESET_CTL, 0x1);
             gpio_put_masked(PWR_SEQ_MASK, 0x0);

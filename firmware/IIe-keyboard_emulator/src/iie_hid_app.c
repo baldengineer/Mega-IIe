@@ -2,7 +2,7 @@
  * The MIT License (MIT)
  *
  * Copyright (c) 2021, Ha Thach (tinyusb.org)
- * Copyright (c) 2021 James Lewis
+ * Copyright (c) 2022 James Lewis
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,17 @@
 #include "tusb.h"
 #include <iie_hid_app.h>
 #include <keyboard_mapping.h>
+#include "constants.h"
+#include "enums.h"
 
 #define MAX_REPORT 4
+
+extern int audio_volume;
+extern bool audio_mute;
+extern bool audio_variable_debug;
+extern struct Macro_list function_key_macros;
+bool control_key = false;
+
 
 void hid_app_task(void) {
     // nothing to do
@@ -135,12 +144,13 @@ void imma_led(uint8_t state) {
 
 inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     bool is_shift = mod_keys & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
-    bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
+    //bool const is_ctrl = mod_keys & (KEYBOARD_MODIFIER_LEFTCTRL | KEYBOARD_MODIFIER_RIGHTCTRL);
+    bool is_ctrl = control_key;
 
     // this mirrors how IIe works (but not IIgs, I think)
     if (shift_lock_state && (keyboard_code >= 4) && (keyboard_code <= 29))  //a=4, z=29
         is_shift = true;
-
+    
     uint8_t ch = 0x0;
     if (is_shift && is_ctrl)
         ch = both_kbd_map[keyboard_code];
@@ -151,6 +161,8 @@ inline static uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys) {
     else
         ch = normal_kbd_map[keyboard_code];
 
+    printf("[%d], ascii[%d]\n", keyboard_code, ch);
+
     return ch;
 }
 
@@ -158,20 +170,37 @@ static void handle_special_sequences(hid_keyboard_report_t const* report, uint8_
         // looking for special key sequences
 
     if (modifiers > 0) {
+        // menu key is 0x10
+        printf("Modifier: [%x]\n", modifiers);
+
+        if ((modifiers & 0x01))
+            caps_lock_toggle();
+
         // left-windows key (open-apple)
-        if ((modifiers & 0x08))
+        if ((modifiers & 0x04)) //0x08 is normal windows key
             OAPL_state = true;
 
         // right-windows key (closed-apple)
-        if ((modifiers & 0x80))
+        if ((modifiers & 0x40)) //0x80 is normal windows key
             CAPL_state = true;
 
         // ctrl-alt-delete (same as IIe ctrl-reset)
-        if ((modifiers == 5))
+        // if ((modifiers == 5))
+        //     for (uint8_t i = 0; i < 6; i++) {
+        //         if (report->keycode[i]==76)
+        //             do_a_reset = true;
+        //     }
+        if ((modifiers & 0x04)) {
+            uint8_t key_count = 0;
             for (uint8_t i = 0; i < 6; i++) {
                 if (report->keycode[i]==76)
-                    do_a_reset = true;
+                    key_count++;
+                if (report->keycode[i]==57)
+                    key_count++;
             }
+            if (key_count == 2)
+                do_a_reset = true;
+        }
     }
 }
 
@@ -192,6 +221,16 @@ static void find_new_keys(hid_keyboard_report_t const* report,hid_keyboard_repor
     }
 }
 
+static void caps_lock_toggle() {
+    D(printf("Caps Lock\n");)
+    shift_lock_state = !shift_lock_state;
+    if (shift_lock_state)
+        imma_led(0x2);
+    else
+        imma_led(0x0);
+    D(printf("Shift Lock: %d\n", shift_lock_state);)
+}
+
 static void process_kbd_report(hid_keyboard_report_t const* report) {
     static hid_keyboard_report_t prev_report = {0, 0, {0}};  // previous report to check key released
     static uint8_t prev_report_count = 0;
@@ -207,10 +246,11 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
     // count the current reports
     bool special_function = false;
+    control_key = false;
     uint8_t report_count = 0;
     for (uint8_t i = 0; i < 6; i++) {
         if (report->keycode[i] > 0) {
-            if ((report->keycode[i] >= 57) && (report->keycode[i] <= 72))
+            if (((report->keycode[i] >= 57) && (report->keycode[i] <= 72)))
                 special_function = true;
             report_count++;
         }
@@ -227,35 +267,86 @@ static void process_kbd_report(hid_keyboard_report_t const* report) {
 
     // Condition #0: does this current report contain caps, Fx, restore, 40/80 or Run/stop?
     if (special_function) {
+        bool is_shift = modifiers & (KEYBOARD_MODIFIER_LEFTSHIFT | KEYBOARD_MODIFIER_RIGHTSHIFT);
+        function_key_macros.shift = is_shift;
         for (uint8_t i = 0; i < report_count; i++) {
             switch (report->keycode[i]) {
-                case 57: // caps lock
-                    D(printf("Caps Lock\n");)
-                    shift_lock_state = !shift_lock_state;
-                    if (shift_lock_state)
-                        imma_led(0x2);
-                    else
-                        imma_led(0x0);
-                    D(printf("Shift Lock: %d\n", shift_lock_state);)
+
+                case CTRL_KEY: // ctrl key on mega keyboard (caps on others)
+                    control_key = true;
                 break;
 
-                case 70: // restore
-                    D(printf("Restore\n");)
+                case F1:
+                    function_key_macros.Print = true;
+                break;
+                case F2:
+                    function_key_macros.Input = true;
+                break;
+                case F3:
+                    function_key_macros.Poke = true;
+                break;
+                case F4:
+                    function_key_macros.Peek = true;
+                break;
+                case F5:
+                    function_key_macros.Call = true;
+                break;
+                case F6:
+                    function_key_macros.PR = true;
+                break;
+                case F7:
+                    function_key_macros.Text = true;
+                break;
+                case F8:
+                    function_key_macros.Home = true;
+                break;
+                case F9:
+                    function_key_macros.n151 = true;
+                break;
+                case F10:
+                    function_key_macros.x3F4 = true;
+                break;
+                case F11:
+                    function_key_macros.p1012 = true;
                 break;
 
-                case 71: // 40/80
-                    D(printf("40/80\n");)
-                    color_mode_state = !color_mode_state;
-                    D(printf("Color Mode State: %d\n", color_mode_state);)
-                    set_color_mode(color_mode_state);
-                break;
-
-                case 72: // Run/Stop
-                    D(printf("Run/Stop\n");)
+                case F12:
+                    D(printf("[%d] F12\n",report->keycode[i]);)
                     power_cycle_timer = time_us_32();
                     power_cycle_key_counter++;
                     D(printf("PWR Cycle Count: (%d)\n", power_cycle_key_counter);)
                 break;
+
+                case VOL_DOWN: // now volume down, was restore
+                    if (is_shift)
+                        audio_volume++;
+                    else     
+                        audio_volume += 10;
+                    if (audio_volume > MCP4541_MAX_STEPS)
+                        audio_volume = MCP4541_MAX_STEPS;
+                    printf("Volume Down...[%d]\n", audio_volume);
+                break;
+
+                case VOL_MUTE:
+                    if (is_shift) {
+                        audio_variable_debug = true;
+                    } else  {
+                        audio_mute = !audio_mute;
+                    }
+                break;
+
+                case VOL_UP: // now volume up, was 40/80
+                    if (is_shift)
+                        audio_volume--;
+                    else
+                        audio_volume -= 10;
+                    if (audio_volume <= MCP4541_MIN_STEPS)
+                        audio_volume = MCP4541_MIN_STEPS;
+                    printf("Volume Up...[%d]\n", audio_volume);
+                break;
+
+                default:
+                    printf("Got Special Function: [%d]\n",report->keycode[i]);
             }
         }
     }

@@ -1,7 +1,7 @@
 /* 
  * The MIT License (MIT)
  *
- * Copyright (c) 2020-2021 James Lewis
+ * Copyright (c) 2020-2022 James Lewis
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
 queue_t keycode_queue;
 
 // old habits die hard
-uint32_t millis() {
+static inline uint32_t millis() {
     return ((time_us_32() / 1000));
 }
 
@@ -51,18 +51,27 @@ void set_color_mode(bool state) {
 void queue_key(uint8_t key) {
     // if the PIO is ready, let's send in the character now
   //  if (pio_interrupt_get(pio,1) && queue_is_empty(&keycode_queue)) {
-      if (queue_is_empty(&keycode_queue)) {
-        write_key(key);
-        D(printf("Im[%c]", key);)
+    if (key == '\0') // happens when function keys get pressed...
+        return;
+    D(printf("Im[%c]", key);)
+    if (queue_is_empty(&keycode_queue)) {
+        write_key(key);  
     }  else if (!queue_try_add(&keycode_queue, &key))
         printf("Failed to add [%c]\n", key);
 }
 
+static inline void empty_keyboard_queue() { 
+    while (!queue_is_empty(&keycode_queue)) {
+        uint8_t throwaway = '\0';
+        queue_try_remove(&keycode_queue, &throwaway);
+        printf("%c",throwaway);
+    }
+}
 // TODO  pass references to pio stuff so I can move to another file
 void reset_mega(uint8_t reset_type) {
     //reset_type = cold or warm
 
-    printf("Disabling Mega-II...");
+    printf("\nDisabling Mega-II...");
     gpio_put(RESET_CTL, 0x1);
     printf("\nReseting PIO...");
     pio_sm_set_enabled(pio, pio_sm, false);
@@ -77,11 +86,7 @@ void reset_mega(uint8_t reset_type) {
     tuh_task();
     printf("...[DONE]");
     printf("\nClearing Keyboard Queue..."); // queue_free() keeps causing hardfault
-    while (!queue_is_empty(&keycode_queue)) {
-        uint8_t throwaway = '\0';
-        queue_try_remove(&keycode_queue, &throwaway);
-        printf("%c",throwaway);
-    }
+    empty_keyboard_queue();
     printf(" [Done].");
     printf("\nRenabling PIO...");
     pio_sm_set_enabled(pio, pio_sm, true);
@@ -90,13 +95,13 @@ void reset_mega(uint8_t reset_type) {
     gpio_put(RESET_CTL, 0x0);
 }
 
-inline void write_key(uint8_t key) {
+void write_key(uint8_t key) {
     pio_sm_put(pio, pio_sm_1, key & 0x7F); 
     pio_sm_put(pio, pio_sm, 0x3);
     pio_interrupt_clear(pio, 1);
 }
 
-inline void raise_key() { // I don't remember why this is an if-statement, oh well, lolz.
+void raise_key() { // I don't remember why this is an if-statement, oh well, lolz.
     if (!pio_interrupt_get(pio,1)) {  //If irq 1 is clear we have a new key still
         pio_sm_put(pio, pio_sm,0x1);
     } else {
@@ -154,6 +159,64 @@ void blink_case_led(int speed) {
 
 }
 
+bool audio_variable_debug;
+
+static inline void handle_volume_control() {
+    static uint16_t previous_audio_volume = 0;
+    static uint32_t previous_audio_write = 0;
+    static uint32_t previous_wiper_check = 0;
+    static bool previous_audio_mute = false;
+    static bool eeprom_write_flag = false;
+
+    if (previous_audio_mute != audio_mute) {
+        if (audio_mute) {
+            // enter mute state
+            write_mcp4541_wiper(MCP4541_MAX_STEPS, false);
+        } else {
+            // exit mute state
+            previous_audio_volume = MCP4541_MAX_STEPS;
+            audio_volume = read_mcp4541_eeprom();
+        }
+        previous_audio_mute = audio_mute;
+    }
+    if (audio_mute)
+        return;
+    
+    if (audio_volume != previous_audio_volume) {
+        write_mcp4541_wiper(audio_volume, false);
+        previous_audio_write = time_us_32();
+        eeprom_write_flag = true;
+    }
+
+    if (time_us_32() - previous_wiper_check >= WIPER_CHECK_INTERVAL) {
+        int current_wiper_value = read_mcp4541_wiper();
+        if (current_wiper_value < 0) {
+            printf("Wiper Check Error: [%d]\n", current_wiper_value);
+        }
+        
+        // for some reason, we're out of sync, force them different for next iteration
+        if (audio_volume != current_wiper_value) {
+            printf("ERROR: Audio level wrong. wiper:[%d], eeprom:[%d], variable[%d]\n", read_mcp4541_wiper(), read_mcp4541_eeprom(), audio_volume);
+            previous_audio_volume = audio_mute-1;
+        }
+
+        previous_wiper_check = time_us_32();
+    }
+
+    // only update the EEPROM after user stops mashing the button.
+    if (eeprom_write_flag && time_us_32() - previous_audio_write >= MCP4541_EEPROM_WAIT){
+        write_mcp4541_eeprom(audio_volume);
+        eeprom_write_flag = false;
+    }
+
+    if (audio_variable_debug) {
+        audio_variable_debug = false;
+        printf("[DEBUG] Audio levels. wiper:[%d], eeprom:[%d], variable[%d]\n", read_mcp4541_wiper(), read_mcp4541_eeprom(), audio_volume);
+
+    }
+    previous_audio_volume = audio_volume;
+}
+
 // put your setup code here, to run once:
 void setup() {
    
@@ -170,7 +233,6 @@ void setup() {
     printf("\nConfiguring RESET_CTRL Pin (%d)", RESET_CTL);
     out_init(RESET_CTL, 0x0);
 
-    printf("\nTurning OFF Supply Pins\n");
     mega_power_state = PWR_OFF;
     handle_power_sequence(mega_power_state);
 
@@ -189,13 +251,9 @@ void setup() {
         // sleep_ms(2000);
     #endif
     
-    // ************************************************************
-    // printf("\nEnabling TXB0108 Level Shifter (%d)", shifter_enable);
-    // out_init(shifter_enable, 0x1); // the TXB0108 is active HI!
-    #if Mega_IIe_Rev2
-        printf("\nEnabling Color Mode (%d)", COLOR_MODE_PIN);
-        out_init(COLOR_MODE_PIN, color_mode_state);
-    #endif
+    //audio_volume = (MCP4541_MAX_STEPS/2);
+    printf("\nSetting up Audio I2C Interface...");
+    setup_i2c_audio();
 
     // Get VGA2040 Ready To Go
     #if Mega_IIe_Rev3
@@ -230,16 +288,8 @@ void setup() {
     printf("\nConfiguring key code queue");
     queue_init(&keycode_queue, sizeof(uint8_t), 10); // really only need 6, but wutwevers
  
-    tuh_task();
-    printf("\nPausing for 5 seconds ...");
-    for (int x=5; x>=0; x--) {
-        printf("%d...",x);
-        for (int y=0; y<100; y++) {
-            busy_wait_ms(10);
-            tuh_task();
-        }
-    }
-
+// line 164 assertion error:
+// https://github.com/raspberrypi/pico-sdk/issues/649
     while(!kbd_connected) {
         tuh_task();
         static uint32_t prev_micros;
@@ -252,7 +302,17 @@ void setup() {
     }
     printf("Keyboard Detected, yay");
 
-    printf("\nTurning ON Supply Pins\n");
+    tuh_task();
+    int boot_wait_time = 2;
+    printf("\nPausing for %d seconds ...", boot_wait_time);
+    for (int x=boot_wait_time; x>=0; x--) {
+        printf("%d...",x);
+        for (int y=0; y<100; y++) {
+            busy_wait_ms(10);
+            tuh_task();
+        }
+    }
+
     mega_power_state = PWR_ON;
     handle_power_sequence(mega_power_state);
 
@@ -272,7 +332,6 @@ inline static void handle_serial_buffer() {
     if (key_value > 0) {
         if (key_value == 0x12) { // should be CTRL-R
             reset_mega(1); // 0 = cold, 1 = warm
-            //handle_power_sequence(mega_power_state);
         } else {
             //prepare_key_value(key_value);
             printf("%c",key_value);
@@ -320,6 +379,134 @@ inline static void handle_pio_keycode_queue() {
     }
 }
 
+#define MACRO_WAIT 10
+
+void queue_macro_string(char *msg, bool before_cr, bool after_cr, bool after_sp) {
+    int x = 0;
+    if (before_cr) {
+        queue_key(13);
+        busy_wait_ms(MACRO_WAIT*5);
+    }
+
+    while (msg[x] != '\0') {
+        queue_key(msg[x]);
+        busy_wait_ms(MACRO_WAIT);
+        x++;
+        if (x >= 10)
+            tuh_task();
+    }
+    busy_wait_ms(MACRO_WAIT*5);
+    if (after_cr)
+        queue_key(13);
+    if (after_sp)
+        queue_key(' ');
+    printf("Queued %d chars\n", x);
+}
+
+inline static void handle_macros() {
+    char macro_string[32];
+    if (function_key_macros.Print) {
+        function_key_macros.Print = false;
+        //printf("Print Macro\n");
+        sprintf(macro_string, "PRINT");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Input) {
+        function_key_macros.Input = false;
+        //printf("Input Macro\n");
+        sprintf(macro_string, "INPUT");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Poke) {
+        function_key_macros.Poke = false;
+        //printf("Poke Macro\n");
+        sprintf(macro_string, "POKE");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Peek) {
+        function_key_macros.Peek = false;
+        //printf("Peek Macro\n");
+        sprintf(macro_string, "PEEK");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.Call) {
+        function_key_macros.Call = false;
+        //printf("Call Macro\n");
+        sprintf(macro_string, "CALL");
+        queue_macro_string(macro_string, false, false, true);
+    }
+
+    if (function_key_macros.PR) {
+        function_key_macros.PR = false;
+        //printf("PR Macro\n");
+        if (function_key_macros.shift)
+            sprintf(macro_string, "PR #3");
+        else
+            sprintf(macro_string, "PR #6");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+    if (function_key_macros.Text) {
+        function_key_macros.Text = false;
+        //printf("Text Macro\n");
+        if (function_key_macros.shift)
+            sprintf(macro_string, "GR");
+        else
+            sprintf(macro_string, "TEXT");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+    if (function_key_macros.Home) {
+        function_key_macros.Home = false;
+        //printf("Home Macro\n");
+        sprintf(macro_string, "HOME");
+        queue_macro_string(macro_string, true, true, false);
+    }
+
+    if (function_key_macros.n151) {
+        function_key_macros.n151 = false;
+        //printf("-151 Macro\n");
+        sprintf(macro_string,"CALL");
+        queue_macro_string(macro_string, true, false, true);
+        tuh_task();
+        sprintf(macro_string, "-151");
+        queue_macro_string(macro_string, false, true, false);
+    }
+
+    if (function_key_macros.x3F4) {
+        function_key_macros.x3F4 = false;
+        //printf("3F4 Macro\n");
+        sprintf(macro_string, "3F4");
+        queue_macro_string(macro_string, true, true, false);
+        tuh_task();
+        busy_wait_ms(100);
+        sprintf(macro_string, ":00");
+        tuh_task();
+        queue_macro_string(macro_string, false, true, false);
+        if (function_key_macros.shift)
+            do_a_reset = true;
+    }
+
+    if (function_key_macros.p1012) {
+        function_key_macros.p1012 = false;
+        //printf("1012 Macro\n");
+        sprintf(macro_string, "POKE");
+        queue_macro_string(macro_string, true, false, true);
+        tuh_task();
+        sprintf(macro_string, "1012,1");
+        queue_macro_string(macro_string, false, true, false);
+        if (function_key_macros.shift)
+            do_a_reset = true;
+    }
+
+
+    
+}
+
 inline static void handle_nkey_repeats() {
     switch (nkey) {               
         case NKEY_NEW:
@@ -361,6 +548,8 @@ int main() {
         handle_serial_buffer();
         handle_pio_keycode_queue();
         handle_nkey_repeats();
+        handle_volume_control();
+        handle_macros();
     } // while (true)
     return 0;  // but you never will hah!
 } // it's da main thing

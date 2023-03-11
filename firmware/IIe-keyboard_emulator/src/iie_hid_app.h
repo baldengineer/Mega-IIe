@@ -54,6 +54,7 @@ static struct{
 
 static void process_kbd_report(hid_keyboard_report_t const* report);
 static void process_generic_report(uint8_t dev_addr, uint8_t instance, uint8_t const* report, uint16_t len);
+static void caps_lock_toggle();
 
 enum nkey_states nkey;
 uint32_t nkey_last_press;

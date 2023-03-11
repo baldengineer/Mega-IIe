@@ -16,6 +16,9 @@
 #include "src/constants.h"
 #include "src/enums.h"
 
+// I2C Stuff for Digital Pot
+#include "src/mcp4541.h"
+
 //#define DEBUG_MAIN
 
 bool mega_power_state = 0x0;
@@ -55,6 +58,7 @@ void raise_key();
 void write_key(uint8_t key);
 void queue_key(uint8_t key);
 void reset_mega(uint8_t reset_type);
+static inline void handle_volume_control();
 
 uint32_t power_cycle_timer;
 uint8_t power_cycle_key_counter;
@@ -65,6 +69,9 @@ bool color_mode_state = true;
 
 bool headphone_status = false;
 bool reset_state = false;
+int audio_volume = (MCP4541_MAX_STEPS/2);
+bool audio_mute = false;
+struct Macro_list function_key_macros;
 
 // From the outside scary world
 extern void imma_led(uint8_t state);
@@ -75,6 +82,9 @@ extern bool any_key;
 extern bool tuh_hid_set_report(uint8_t dev_addr, uint8_t instance, uint8_t report_id, uint8_t report_type, void *report, uint16_t len);
 extern void KBD_pio_setup();
 extern uint8_t get_ascii(uint8_t keyboard_code, uint8_t mod_keys); 
+
+
+// I2C external 
 
 extern void toggle_pwr_pins();
 //extern void handle_mega_power_button();

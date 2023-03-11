@@ -9,8 +9,8 @@
 //                                   Includes
 // ----------------------------------------------------------------------------
 
+
 #include "../../global.h"	// global common definitions
 #include "../vga.pio.h"		// VGA PIO compilation
 #include "../TEST_CAP.pio.h" //Test Capture
-// main
-#include "main.h"		// main code
+

@@ -24,6 +24,7 @@ add_executable(IIe-keyboard_emulator
         src/iie_hid_app.c
         src/power_sequence.c
         src/kbd_pio_handler.c
+        src/mcp4541.c
         )
 
         
@@ -47,6 +48,7 @@ target_link_libraries(IIe-keyboard_emulator pico_stdlib)
 
 # Add any user requested libraries
 target_link_libraries(IIe-keyboard_emulator
+        hardware_i2c
         hardware_pio
         hardware_timer
         hardware_watchdog

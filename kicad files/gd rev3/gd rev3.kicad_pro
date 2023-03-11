@@ -1,5 +1,6 @@
 {
   "board": {
+    "3dviewports": [],
     "design_settings": {
       "defaults": {
         "board_outline_line_width": 0.09999999999999999,
@@ -286,7 +287,8 @@
       "zones_allow_external_fillets": false,
       "zones_use_no_outline": true
     },
-    "layer_presets": []
+    "layer_presets": [],
+    "viewports": []
   },
   "boards": [],
   "cvpcb": {
@@ -534,16 +536,7 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "Disk Drive",
-        "nets": [
-          "/IWM/PHa",
-          "/IWM/PHb",
-          "/IWM/PHc",
-          "/IWM/PHd",
-          "/IWM/seek0",
-          "/IWM/seek1",
-          "/IWM/seek2",
-          "/IWM/seek3"
-        ],
+        "nets": [],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.4,
@@ -561,10 +554,7 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "Neg Thicc",
-        "nets": [
-          "-12V",
-          "-5V"
-        ],
+        "nets": [],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.508,
@@ -582,75 +572,7 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "Smol Logic",
-        "nets": [
-          "/Audio/AUD_SCL",
-          "/Audio/AUD_SDA",
-          "/Audio/HP_Sense",
-          "/KBD_TX_SDA",
-          "/VID_RX",
-          "/VID_TX",
-          "/game_port/SW0_OAPL",
-          "/game_port/SW1_CAPL",
-          "/power/Analog_Pwr",
-          "/power/Mega_Pwr",
-          "/rp2040-keyboard/D0",
-          "/rp2040-keyboard/D1",
-          "/rp2040-keyboard/D2",
-          "/rp2040-keyboard/D3",
-          "/rp2040-keyboard/D4",
-          "/rp2040-keyboard/D5",
-          "/rp2040-keyboard/D6",
-          "/rp2040-keyboard/D7",
-          "/rp2040-keyboard/D_N",
-          "/rp2040-keyboard/D_P",
-          "/rp2040-keyboard/KBD_QSPI_SCLK",
-          "/rp2040-keyboard/KBD_QSPI_SD0",
-          "/rp2040-keyboard/KBD_QSPI_SD1",
-          "/rp2040-keyboard/KBD_QSPI_SD2",
-          "/rp2040-keyboard/KBD_QSPI_SD3",
-          "/rp2040-keyboard/KBD_QSPI_SS",
-          "/rp2040-keyboard/KBD_RUN",
-          "/rp2040-keyboard/KBD_XIN",
-          "/rp2040-keyboard/KBD_XOUT",
-          "/rp2040-keyboard/PH0rp",
-          "/rp2040-keyboard/RESET_CTL",
-          "/rp2040-keyboard/RWrp",
-          "/rp2040-keyboard/SW0_OAPL_3v3",
-          "/rp2040-keyboard/SW1_CAPL_3v3",
-          "/rp2040-keyboard/SWCLK",
-          "/rp2040-keyboard/SWD",
-          "/rp2040-keyboard/USB_D+",
-          "/rp2040-keyboard/USB_D-",
-          "/rp2040-keyboard/VID_EN",
-          "/rp2040-keyboard/kbd_LED",
-          "/rp2040-keyboard/~{245_EN}",
-          "/rp2040-keyboard/~{KSEL0rp}",
-          "/rp2040-keyboard/~{KSEL1rp}",
-          "/rp2040-keyboard/~{KSEL2rp}",
-          "/rp2040-keyboard/~{PH0}",
-          "/rp2040-keyboard/~{RESETrp}",
-          "/video/14M_RP",
-          "/video/D_N",
-          "/video/D_P",
-          "/video/RGB1_RP",
-          "/video/RGB2_RP",
-          "/video/RGB4_RP",
-          "/video/RGB8_RP",
-          "/video/vid_LED_L",
-          "/video/vid_QSPI_SCLK",
-          "/video/vid_QSPI_SD0",
-          "/video/vid_QSPI_SD1",
-          "/video/vid_QSPI_SD2",
-          "/video/vid_QSPI_SD3",
-          "/video/vid_QSPI_SS",
-          "/video/vid_SWCLK",
-          "/video/vid_SWD",
-          "/video/vid_XIN",
-          "/video/vid_XOUT",
-          "/video/~{RESET_RP}",
-          "/video/~{SYNC_RP}",
-          "/video/~{WINDOW_RP}"
-        ],
+        "nets": [],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.1524,
@@ -668,9 +590,7 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "Smol Powers (1v1)",
-        "nets": [
-          "+1V1"
-        ],
+        "nets": [],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.1524,
@@ -688,18 +608,7 @@
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "VGA",
-        "nets": [
-          "/video/BLU0",
-          "/video/BLU1",
-          "/video/GRN0",
-          "/video/GRN1",
-          "/video/GRN2",
-          "/video/HSYNC",
-          "/video/RED0",
-          "/video/RED1",
-          "/video/RED2",
-          "/video/VSYNC"
-        ],
+        "nets": [],
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.1524,
@@ -711,7 +620,362 @@
     "meta": {
       "version": 2
     },
-    "net_colors": null
+    "net_colors": null,
+    "netclass_assignments": null,
+    "netclass_patterns": [
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/PHa"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/PHb"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/PHc"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/PHd"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/seek0"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/seek1"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/seek2"
+      },
+      {
+        "netclass": "Disk Drive",
+        "pattern": "/IWM/seek3"
+      },
+      {
+        "netclass": "Neg Thicc",
+        "pattern": "-12V"
+      },
+      {
+        "netclass": "Neg Thicc",
+        "pattern": "-5V"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/Audio/AUD_SCL"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/Audio/AUD_SDA"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/Audio/HP_Sense"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/KBD_TX_SDA"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/VID_RX"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/VID_TX"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/game_port/SW0_OAPL"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/game_port/SW1_CAPL"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/power/Analog_Pwr"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/power/Mega_Pwr"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D0"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D1"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D2"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D3"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D4"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D5"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D6"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D7"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D_N"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/D_P"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_QSPI_SCLK"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_QSPI_SD0"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_QSPI_SD1"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_QSPI_SD2"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_QSPI_SD3"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_QSPI_SS"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_RUN"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_XIN"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/KBD_XOUT"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/PH0rp"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/RESET_CTL"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/RWrp"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/SW0_OAPL_3v3"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/SW1_CAPL_3v3"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/SWCLK"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/SWD"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/USB_D+"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/USB_D-"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/VID_EN"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/kbd_LED"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/~{245_EN}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/~{KSEL0rp}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/~{KSEL1rp}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/~{KSEL2rp}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/~{PH0}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/rp2040-keyboard/~{RESETrp}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/14M_RP"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/D_N"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/D_P"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/RGB1_RP"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/RGB2_RP"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/RGB4_RP"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/RGB8_RP"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_LED_L"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_QSPI_SCLK"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_QSPI_SD0"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_QSPI_SD1"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_QSPI_SD2"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_QSPI_SD3"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_QSPI_SS"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_SWCLK"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_SWD"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_XIN"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/vid_XOUT"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/~{RESET_RP}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/~{SYNC_RP}"
+      },
+      {
+        "netclass": "Smol Logic",
+        "pattern": "/video/~{WINDOW_RP}"
+      },
+      {
+        "netclass": "Smol Powers (1v1)",
+        "pattern": "+1V1"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/BLU0"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/BLU1"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/GRN0"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/GRN1"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/GRN2"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/HSYNC"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/RED0"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/RED1"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/RED2"
+      },
+      {
+        "netclass": "VGA",
+        "pattern": "/video/VSYNC"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -727,6 +991,8 @@
   "schematic": {
     "annotate_start_num": 0,
     "drawing": {
+      "dashed_lines_dash_length_ratio": 12.0,
+      "dashed_lines_gap_length_ratio": 3.0,
       "default_line_thickness": 6.0,
       "default_text_size": 50.0,
       "field_names": [],
@@ -758,7 +1024,11 @@
     "page_layout_descr_file": "C:\\Users\\balde\\Dropbox\\KiCad\\BE_Frame\\BE_Layout_OSHW.kicad_wks",
     "plot_directory": "",
     "spice_adjust_passive_values": false,
+    "spice_current_sheet_as_root": false,
     "spice_external_command": "spice \"%I\"",
+    "spice_model_current_sheet_as_root": true,
+    "spice_save_all_currents": false,
+    "spice_save_all_voltages": false,
     "subpart_first_id": 65,
     "subpart_id_separator": 0
   },
