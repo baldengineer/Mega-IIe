@@ -24,3 +24,4 @@ firmware/mega2_picovga/memmap_blocked_ram.ld
 firmware/mega2_picovga/memmap_copy_to_ram.ld
 firmware/mega2_picovga/memmap_default.ld
 firmware/mega2_picovga/memmap_no_flash.ld
+*.lck
