@@ -3135,10 +3135,6 @@
     (stroke (width 0) (type default))
     (uuid 64ecbef3-04da-49e5-a7d2-4b0aa8648359)
   )
-  (wire (pts (xy 370.84 204.343) (xy 370.84 205.74))
-    (stroke (width 0) (type default))
-    (uuid 65af1f0c-95cc-4026-b2e5-2251a2eeca0a)
-  )
   (wire (pts (xy 29.21 133.35) (xy 41.91 133.35))
     (stroke (width 0) (type default))
     (uuid 65e2d055-444c-4ce6-a77a-9cce81b7a6ad)
@@ -3331,6 +3327,10 @@
   (wire (pts (xy 370.84 228.6) (xy 370.84 229.87))
     (stroke (width 0) (type default))
     (uuid 843f4e12-fc57-4651-83b8-73d8401dc34a)
+  )
+  (wire (pts (xy 370.84 201.93) (xy 370.84 205.74))
+    (stroke (width 0) (type default))
+    (uuid 84db8a55-1421-485d-a597-d3ca3edc3477)
   )
   (wire (pts (xy 224.79 185.42) (xy 240.03 185.42))
     (stroke (width 0) (type default))
@@ -4894,7 +4894,7 @@
   (symbol (lib_id "Device:Q_NPN_BEC") (at 368.3 223.52 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 1cfcbd6e-5873-4f6a-bcd2-d302706bee09)
-    (property "Reference" "Q?" (at 373.1514 222.3516 0)
+    (property "Reference" "Q10" (at 373.1514 222.3516 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "BC817" (at 373.1514 224.663 0)
@@ -4912,7 +4912,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "Q?") (unit 1)
+          (reference "Q10") (unit 1)
         )
       )
     )
@@ -4994,26 +4994,26 @@
     )
   )
 
-  (symbol (lib_name "+5V_2040_1") (lib_id "My Library:+5V_2040") (at 370.84 204.343 0) (unit 1)
+  (symbol (lib_name "+5V_2040_1") (lib_id "My Library:+5V_2040") (at 370.84 201.93 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 2520eaa9-f5f7-415b-828b-c30ebfe2d6ff)
-    (property "Reference" "#PWR?" (at 370.84 208.153 0)
+    (property "Reference" "#PWR02" (at 370.84 205.74 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "+5V_2040" (at 366.776 200.406 0)
+    (property "Value" "+5V_2040" (at 366.776 197.993 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 370.84 204.343 0)
+    (property "Footprint" "" (at 370.84 201.93 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 370.84 204.343 0)
+    (property "Datasheet" "" (at 370.84 201.93 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 235077f7-1831-41f9-8013-4400067225fc))
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "#PWR?") (unit 1)
+          (reference "#PWR02") (unit 1)
         )
       )
     )
@@ -5159,7 +5159,7 @@
   (symbol (lib_id "power:GND") (at 370.84 229.87 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 39afa735-292e-4a91-9343-3adbd69af746)
-    (property "Reference" "#PWR?" (at 370.84 236.22 0)
+    (property "Reference" "#PWR03" (at 370.84 236.22 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 370.967 234.2642 0)
@@ -5175,7 +5175,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "#PWR?") (unit 1)
+          (reference "#PWR03") (unit 1)
         )
       )
     )
@@ -5412,7 +5412,7 @@
   (symbol (lib_id "My_Library:R_0805") (at 359.41 223.52 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4e5c9b45-9707-402e-9e27-6c6ac71ff95b)
-    (property "Reference" "R?" (at 358.14 226.06 90)
+    (property "Reference" "R84" (at 358.14 226.06 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10k" (at 358.14 220.98 90)
@@ -5429,7 +5429,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "R?") (unit 1)
+          (reference "R84") (unit 1)
         )
       )
     )
@@ -5839,7 +5839,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 163.83 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 69a93aef-19ce-4638-ad0b-2508f0dde802)
-    (property "Reference" "TP?" (at 163.83 53.34 90)
+    (property "Reference" "TP33" (at 163.83 53.34 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "TestPoint" (at 165.3032 57.7342 0)
@@ -5855,7 +5855,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "TP?") (unit 1)
+          (reference "TP33") (unit 1)
         )
       )
     )
@@ -7401,7 +7401,7 @@
   (symbol (lib_name "R_0805_5") (lib_id "My_Library:R_0805") (at 65.786 65.532 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c363da43-b2a5-4ec3-9a80-96be1dadf5c4)
-    (property "Reference" "R?" (at 67.2846 64.3636 0)
+    (property "Reference" "R32" (at 67.2846 64.3636 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "470k" (at 67.2846 66.675 0)
@@ -7418,7 +7418,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "R?") (unit 1)
+          (reference "R32") (unit 1)
         )
       )
     )
@@ -7452,7 +7452,7 @@
   (symbol (lib_id "power:GND") (at 65.786 77.978 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c4120b04-b9c1-4d28-b8c7-433749bbe951)
-    (property "Reference" "#PWR?" (at 65.786 84.328 0)
+    (property "Reference" "#PWR01" (at 65.786 84.328 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 61.976 79.248 0)
@@ -7468,7 +7468,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "#PWR?") (unit 1)
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -7926,7 +7926,7 @@
   (symbol (lib_id "Device:C") (at 65.786 73.66 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ee5cdc88-71af-4280-9113-1c0dd0ba3679)
-    (property "Reference" "C?" (at 68.707 72.4916 0)
+    (property "Reference" "C91" (at 68.707 72.4916 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1e-6" (at 68.707 74.803 0)
@@ -7943,7 +7943,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/adee9709-3834-4416-bb9d-b047d3f7f3b7"
-          (reference "C?") (unit 1)
+          (reference "C91") (unit 1)
         )
       )
     )

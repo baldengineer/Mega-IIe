@@ -1248,7 +1248,7 @@
   (symbol (lib_id "power:GND") (at 84.582 171.196 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0875d283-35e7-4707-8a35-706ceea5c6f1)
-    (property "Reference" "#PWR?" (at 84.582 177.546 0)
+    (property "Reference" "#PWR04" (at 84.582 177.546 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 84.582 176.276 0)
@@ -1264,7 +1264,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c78c3992-30f5-49be-b188-a14fa5a1512a"
-          (reference "#PWR?") (unit 1)
+          (reference "#PWR04") (unit 1)
         )
       )
     )
@@ -1489,7 +1489,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 75.438 168.656 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 312855e5-e2ec-4d9d-a2c4-54a2e5eaed9d)
-    (property "Reference" "TP?" (at 75.438 161.798 0)
+    (property "Reference" "TP34" (at 75.438 161.798 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TestPoint" (at 75.438 163.576 0)
@@ -1505,7 +1505,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c78c3992-30f5-49be-b188-a14fa5a1512a"
-          (reference "TP?") (unit 1)
+          (reference "TP34") (unit 1)
         )
       )
     )
@@ -1568,7 +1568,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 92.964 168.656 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 34ee3b4b-46da-4dec-9dc3-f9b1eb5f4d11)
-    (property "Reference" "TP?" (at 92.964 161.798 0)
+    (property "Reference" "TP38" (at 92.964 161.798 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TestPoint" (at 92.964 163.576 0)
@@ -1584,7 +1584,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c78c3992-30f5-49be-b188-a14fa5a1512a"
-          (reference "TP?") (unit 1)
+          (reference "TP38") (unit 1)
         )
       )
     )
@@ -1997,7 +1997,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 80.01 168.656 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9a21acf0-5335-4136-a782-b033c8c1e9f0)
-    (property "Reference" "TP?" (at 80.01 161.798 0)
+    (property "Reference" "TP35" (at 80.01 161.798 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TestPoint" (at 80.01 163.576 0)
@@ -2013,7 +2013,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c78c3992-30f5-49be-b188-a14fa5a1512a"
-          (reference "TP?") (unit 1)
+          (reference "TP35") (unit 1)
         )
       )
     )
@@ -2073,7 +2073,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 88.646 168.656 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c27861f5-2266-4fd9-922a-8f2849157ed3)
-    (property "Reference" "TP?" (at 88.646 161.798 0)
+    (property "Reference" "TP37" (at 88.646 161.798 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TestPoint" (at 88.646 163.576 0)
@@ -2089,7 +2089,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c78c3992-30f5-49be-b188-a14fa5a1512a"
-          (reference "TP?") (unit 1)
+          (reference "TP37") (unit 1)
         )
       )
     )
@@ -2125,7 +2125,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 84.582 168.656 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid ce719b1c-35f2-4f98-855c-3325f2ba8cef)
-    (property "Reference" "TP?" (at 84.582 161.798 0)
+    (property "Reference" "TP36" (at 84.582 161.798 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "TestPoint" (at 84.582 163.576 0)
@@ -2141,7 +2141,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c78c3992-30f5-49be-b188-a14fa5a1512a"
-          (reference "TP?") (unit 1)
+          (reference "TP36") (unit 1)
         )
       )
     )
