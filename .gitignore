@@ -27,3 +27,7 @@ firmware/mega2_picovga/memmap_no_flash.ld
 *.lck
 firmware/mega2_picovga/vga_mega2/build_old/*
 firmware/mega2_picovga/vga_mega2/rev3_bin/*
+*.kicad_sch$
+*.7z
+kicad files/gd rev3/bom/
+kicad files/gd rev3/sym-lib-table
