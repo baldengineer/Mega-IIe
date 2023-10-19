@@ -25,3 +25,5 @@ firmware/mega2_picovga/memmap_copy_to_ram.ld
 firmware/mega2_picovga/memmap_default.ld
 firmware/mega2_picovga/memmap_no_flash.ld
 *.lck
+firmware/mega2_picovga/vga_mega2/build_old/*
+firmware/mega2_picovga/vga_mega2/rev3_bin/*
