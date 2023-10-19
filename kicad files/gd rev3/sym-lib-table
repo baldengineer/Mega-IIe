@@ -1,4 +1,6 @@
 (sym_lib_table
+  (version 7)
   (lib (name "Apple_IIgs_Symbols")(type "Legacy")(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/Apple_IIgs_Symbols.lib")(options "")(descr ""))
   (lib (name "WDC 65C02")(type "Legacy")(uri "C:/Users/balde/Dropbox/Projects/Retro Computing Projects/Golden Delicious/GD-GitHub/kicad files/KiCad_Symbols/WDC 65C02.lib")(options "")(descr ""))
+  (lib (name "Mega IIe Rev3 Symbols")(type "KiCad")(uri "${KIPRJMOD}/Mega IIe Rev3 Symbols.kicad_sym")(options "")(descr ""))
 )
