@@ -24,7 +24,7 @@
 
 
 uint16_t map(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max);
-inline int bound_mcp4541_value(int incoming);
+int bound_mcp4541_value(int incoming);
 int write_mcp4541_wiper(uint16_t volume_level, bool update_eeprom);
 int write_mcp4541_eeprom(uint16_t volume_level);
 int read_mcp4541_eeprom();

@@ -127,6 +127,11 @@ void out_init(uint8_t pin, bool state) {
 
 // For the blinky led
 bool case_led_blink(struct repeating_timer *t) {
+    if (kbd_led_state[1])
+        kbd_led_state[1] = 0x0;
+    else
+        kbd_led_state[1] = 0x1;
+    out_init(KBD_LED_PIN, kbd_led_state[1]);
     return true;
 }
 
@@ -165,7 +170,7 @@ static inline void handle_volume_control() {
     static uint16_t previous_audio_volume = 0;
     static uint32_t previous_audio_write = 0;
     static uint32_t previous_wiper_check = 0;
-    static bool previous_audio_mute = false;
+    static bool previous_audio_mute = true;
     static bool eeprom_write_flag = false;
 
     if (previous_audio_mute != audio_mute) {
@@ -219,6 +224,18 @@ static inline void handle_volume_control() {
 
 // put your setup code here, to run once:
 void setup() {
+
+    #if Mega_IIe_Rev2
+        printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
+        out_init(DEBUG_PIN, 0x0);
+    #elif Mega_IIe_Rev3
+        kbd_led_state[1] = 0x1;
+        printf("\nConfiguring Case LED Pin(%d)", KBD_LED_PIN);
+        out_init(KBD_LED_PIN, kbd_led_state[1]);
+    #endif
+
+    struct repeating_timer case_led_timer;
+    add_repeating_timer_ms(150, case_led_blink, NULL, &case_led_timer);
    
     stdio_init_all();  // UART accepts input and displays debug infos
    // busy_wait_ms(10);
@@ -236,21 +253,6 @@ void setup() {
     mega_power_state = PWR_OFF;
     handle_power_sequence(mega_power_state);
 
-    #if Mega_IIe_Rev2
-        printf("\nConfiguring DEBUG Pin (%d)", DEBUG_PIN);     // debug pin to trigger the external logic analyzer
-        out_init(DEBUG_PIN, 0x0);
-    #elif Mega_IIe_Rev3
-        printf("\nConfiguring Case LED Pin(%d)", KBD_LED_PIN);
-        out_init(KBD_LED_PIN, 0x0);
-
-        // struct repeating_timer case_led_timer;
-        // add_repeating_timer_ms(500, repeating_timer_callback, NULL, &timer);
-        // sleep_ms(3000);
-        // bool cancelled = cancel_repeating_timer(&timer);
-        // printf("cancelled... %d\n", cancelled);
-        // sleep_ms(2000);
-    #endif
-    
     //audio_volume = (MCP4541_MAX_STEPS/2);
     printf("\nSetting up Audio I2C Interface...");
     setup_i2c_audio();
@@ -315,6 +317,8 @@ void setup() {
 
     mega_power_state = PWR_ON;
     handle_power_sequence(mega_power_state);
+    bool cancelled = cancel_repeating_timer(&case_led_timer);
+    printf("\nCancelled LED timer: %d\n", cancelled);
 
     printf("\n\n---------\nMega IIe Keyboard Emulatron 2000\n\nREADY.\n] ");
 }
@@ -351,9 +355,16 @@ inline static void handle_serial_buffer() {
 
 inline static void handle_three_finger_reset() {
     if (do_a_reset) {
+        struct repeating_timer case_led_timer;
+        add_repeating_timer_ms(150, case_led_blink, NULL, &case_led_timer);
         do_a_reset = false;
         busy_wait_ms(THREE_FINGER_WAIT);
         reset_mega(0);
+        bool cancelled = cancel_repeating_timer(&case_led_timer);
+        printf("\nCancelled LED timer: %d\n", cancelled);
+        kbd_led_state[1] = 0x1; // turn LED back on!
+        out_init(KBD_LED_PIN, kbd_led_state[1]);
+
     }
 }   
 
@@ -383,6 +394,9 @@ inline static void handle_pio_keycode_queue() {
 
 void queue_macro_string(char *msg, bool before_cr, bool after_cr, bool after_sp) {
     int x = 0;
+    struct repeating_timer case_led_timer;
+    add_repeating_timer_ms(25, case_led_blink, NULL, &case_led_timer);
+
     if (before_cr) {
         queue_key(13);
         busy_wait_ms(MACRO_WAIT*5);
@@ -401,6 +415,11 @@ void queue_macro_string(char *msg, bool before_cr, bool after_cr, bool after_sp)
     if (after_sp)
         queue_key(' ');
     printf("Queued %d chars\n", x);
+
+    bool cancelled = cancel_repeating_timer(&case_led_timer);
+    printf("\nCancelled LED timer: %d\n", cancelled);
+    kbd_led_state[1] = 0x1; // turn LED back on!
+    out_init(KBD_LED_PIN, kbd_led_state[1]);
 }
 
 inline static void handle_macros() {

@@ -5339,7 +5339,7 @@
   (symbol (lib_id "Connector:TestPoint") (at 165.1 29.21 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a56d3449-0ee2-446a-8385-d6eaa81cc8e3)
-    (property "Reference" "TP?" (at 170.18 29.21 90)
+    (property "Reference" "TP39" (at 170.18 29.21 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "TestPoint" (at 165.7858 30.6832 0)
@@ -5355,7 +5355,7 @@
     (instances
       (project "gd rev3"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/61636626-f40d-4279-9065-37c0ad74df56"
-          (reference "TP?") (unit 1)
+          (reference "TP39") (unit 1)
         )
       )
     )
