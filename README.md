@@ -1,18 +1,31 @@
-![demo of Mega IIe running AppleSoft](images/2022-06_05_mega_iie_rev2_with_vga_monitor.jpg)
+![Mega IIe Rev 3 loading Number Munchers](images/rev3-on-disk-drive-loading-number-munchers.jpg)
+
 # Golden Delicious
+This project started as a portable Apple ][ by using the Mega-II chip from an IIGS. (This chip is precursor, and slightly different to the Gemini in the Mac LC compatibility card.) However, it evolved into making a miniture Apple IIe compatible computer.
 
-This project started as a portable Apple ][ by using the MEGA II chip from an IIgs. (This chip was also known as the Gemini in the Mac LC compatibility card.) However, it evolved into making a miniture Apple IIe compatible computer.
+This repo contains the KiCad design files, RP2040 firmware, and notes for the Mega IIe computer. 
 
+## Rev 3 Video
+This element14 Presents video documents the effort to get from an Applesoft Prompt to a fully functional computer, in a miniature case.
+
+https://www.youtube.com/watch?v=gFCD4s_hsb4
+
+You can find additional information on the [element14 Community](https://bald.ee/e14-megaiie) or in this [Hackster.io](https://www.hackster.io/news/bald-engineer-s-mega-iie-is-a-modern-miniature-apple-ii-based-on-mega-ii-chip-from-1986-019507d4d10c) article. 
+
+
+## Bit Preserve
 This project is why I started [Bit Preserve](https://github.com/baldengineer/bit-preserve), a project to archive vintage computer schematics.
 
-![Mega IIe Rev2 Hardware](images/2022-06_05_mega_iie_rev2.jpg)
-
+# Notes
+When live streaming the probject, I kept some notes here for future reference.
 
 ## (Off-)Stream Notes 2021-10-02
 * Attempting to book the GD with a IIc ROM results in a lock-up.
   * graphics get initialized and the memory is dumped to the screen, but no beep and nothing past that.
   * Logic Analyzer suggests `BASICINIT` is doing a monitor version check in the F8 ROM, but failing. It calls a jump called `HANG`. Even though the 6502 should be jumping in a circle, it seems to keep doing other stuff. (Maybe it is just bus fetches that do nothing?)
 * SLOTMAKER Bus Headers on the IO board are pinned out different from the SLOTMAKER Bus Header on the MEGA-65c02. For a ribbon cable, each pin-pair needs to be swapped, except for the last two. They are GND.
+
+![demo of Mega IIe running AppleSoft](images/2022-06_05_mega_iie_rev2_with_vga_monitor.jpg)
 
 ## Stream Notes 2021-10-01
 Golden Delicious Rev 2 booted! Yay!
@@ -31,6 +44,7 @@ Golden Delicious Rev 2 booted! Yay!
 * al: keep it all breakouts
 * can we decode ROMEN1 and ROMEN2 ourselves?
 
+![Mega IIe Rev2 Hardware](images/2022-06_05_mega_iie_rev2.jpg)
 
 ## Stream Notes 2021-05-19
 Things to look at on the scope:
@@ -48,14 +62,9 @@ Things to look at on the scope:
   * 3 = 3.3 VDC
   * 5 = 100ppm for -40C to 105C only on tuesdays when the moon is full and it hasn't rained for a few days. also if you ate green skittles recently *Note1*
 
-
 ### BoM for Protoboards
 * [Possible MC1377 Source](https://www.ebay.com/itm/192523168043?hash=item2cd346692b:g:BgIAAOSwWfda4kj6)
 
 ## Stream Notes 2021-05-16
 * [WDC Application note on using 65C02 in Apple II and other old systems](https://www.westerndesigncenter.com/wdc/AN-002_W65C02S_Replacements.php)
 * [65C02 Datasheet](https://www.westerndesigncenter.com/wdc/documentation/w65c02s.pdf)
-
-## Bald Engineer Live Stream
-Watch the stream and help out in chat here:
-https://twitch.tv/baldengineer
