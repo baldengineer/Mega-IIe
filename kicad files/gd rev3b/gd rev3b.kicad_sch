@@ -6,10 +6,9 @@
 
   (title_block
     (title "Mega IIe Rev 3 PCB")
-    (date "2022-06-27")
+    (date "2023-10-19")
     (rev "3b")
     (company "twitch.tv/baldengineer")
-    (comment 1 "Modified to clean up ERC issues on 2023-10-19")
   )
 
   (lib_symbols
@@ -1278,7 +1277,7 @@
     )
     (pin "1" (uuid d7374bf0-ca8d-4766-b191-7577a39cebd2))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0416") (unit 1)
         )
@@ -1303,7 +1302,7 @@
     )
     (pin "1" (uuid 73f99aa0-4c67-42c4-b45c-cdad74ed8658))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0208") (unit 1)
         )
@@ -1329,7 +1328,7 @@
     (pin "1" (uuid 2492045e-5a79-4341-ab7c-83ed32210c26))
     (pin "2" (uuid 44eb9be2-ea60-4ae0-8502-efdff5651785))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "RDNP2") (unit 1)
         )
@@ -1354,7 +1353,7 @@
     )
     (pin "1" (uuid 9b1a7ebf-6a0e-4233-9ce7-33f726a2adab))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0415") (unit 1)
         )
@@ -1379,7 +1378,7 @@
     )
     (pin "1" (uuid 9a892244-20b8-4821-b365-66292672a441))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0217") (unit 1)
         )
@@ -1405,7 +1404,7 @@
     (pin "1" (uuid c691444a-b508-4f10-bb3a-e9e4a45d9b44))
     (pin "2" (uuid b15a47e5-d70b-46f1-82ba-8e161ee2f768))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "R79") (unit 1)
         )
@@ -1430,7 +1429,7 @@
     )
     (pin "1" (uuid a4076fb6-d475-4b11-a8de-00deab4110f9))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0417") (unit 1)
         )
@@ -1455,7 +1454,7 @@
     )
     (pin "1" (uuid f119ba6e-1408-4b8c-a561-21a3c9bf7c22))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0209") (unit 1)
         )
@@ -1481,7 +1480,7 @@
     (pin "1" (uuid b6f8c4bb-a975-44f0-865f-8b917fcbc4eb))
     (pin "2" (uuid 7d27f142-415b-4d19-8eee-a7423cf70c35))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "RDNP1") (unit 1)
         )
@@ -1508,7 +1507,7 @@
     (pin "2" (uuid 73871374-26c8-4126-90c1-e93c2f59a53e))
     (pin "3" (uuid 369ef3d6-c580-4506-8bb0-48a9a2dd140b))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "JP1") (unit 1)
         )
@@ -1533,7 +1532,7 @@
     )
     (pin "1" (uuid e50c5aa5-486a-47e2-b078-e0ce4d1c1cba))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "#PWR0218") (unit 1)
         )
@@ -1560,7 +1559,7 @@
     (pin "2" (uuid 96aaa866-fac0-40bd-a80a-f743642cab7c))
     (pin "3" (uuid 270d867f-966b-4b04-b79b-a054129ab225))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
           (reference "JP2") (unit 1)
         )
@@ -1587,7 +1586,7 @@
       (uuid 808a68f1-76ef-4277-b7c3-0ec172f7e6db)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "10"))
       )
     )
@@ -1704,7 +1703,7 @@
       (uuid 9d027a62-e1fa-4a55-9096-9639d2036390)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "2"))
       )
     )
@@ -1805,7 +1804,7 @@
       (uuid 96ff135c-3e55-4cc6-87b6-03d7b084190b)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "4"))
       )
     )
@@ -1858,7 +1857,7 @@
       (uuid e2dcda64-bdb4-406e-97df-b24eca224928)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "7"))
       )
     )
@@ -1923,7 +1922,7 @@
       (uuid 0075ff85-79f8-4bf6-873e-1888dc598918)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "9"))
       )
     )
@@ -1956,7 +1955,7 @@
       (uuid 6776663b-2175-44f6-98fa-06bc4b72bd88)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "8"))
       )
     )
@@ -1997,7 +1996,7 @@
       (uuid 557db743-3690-431c-9b87-e2a405a2f087)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "3"))
       )
     )
@@ -2074,7 +2073,7 @@
       (uuid 67a76705-f818-4b20-a200-ea0863f327e2)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "5"))
       )
     )
@@ -2115,7 +2114,7 @@
       (uuid f3303121-d3f5-4ce4-b8b7-ed895b402dbc)
     )
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55" (page "6"))
       )
     )

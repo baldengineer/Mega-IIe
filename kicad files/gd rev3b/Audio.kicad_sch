@@ -605,6 +605,58 @@
         )
       )
     )
+    (symbol "My Library:+5V_2040" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
+      (property "Reference" "#PWR" (at 0 -3.81 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Value" "+5V_2040" (at 0 3.556 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "Datasheet" "" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_keywords" "power-flag" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (property "ki_description" "Power symbol creates a global label with name \"+5V_2040\"" (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+      (symbol "+5V_2040_0_1"
+        (polyline
+          (pts
+            (xy -0.762 1.27)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 0)
+            (xy 0 2.54)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+        (polyline
+          (pts
+            (xy 0 2.54)
+            (xy 0.762 1.27)
+          )
+          (stroke (width 0) (type default))
+          (fill (type none))
+        )
+      )
+      (symbol "+5V_2040_1_1"
+        (pin power_in line (at 0 0 90) (length 0) hide
+          (name "+5V_2040" (effects (font (size 1.27 1.27))))
+          (number "1" (effects (font (size 1.27 1.27))))
+        )
+      )
+    )
     (symbol "R_0805_1" (pin_numbers hide) (pin_names (offset 0.254) hide) (in_bom yes) (on_board yes)
       (property "Reference" "R" (at 0.762 0.508 0)
         (effects (font (size 1.27 1.27)) (justify left))
@@ -839,58 +891,6 @@
         )
       )
     )
-    (symbol "power:+5V" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
-      (property "Reference" "#PWR" (at 0 -3.81 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Value" "+5V" (at 0 3.556 0)
-        (effects (font (size 1.27 1.27)))
-      )
-      (property "Footprint" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "Datasheet" "" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_keywords" "global power" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (property "ki_description" "Power symbol creates a global label with name \"+5V\"" (at 0 0 0)
-        (effects (font (size 1.27 1.27)) hide)
-      )
-      (symbol "+5V_0_1"
-        (polyline
-          (pts
-            (xy -0.762 1.27)
-            (xy 0 2.54)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-        (polyline
-          (pts
-            (xy 0 0)
-            (xy 0 2.54)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-        (polyline
-          (pts
-            (xy 0 2.54)
-            (xy 0.762 1.27)
-          )
-          (stroke (width 0) (type default))
-          (fill (type none))
-        )
-      )
-      (symbol "+5V_1_1"
-        (pin power_in line (at 0 0 90) (length 0) hide
-          (name "+5V" (effects (font (size 1.27 1.27))))
-          (number "1" (effects (font (size 1.27 1.27))))
-        )
-      )
-    )
     (symbol "power:GND" (power) (pin_names (offset 0)) (in_bom yes) (on_board yes)
       (property "Reference" "#PWR" (at 0 -6.35 0)
         (effects (font (size 1.27 1.27)) hide)
@@ -969,7 +969,7 @@
     (stroke (width 0) (type default))
     (uuid 06482457-e4df-4c1c-972d-a2a1dbb1f557)
   )
-  (wire (pts (xy 214.63 95.25) (xy 204.47 95.25))
+  (wire (pts (xy 226.695 94.615) (xy 204.47 94.615))
     (stroke (width 0) (type default))
     (uuid 09083d0d-956c-4c1b-9e9e-3ef2425e94ea)
   )
@@ -1009,11 +1009,11 @@
     (stroke (width 0) (type default))
     (uuid 3a82e6e4-9343-49db-a573-ed8aeb5f65ce)
   )
-  (wire (pts (xy 231.14 74.93) (xy 231.14 123.19))
+  (wire (pts (xy 243.205 74.93) (xy 243.205 123.19))
     (stroke (width 0) (type default))
     (uuid 3c7af8f2-ffd6-493f-be5e-d964c89ae687)
   )
-  (wire (pts (xy 204.47 95.25) (xy 204.47 101.6))
+  (wire (pts (xy 204.47 94.615) (xy 204.47 101.6))
     (stroke (width 0) (type default))
     (uuid 3e8c3017-1a6e-4036-8e63-05b85cbfe33d)
   )
@@ -1033,7 +1033,7 @@
     (stroke (width 0) (type default))
     (uuid 5a241dfa-a877-4334-986f-e671366fe6fc)
   )
-  (wire (pts (xy 214.63 87.63) (xy 204.47 87.63))
+  (wire (pts (xy 226.695 86.995) (xy 204.47 86.995))
     (stroke (width 0) (type default))
     (uuid 5da2b9f3-617a-43e2-8187-95c132ef6173)
   )
@@ -1053,7 +1053,7 @@
     (stroke (width 0) (type default))
     (uuid 6b3ff6d2-5d9a-4ae1-bd96-cf6559ae9c31)
   )
-  (wire (pts (xy 204.47 87.63) (xy 204.47 90.17))
+  (wire (pts (xy 204.47 86.995) (xy 204.47 90.17))
     (stroke (width 0) (type default))
     (uuid 6d2a2b4c-bd12-4f4b-b2ac-7170c5d76161)
   )
@@ -1085,15 +1085,15 @@
     (stroke (width 0) (type default))
     (uuid 8af05811-a4d1-4f67-ba49-4597396737f8)
   )
-  (wire (pts (xy 214.63 92.71) (xy 204.47 92.71))
+  (wire (pts (xy 226.695 92.075) (xy 204.47 92.075))
     (stroke (width 0) (type default))
     (uuid 8d8ffc88-958a-41cf-bee1-f4171ad932c9)
   )
-  (wire (pts (xy 204.47 74.93) (xy 231.14 74.93))
+  (wire (pts (xy 204.47 74.93) (xy 243.205 74.93))
     (stroke (width 0) (type default))
     (uuid 8f992321-10f3-4de1-bb3b-8ae5b5358722)
   )
-  (wire (pts (xy 214.63 85.09) (xy 204.47 85.09))
+  (wire (pts (xy 226.695 84.455) (xy 204.47 84.455))
     (stroke (width 0) (type default))
     (uuid 91487b81-ff41-41bf-b960-360757774826)
   )
@@ -1141,19 +1141,15 @@
     (stroke (width 0) (type default))
     (uuid ad088319-2c3b-4a36-9b78-684fd117c9db)
   )
-  (wire (pts (xy 213.36 90.17) (xy 214.63 90.17))
-    (stroke (width 0) (type default))
-    (uuid b0f49195-a1db-430d-86b5-645b50ff517a)
-  )
   (wire (pts (xy 171.45 102.87) (xy 177.8 102.87))
     (stroke (width 0) (type default))
     (uuid b9b681f5-4bcc-47a4-8cfb-be88f7e2ff3f)
   )
-  (wire (pts (xy 204.47 85.09) (xy 204.47 74.93))
+  (wire (pts (xy 204.47 84.455) (xy 204.47 74.93))
     (stroke (width 0) (type default))
     (uuid bc5f3de1-210c-4dd9-9de6-972bd090acd8)
   )
-  (wire (pts (xy 144.78 123.19) (xy 231.14 123.19))
+  (wire (pts (xy 144.78 123.19) (xy 243.205 123.19))
     (stroke (width 0) (type default))
     (uuid be4ffb5b-9662-4a45-9627-00826b328fb4)
   )
@@ -1172,6 +1168,10 @@
   (wire (pts (xy 104.14 95.25) (xy 104.14 96.52))
     (stroke (width 0) (type default))
     (uuid c217a890-f9b0-4ae0-93e6-731cbb924039)
+  )
+  (wire (pts (xy 219.075 89.535) (xy 226.695 89.535))
+    (stroke (width 0) (type default))
+    (uuid c36985e4-5dae-44e4-89a1-f8eb9cc070e1)
   )
   (wire (pts (xy 171.45 90.17) (xy 173.99 90.17))
     (stroke (width 0) (type default))
@@ -1237,7 +1237,7 @@
     (stroke (width 0) (type default))
     (uuid e5fc1413-82b0-40ec-85e0-671e8433dc6c)
   )
-  (wire (pts (xy 204.47 92.71) (xy 204.47 90.17))
+  (wire (pts (xy 204.47 92.075) (xy 204.47 90.17))
     (stroke (width 0) (type default))
     (uuid e5fe97a1-1202-48a5-a2ef-5e59754664c4)
   )
@@ -1254,7 +1254,8 @@
     (uuid f710db74-8760-4243-a0e1-f601ac4713ae)
   )
 
-  (text "Are we scaling the audio on demo board?" (at 25.4 129.54 0)
+  (text "Q: Are we scaling the audio on demo board?\nA: I still don't know.\n\nNeed to see what I did on R3 pcb."
+    (at 29.845 135.89 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 84be79d6-76b3-4ea1-a0d3-b23e668f2b26)
   )
@@ -1263,7 +1264,7 @@
     (uuid b2230e12-82f5-449e-8f6d-fcfbcd5c682a)
   )
   (text "54-00177 and 54-00178 seem to have\nsimilar functionality. Originally \nI ordered the `8 but seemingly \ndesigned to `7's pinout.\n\nIs the `7 the same as the \n\"default\" symbol in Kicad?"
-    (at 233.68 96.52 0)
+    (at 246.38 97.79 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid b79ef964-8b14-443a-9f03-5e20aa4d3090)
   )
@@ -1364,34 +1365,9 @@
     (pin "1" (uuid f0aef76a-6af9-45f5-ab57-57051118f3fc))
     (pin "2" (uuid 99a4d257-749e-401f-9b1d-5687d26a744a))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "R9") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+5V") (at 104.14 85.09 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 150aea2e-4906-4fe9-bf57-0de9ad834131)
-    (property "Reference" "#PWR0320" (at 104.14 88.9 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (at 104.521 80.6958 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 104.14 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 104.14 85.09 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 55127645-eb94-4f24-8ace-e19351692cd5))
-    (instances
-      (project "gd rev3"
-        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
-          (reference "#PWR0320") (unit 1)
         )
       )
     )
@@ -1415,9 +1391,34 @@
     (pin "1" (uuid 506c704b-69fa-4754-81e1-98815f3171f3))
     (pin "2" (uuid 4fc92c5e-8377-4044-ad88-3e044beda922))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "R50") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "My Library:+5V_2040") (at 93.98 121.92 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 22260689-f79c-46ed-b300-9b7270c88716)
+    (property "Reference" "#PWR016" (at 93.98 125.73 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V_2040" (at 93.98 116.84 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 93.98 121.92 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 93.98 121.92 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 84c15c1b-4680-498c-a51a-e5a8913fca79))
+    (instances
+      (project "gd rev3b"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
+          (reference "#PWR016") (unit 1)
         )
       )
     )
@@ -1440,7 +1441,7 @@
     )
     (pin "1" (uuid cf682ebe-ba79-4c5d-9453-31a9822ed12b))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0326") (unit 1)
         )
@@ -1466,7 +1467,7 @@
     (pin "1" (uuid a3741f16-fd55-4e65-90b6-a801f441614d))
     (pin "2" (uuid 5a7b76de-adcb-4a51-9160-141545b2f52c))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "R8") (unit 1)
         )
@@ -1491,7 +1492,7 @@
     )
     (pin "1" (uuid 956cbd62-64ae-44f9-a2fb-68d9c6b6852c))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0324") (unit 1)
         )
@@ -1516,7 +1517,7 @@
     )
     (pin "1" (uuid e84bddf4-4ba4-43b3-be45-185218d9e35c))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0317") (unit 1)
         )
@@ -1524,25 +1525,50 @@
     )
   )
 
-  (symbol (lib_id "Mega IIe Rev3 Symbols:AudioJack3_SwitchTR-Tensility_Pins") (at 219.71 92.71 180) (unit 1)
+  (symbol (lib_id "My Library:+5V_2040") (at 219.075 89.535 90) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 454a0ee3-90ea-4664-839d-11ed6ac12c98)
+    (property "Reference" "#PWR017" (at 222.885 89.535 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V_2040" (at 215.9 89.535 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (at 219.075 89.535 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 219.075 89.535 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 2baa2e78-00b4-46ff-b037-3e4c93444748))
+    (instances
+      (project "gd rev3b"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
+          (reference "#PWR017") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "Mega IIe Rev3 Symbols:AudioJack3_SwitchTR-Tensility_Pins") (at 231.775 92.075 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 47e44467-5dc2-473c-833e-1aa4a47838e8)
-    (property "Reference" "J20" (at 219.71 106.68 0)
+    (property "Reference" "J20" (at 231.14 80.645 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "Ears" (at 220.98 104.14 0)
+    (property "Value" "Ears" (at 231.14 97.155 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "My Libraries:Jack_3.5mm_tensility_54-00177" (at 218.44 80.01 0)
+    (property "Footprint" "My Libraries:Jack_3.5mm_tensility_54-00177" (at 230.505 79.375 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00178.pdf" (at 218.44 74.93 0)
+    (property "Datasheet" "https://tensility.s3.amazonaws.com/uploads/pdffiles/54-00178.pdf" (at 230.505 74.295 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MFG" "Tensility International Corp" (at 219.71 77.47 0)
+    (property "MFG" "Tensility International Corp" (at 231.775 76.835 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "MPN" "54-00178" (at 219.71 97.79 0)
+    (property "MPN" "54-00178" (at 231.775 97.155 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "2" (uuid 1404eefe-9d92-4d34-bbc8-b6583450aa21))
@@ -1551,7 +1577,7 @@
     (pin "5" (uuid 0669e4fc-1250-463f-862c-707599c7a325))
     (pin "6" (uuid 26d8760a-1b44-434e-aeb2-f363e408e463))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "J20") (unit 1)
         )
@@ -1559,26 +1585,26 @@
     )
   )
 
-  (symbol (lib_id "power:+5V") (at 213.36 90.17 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 48929f08-de53-4eb8-a516-0cc5d5685f7e)
-    (property "Reference" "#PWR0327" (at 217.17 90.17 0)
+  (symbol (lib_id "My Library:+5V_2040") (at 152.4 64.77 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 4994c54d-792e-4b62-8d2b-d9b4475d2e28)
+    (property "Reference" "#PWR014" (at 152.4 68.58 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Value" "+5V" (at 208.9658 89.789 0)
+    (property "Value" "+5V_2040" (at 152.4 59.69 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 213.36 90.17 0)
+    (property "Footprint" "" (at 152.4 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 213.36 90.17 0)
+    (property "Datasheet" "" (at 152.4 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid dfee8847-d017-40c8-8b20-904e13142678))
+    (pin "1" (uuid 7aa03993-e57f-4b3e-9f90-7ae0bb98c0cd))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
-          (reference "#PWR0327") (unit 1)
+          (reference "#PWR014") (unit 1)
         )
       )
     )
@@ -1601,7 +1627,7 @@
     )
     (pin "1" (uuid 532e14e1-6179-4f90-9d6f-1ae493d0dc07))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0316") (unit 1)
         )
@@ -1626,7 +1652,7 @@
     )
     (pin "1" (uuid 28f95d28-f157-4984-8065-73b7d400d71e))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0135") (unit 1)
         )
@@ -1652,7 +1678,7 @@
     (pin "1" (uuid 78cda949-6108-40f5-97be-3759dbe40c68))
     (pin "2" (uuid 614c345c-1d97-419f-ac45-fe28c20655bc))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "R49") (unit 1)
         )
@@ -1678,9 +1704,34 @@
     (pin "1" (uuid 5ace924f-6bbd-42a4-a270-d9cf39c92d34))
     (pin "2" (uuid 20626888-0e63-4d43-b9ae-8aca0f906ec0))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "J19") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "My Library:+5V_2040") (at 104.14 85.09 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid 6a8b1d12-e41d-4087-9084-9eaffafa6eeb)
+    (property "Reference" "#PWR013" (at 104.14 88.9 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V_2040" (at 104.14 80.01 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 104.14 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 104.14 85.09 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 69a39fd5-8429-4b32-9173-50a913fcaf3b))
+    (instances
+      (project "gd rev3b"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
+          (reference "#PWR013") (unit 1)
         )
       )
     )
@@ -1705,7 +1756,7 @@
     (pin "2" (uuid f09b7b58-780a-41bc-bd5a-4d825576a463))
     (pin "3" (uuid a5837652-b1ef-4dbd-98d3-1890d7ba9ada))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "Q2") (unit 1)
         )
@@ -1734,7 +1785,7 @@
     (pin "1" (uuid 9629383f-741a-4aad-a55b-046fab8f8544))
     (pin "2" (uuid 5e6ad25a-8577-47e2-a676-731bae40e084))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "C62") (unit 1)
         )
@@ -1760,7 +1811,7 @@
     (pin "1" (uuid 51da4cc5-dd91-4a2c-8205-12541c33d787))
     (pin "2" (uuid aef9348d-7b57-4a5c-a715-dd0a10d277cd))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "R10") (unit 1)
         )
@@ -1792,7 +1843,7 @@
     (pin "7" (uuid 04d342a0-5f9b-4b5e-a82e-238cc9d890f1))
     (pin "8" (uuid 4827ee83-54c7-4731-ae25-52c5d150d42f))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "U26") (unit 1)
         )
@@ -1800,13 +1851,13 @@
     )
   )
 
-  (symbol (lib_name "R_0805_6") (lib_id "Mega IIe Rev3 Symbols:R_0805_6") (at 93.98 133.35 180) (unit 1)
+  (symbol (lib_name "R_0805_6") (lib_id "Mega IIe Rev3 Symbols:R_0805_6") (at 93.98 133.35 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 82dd96d4-16c6-4913-9cd2-3e8dfa0e54a5)
-    (property "Reference" "R48" (at 99.06 134.62 0)
+    (property "Reference" "R48" (at 99.06 132.08 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "220" (at 99.06 132.08 0)
+    (property "Value" "220" (at 99.06 134.62 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_SMD:R_0805_2012Metric" (at 93.98 133.35 0)
@@ -1815,10 +1866,10 @@
     (property "Datasheet" "~" (at 93.98 133.35 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid df1313ec-8e04-43e7-810a-e06748bf422b))
-    (pin "2" (uuid fe50333d-ffac-4924-8ff7-b1b1640157e6))
+    (pin "1" (uuid b71965a8-b7b7-4ea6-907b-af55137a0fc9))
+    (pin "2" (uuid 12384746-580a-4b61-ac86-c1471d914f14))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "R48") (unit 1)
         )
@@ -1843,34 +1894,9 @@
     )
     (pin "1" (uuid f132a81b-dbe4-4ebb-9be6-ce5e5616e7cc))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0103") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+5V") (at 152.4 64.77 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 8b524c21-4e4e-44ba-a7e9-e21b47f1c74c)
-    (property "Reference" "#PWR0322" (at 152.4 68.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (at 152.781 60.3758 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 152.4 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 152.4 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 2331b78c-54e7-4ed3-a79e-14d13d93d9aa))
-    (instances
-      (project "gd rev3"
-        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
-          (reference "#PWR0322") (unit 1)
         )
       )
     )
@@ -1893,7 +1919,7 @@
     )
     (pin "1" (uuid 6168e1ed-2e96-40ee-ae3f-f3df155db13a))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0323") (unit 1)
         )
@@ -1918,34 +1944,9 @@
     )
     (pin "1" (uuid 1834a017-b12a-40c1-a8bb-26c1134c7dea))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0325") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+5V") (at 97.79 64.77 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 92376bd3-149a-4796-8519-388223413ec6)
-    (property "Reference" "#PWR0318" (at 97.79 68.58 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (at 98.171 60.3758 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 97.79 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 97.79 64.77 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 8e288bb1-e699-4f5f-a308-45ed8b8cac79))
-    (instances
-      (project "gd rev3"
-        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
-          (reference "#PWR0318") (unit 1)
         )
       )
     )
@@ -1969,34 +1970,9 @@
     (pin "1" (uuid 04d470f1-d162-4395-98f5-cc4498a578b6))
     (pin "2" (uuid 01cb9e4e-0478-40f0-9b58-2f226da869c7))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "C58") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "power:+5V") (at 93.98 121.92 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid ac66e334-5dcd-4a2b-9e7b-c7095545df71)
-    (property "Reference" "#PWR0315" (at 93.98 125.73 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Value" "+5V" (at 94.361 117.5258 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "" (at 93.98 121.92 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "" (at 93.98 121.92 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 5085343d-17dc-495a-9017-a834cb4053f2))
-    (instances
-      (project "gd rev3"
-        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
-          (reference "#PWR0315") (unit 1)
         )
       )
     )
@@ -2026,7 +2002,7 @@
     (pin "7" (uuid 937314f2-ba68-4181-b95d-bdc8f8ee2331))
     (pin "8" (uuid 5f81fcdf-4ce3-491d-b12d-7465acb30309))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "U27") (unit 1)
         )
@@ -2052,7 +2028,7 @@
     (pin "1" (uuid b7abc5f4-141c-4e62-a36b-bb1f2b18abf1))
     (pin "2" (uuid 394c88c3-e9c0-4b85-86f1-8f0a12dce37d))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "C60") (unit 1)
         )
@@ -2078,7 +2054,7 @@
     (pin "1" (uuid c323b864-104a-492a-beee-52a34721108d))
     (pin "2" (uuid a3de9fed-759b-497b-8ee5-a57b39d639f7))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "D2") (unit 1)
         )
@@ -2104,7 +2080,7 @@
     (pin "1" (uuid c62159a6-4291-4efc-9dd8-120426bd99c8))
     (pin "2" (uuid a739af75-286b-4d49-9867-eef864fffb43))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "RNP3") (unit 1)
         )
@@ -2129,9 +2105,34 @@
     )
     (pin "1" (uuid 894b548a-7784-41e7-b6f4-12966c30095e))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0134") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "My Library:+5V_2040") (at 97.79 64.77 0) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (uuid d398c673-752c-461b-ad83-53f0ebbc1ead)
+    (property "Reference" "#PWR015" (at 97.79 68.58 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "+5V_2040" (at 97.79 59.69 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "" (at 97.79 64.77 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "" (at 97.79 64.77 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 19b2a0ca-ec5e-4b44-8e43-7aa9abc68ab6))
+    (instances
+      (project "gd rev3b"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
+          (reference "#PWR015") (unit 1)
         )
       )
     )
@@ -2154,7 +2155,7 @@
     )
     (pin "1" (uuid a2d4d0a2-d6ec-47f6-82ba-b5fa08624e38))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0319") (unit 1)
         )
@@ -2179,7 +2180,7 @@
     )
     (pin "1" (uuid 9bbe2ac2-5054-4582-9336-c7fe524c5064))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0314") (unit 1)
         )
@@ -2205,7 +2206,7 @@
     (pin "1" (uuid c6c701cb-fbcc-4647-9a97-e2213e21d595))
     (pin "2" (uuid 90b40b1d-ec2b-4b19-ad2f-50964977f60f))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "C59") (unit 1)
         )
@@ -2231,7 +2232,7 @@
     (pin "1" (uuid a5476ccf-cb33-4270-a8af-617e345995a4))
     (pin "2" (uuid 7e4a58c1-618f-4902-a62a-ecc8fb894b78))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "C61") (unit 1)
         )
@@ -2256,7 +2257,7 @@
     )
     (pin "1" (uuid a78240a4-1cad-4164-bc36-5114c60c097b))
     (instances
-      (project "gd rev3"
+      (project "gd rev3b"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/7f413a4b-3e53-4fa0-9479-601cfc2d3c7d"
           (reference "#PWR0321") (unit 1)
         )
