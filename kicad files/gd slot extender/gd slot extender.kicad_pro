@@ -528,7 +528,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "gerbs r1/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
