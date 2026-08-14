@@ -529,6 +529,10 @@ inline static void handle_macros() {
 inline static void handle_nkey_repeats() {
     switch (nkey) {               
         case NKEY_NEW:
+            if (last_key_pressed == CTRL_KEY) {
+                nkey = NKEY_IDLE;
+                break;
+            }
             nkey_last_press = time_us_32();
             nkey = NKEY_ARMED;
         break;
